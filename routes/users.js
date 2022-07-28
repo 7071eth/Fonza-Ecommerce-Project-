@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/account',(req,res)=>{
-  res.render('account')
+  res.render('user/account')
 })
 
 module.exports = router;
