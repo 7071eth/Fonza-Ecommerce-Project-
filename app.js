@@ -9,6 +9,16 @@ const { hasSubscribers } = require('diagnostics_channel');
 var hbs=require('express-handlebars')
 var app = express();
 
+
+//Database connection using mongoose
+
+const mongoose=require('mongoose')
+mongoose.connect('mongodb://localhost:27017',{useNewUrlParser : true})
+
+const db=mongoose.connection
+db.on('error',error=>console.error(error))
+db.once('open',()=>console.log('Connected to db successfull'))
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -20,6 +30,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/User')));
 
+//hbs security open
+
+
+
+//Routes 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 

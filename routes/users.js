@@ -10,4 +10,11 @@ router.get('/account',(req,res)=>{
   res.render('user/account')
 })
 
+router.post('/account',(req,res)=>{
+  console.log(req.body);
+  console.log("Success")
+  res.send('success')
+})
+
+
 module.exports = router;
