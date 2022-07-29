@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -31,7 +31,7 @@
 
 </head>
 
-<body>
+<body> --}}
 	
 	<div id="page">
 
@@ -41,115 +41,62 @@
 	<div class="container margin_30">
 		<div class="page_header">
 			<div class="breadcrumbs">
-				<ul>
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Category</a></li>
-					<li>Page active</li>
-				</ul>
+				{{!-- <ul>
+					<li><a href="#"></a></li>
+					<li><a href="#"></a></li>
+					<li></li>
+				</ul> --}}
 		</div>
-		<h1>Sign In or Create an Account</h1>
 	</div>
 	<!-- /page_header -->
-			<div class="row justify-content-center">
+		<div class="row justify-content-center">
+			
 			<div class="col-xl-6 col-lg-6 col-md-8">
 				<div class="box_account">
-					<h3 class="client">Already Client</h3>
-					<div class="form_container">
-						<div class="row no-gutters">
-							<div class="col-lg-6 pr-lg-1">
-								<a href="#0" class="social_bt facebook">Login with Facebook</a>
-							</div>
-							<div class="col-lg-6 pl-lg-1">
-								<a href="#0" class="social_bt google">Login with Google</a>
-							</div>
-						</div>
-						<div class="divider"><span>Or</span></div>
-						<div class="form-group">
-							<input type="email" class="form-control" name="email" id="email" placeholder="Email*">
-						</div>
-						<div class="form-group">
-							<input type="password" class="form-control" name="password_in" id="password_in" value="" placeholder="Password*">
-						</div>
-						<div class="clearfix add_bottom_15">
-							<div class="checkboxes float-left">
-								<label class="container_check">Remember me
-									<input type="checkbox">
-									<span class="checkmark"></span>
-								</label>
-							</div>
-							<div class="float-right"><a id="forgot" href="javascript:void(0);">Lost Password?</a></div>
-						</div>
-						<div class="text-center"><input type="submit" value="Log In" class="btn_1 full-width"></div>
-						<div id="forgot_pw">
-							<div class="form-group">
-								<input type="email" class="form-control" name="email_forgot" id="email_forgot" placeholder="Type your email">
-							</div>
-							<p>A new password will be sent shortly.</p>
-							<div class="text-center"><input type="submit" value="Reset Password" class="btn_1"></div>
-						</div>
+					<h3 class="new_client">Registration</h3> 
+					<p id="emailAlert" style="color: red ;">{{alertEmail}}</p>
+
+					<!-- Validation Alert -->
+					{{#each alert}}
+
+					<div class="alert alert-warning alert-dismissible fade show" role="alert">
+					<strong>Alert  :</strong> {{msg}}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 					</div>
-					<!-- /form_container -->
-				</div>
-				<!-- /box_account -->
-				<div class="row">
-					<div class="col-md-6 d-none d-lg-block">
-						<ul class="list_ok">
-							<li>Find Locations</li>
-							<li>Quality Location check</li>
-							<li>Data Protection</li>
-						</ul>
-					</div>
-					<div class="col-md-6 d-none d-lg-block">
-						<ul class="list_ok">
-							<li>Secure Payments</li>
-							<li>H24 Support</li>
-						</ul>
-					</div>
-				</div>
-				<!-- /row -->
-			</div>
-			<div class="col-xl-6 col-lg-6 col-md-8">
-				<div class="box_account">
-					<h3 class="new_client">New Client</h3> <small class="float-right pt-2">* Required Fields</small>
-					<form action="/users/account" method="post">
+					{{/each}}
+
+
+
+					<small class="float-right pt-2">* Required Fields</small>
+					<form action="/users/account" method="POST" onsubmit = "return(validateRegUser());" name="myForm">
 					<div class="form_container">
 						<div class="form-group">
-							<input type="email" class="form-control" name="email" id="email_2" placeholder="Email*">
+							<input type="email" class="form-control" name="email_2" id="email_2" placeholder="Email*">
 						</div>
+						<p id="emailAlert" style="color: red ;"></p>
 						<div class="form-group">
 							<input type="password" class="form-control" name="password_in_2" id="password_in_2" value="" placeholder="Password*">
 						</div>
+						<p id="passwordAlert" style="color: red ;"></p>
 						<hr>
-						<div class="form-group">
-							<label class="container_radio" style="display: inline-block; margin-right: 15px;">Private
-								<input type="radio" name="client_type" checked value="private">
-								<span class="checkmark"></span>
-							</label>
-							<label class="container_radio" style="display: inline-block;">Company
-								<input type="radio" name="client_type" value="company">
-								<span class="checkmark"></span>
-							</label>
-						</div>
+						
 						<div class="private box">
 							<div class="row no-gutters">
 								<div class="col-6 pr-1">
 									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Name*" name="fname">
+										<input type="text" class="form-control" placeholder="Name*" name="namereg">
 									</div>
 								</div>
-								<div class="col-6 pl-1">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Last Name*" name="lname">
-									</div>
-								</div>
+								<p id="nameAlert" style="color: red ;"></p>
 								<div class="col-12">
 									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Full Address*" name="address">
+										<input type="text" class="form-control" placeholder="Full Address*" name="addressreg">
 									</div>
 								</div>
+								<p id="addressAlert" style="color: red ;"></p>
 							</div>
 							<!-- /row -->
-							<div class="row no-gutters">
+							{{!-- <div class="row no-gutters">
 								<div class="col-6 pr-1">
 									<div class="form-group">
 										<input type="text" class="form-control" placeholder="City*" name="city">
@@ -168,10 +115,10 @@
 									<div class="form-group">
 										<div class="custom-select-form">
 											<select class="wide add_bottom_10" name="country" id="country">
-													<option value="" selected>Country*</option>
-													<option value="Europe">Europe</option>
-													<option value="United states">United states</option>
-													<option value="Asia">Asia</option>
+													<option value="" selected>State*</option>
+													<option value="Kerala">Kerala</option>
+													<option value="TamilNadu">Tamil Nadu</option>
+													<option value="Maharashtra">Maharashtra</option>
 											</select>
 										</div>
 									</div>
@@ -181,7 +128,7 @@
 										<input type="text" class="form-control" placeholder="Telephone *">
 									</div>
 								</div>
-							</div>
+							</div> --}}
 							<!-- /row -->
 							
 						</div>
@@ -238,7 +185,7 @@
 						<hr>
 						<div class="form-group">
 							<label class="container_check">Accept <a href="#0">Terms and conditions</a>
-								<input type="checkbox">
+								<input type="checkbox" name="agree">
 								<span class="checkmark"></span>
 							</label>
 						</div>
@@ -261,10 +208,55 @@
 	<!-- page -->
 	
 	<div id="toTop"></div><!-- Back to top button -->
-	
+	<script>
+    
+    function validateRegUser() {
+				
+         if( document.myForm.email_2.value == "" ) {
+            document.getElementById("emailAlert").innerHTML="Enter a valid username"
+            document.myForm.email_2.focus() ;
+            return false;
+         };
+		 document.getElementById("emailAlert").innerHTML=""
+
+		 
+         if( document.myForm.password_in_2.value == "" ) {
+            document.getElementById("passwordAlert").innerHTML="Enter the password"
+            document.myForm.password_in_2.focus() ;
+            return false;
+         };
+		 document.getElementById("passwordAlert").innerHTML=""
+
+		 if( document.myForm.namereg.value == "" ) {
+            
+            document.getElementById("nameAlert").innerHTML="Enter your name"
+            document.myForm.namereg.focus() ;
+            return false;
+         };
+		 document.getElementById("nameAlert").innerHTML=""
+
+		 if( document.myForm.addressreg.value == "" ) {
+            
+            document.getElementById("addressAlert").innerHTML="Enter your Address"
+            document.myForm.addressreg.focus() ;
+            return false;
+         };
+
+		 document.getElementById("addressAlert").innerHTML=""
+
+		 if(document.myForm.agree.checked==false){
+
+			
+			return false;
+		 }
+        
+         return( true );
+      }
+  </script>
 	<!-- COMMON SCRIPTS -->
     <script src="js/common_scripts.min.js"></script>
     <script src="js/main.js"></script>
+
 
     <script>
     	// Client type Panel
@@ -276,5 +268,5 @@
 		});
 	</script>
 		
-</body>
-</html>
+{{!-- </body>
+</html> --}}

@@ -8,16 +8,27 @@ var usersRouter = require('./routes/users');
 const { hasSubscribers } = require('diagnostics_channel');
 var hbs=require('express-handlebars')
 var app = express();
+const bodyParser=require('body-parser')
+var cookieParser = require('cookie-parser');
+
+var session=require('express-session')
+const {check,validationResult}= require('express-validator')
+var db=require('./config/connection')
 
 
-//Database connection using mongoose
+db.connect((err)=>{
+  if(err)console.log("connection error"+err);
+  else console.log("database connected");
 
-const mongoose=require('mongoose')
-mongoose.connect('mongodb://localhost:27017',{useNewUrlParser : true})
+})
+// //Database connection using mongoose
 
-const db=mongoose.connection
-db.on('error',error=>console.error(error))
-db.once('open',()=>console.log('Connected to db successfull'))
+// const mongoose=require('mongoose')
+// mongoose.connect('mongodb://localhost:27017',{useNewUrlParser : true})
+
+// const db=mongoose.connection
+// db.on('error',error=>console.error(error))
+// db.once('open',()=>console.log('Connected to db successfull'))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +40,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/User')));
+app.use(session({secret:"key",
+resave:false,
+saveUninitialized:true,
+cookie:{maxAge:200000}}))
 
 //hbs security open
 
