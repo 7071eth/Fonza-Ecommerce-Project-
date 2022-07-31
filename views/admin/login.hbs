@@ -1,6 +1,6 @@
 <div class="col-xl-6 col-lg-6 col-md-8 mx-auto mt-5">
 				<div class="box_account">
-					<h3 class="client">Login</h3>
+					<h3 class="client">Admin Login</h3>
 					<div class="form_container">
 						<div class="row no-gutters">
 							{{!-- <div class="col-lg-6 pr-lg-1">
@@ -11,12 +11,12 @@
 							</div> --}}
 						</div>
 						<p id="emailAlert" style="color: red ;">{{alertLogin}}</p>
-						<form action="/users/login" method="post" >
+						<form action="/admin/" method="post" >
 						<div class="form-group mt-3">
-							<input type="email" class="form-control" name="email" id="email" placeholder="Email*">
+							<input type="text" class="form-control" name="Email" id="email" placeholder="Email*">
 						</div>
 						<div class="form-group">
-							<input type="password" class="form-control" name="password_in" id="password_in" value="" placeholder="Password*">
+							<input type="password" class="form-control" name="Password" id="password_in" value="" placeholder="Password*">
 						</div>
 						<div class="clearfix add_bottom_15">
 							<div class="checkboxes float-left">

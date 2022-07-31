@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var indexRouter = require('./routes/index');
+var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 const { hasSubscribers } = require('diagnostics_channel');
 var hbs=require('express-handlebars')
@@ -14,6 +14,7 @@ var cookieParser = require('cookie-parser');
 var session=require('express-session')
 const {check,validationResult}= require('express-validator')
 var db=require('./config/connection')
+
 
 
 db.connect((err)=>{
@@ -50,7 +51,8 @@ cookie:{maxAge:200000}}))
 
 
 //Routes 
-app.use('/', indexRouter);
+app.use('/admin', adminRouter);
+app.use('/', usersRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler

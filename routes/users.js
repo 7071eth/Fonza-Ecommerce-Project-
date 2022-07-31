@@ -6,7 +6,7 @@ const userHelpers=require('../helpers/user-helpers')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render('index');
 });
 
 router.get('/account',(req,res)=>{
