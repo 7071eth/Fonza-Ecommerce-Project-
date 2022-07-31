@@ -30,5 +30,19 @@ router.post('/account',(req,res)=>{
   }
 )
 
+router.post('/login',(req,res)=>{
+  userHelpers.doLogin(req.body).then((response)=>{
+    if (response.status){
+     
+      req.session.user=response.user
+      req.session.loggedIn=true
+      res.render('user/dashboard')
+    }else{
+      req.session.loginErr=true
+      res.render('user/login',{alertLogin: "Incorrect Credentials"})
+    }
+  })
+})
+
 
 module.exports = router;
