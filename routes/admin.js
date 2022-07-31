@@ -8,18 +8,25 @@ router.get('/', function(req, res, next) {
   res.render('admin/login', { title: 'Express' });
 });
 
+router.get('/dashboard',(req,res)=>{
+  res.render('admin/dashboard')
+})
+
 router.post('/',function(req,res,next){
-  const { Email, Password } = req.body;
-  if (userName === Email && Pin === Password) {
+  const { email, password } = req.body;
+  console.log(req.body)
+  if (userName === email && Pin === password) {
     req.session.check = true;
     req.session.users = {
       userName
     }
-    res.render('admin/dashboard')
+    
+    res.redirect('/admin/dashboard')
   }
   else {
+    
     req.session.err="incorrect username or password"
-    res.redirect('/admin/')
+    res.render('admin/login',{alertLogin : 'Incorrect credentials'})
   }
 })
 

@@ -11,13 +11,15 @@
 							</div> --}}
 						</div>
 						<p id="emailAlert" style="color: red ;">{{alertLogin}}</p>
-						<form action="/users/login" method="post" >
+						<form action="/users/login" method="post" onsubmit = "return(validateLoginUser());" name="myFormLogin" >
 						<div class="form-group mt-3">
 							<input type="email" class="form-control" name="email" id="email" placeholder="Email*">
 						</div>
+						<p id="emailAlert" style="color: red ;"></p>
 						<div class="form-group">
 							<input type="password" class="form-control" name="password_in" id="password_in" value="" placeholder="Password*">
 						</div>
+						<p id="passwordAlert" style="color: red ;"></p>
 						<div class="clearfix add_bottom_15">
 							<div class="checkboxes float-left">
 								<label class="container_check">Remember me
@@ -57,3 +59,27 @@
 				</div>
 				<!-- /row -->
 			</div>
+			
+			<script>
+    
+    function validateLoginUser() {
+		
+				
+         if( document.myFormLogin.email.value == "" ) {
+            document.getElementById("emailAlert").innerHTML="Enter a valid username"
+            document.myFormLogin.email.focus() ;
+            return false;
+         };
+		 document.getElementById("emailAlert").innerHTML=""
+
+		 
+         if( document.myFormLogin.password_in.value == "" ) {
+            document.getElementById("passwordAlert").innerHTML="Enter the password"
+            document.myFormLogin.password_in.focus() ;
+            return false;
+         };
+		 document.getElementById("passwordAlert").innerHTML=""
+        
+         return( true );
+      }
+  </script>
