@@ -16,6 +16,7 @@ module.exports = {
 
             } else {
                 userData.password_in_2 = await bcrypt.hash(userData.password_in_2, 10)
+                userData.status= 'verified'
                 db.get().collection(collections.USER_COLLECTION).insertOne(userData).then((data) => {
                     resolve(data.insertedId)
                 })
@@ -49,6 +50,13 @@ module.exports = {
                 console.log("login failed");
                 resolve({ status: false })
             }
+        })
+    },
+
+    getAlluser:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let user=await db.get().collection(collection.USER_COLLECTION).find().toArray()
+            resolve(user)
         })
     }
 }

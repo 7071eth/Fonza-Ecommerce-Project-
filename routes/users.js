@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/account',(req,res)=>{
-  res.render('user/account')
+  res.render('user/account',)
 })
 
 router.get('/login',(req,res)=>{
