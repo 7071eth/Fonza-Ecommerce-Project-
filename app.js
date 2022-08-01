@@ -55,7 +55,7 @@ app.use(express.static(path.join( __dirname,'public')));
 app.use(session({secret:"key",
 resave:false,
 saveUninitialized:true,
-cookie:{maxAge:200000}}))
+cookie:{maxAge:600000}}))
 
 //hbs security open
 

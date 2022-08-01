@@ -2,6 +2,8 @@ var db = require('../config/connection')
 var collection = require('../config/collections')
 const bcrypt = require('bcrypt')
 const collections = require('../config/collections')
+const { unsubscribe } = require('../routes/admin')
+const { ObjectID } = require('bson')
 
 module.exports = {
     doSignup: (userData) => {
@@ -53,11 +55,36 @@ module.exports = {
         })
     },
 
-    getAlluser:(userId)=>{
+    getAlluser:()=>{
         return new Promise(async(resolve,reject)=>{
             let user=await db.get().collection(collection.USER_COLLECTION).find().toArray()
             resolve(user)
         })
     },
+
+    blockUser : async function (userId) {
+        const response = await new Promise(async (resolve, reject) => {
+            
+            let user = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: ObjectID(userId) }, { $set: { status: false } }).then((response)=>{
+                console.log(response);
+                resolve(response)
+            })
+            
+        })
+        
+    },
+
+    unblockUser : async function (userId) {
+        const response = await new Promise(async (resolve, reject) => {
+            
+            let user = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: ObjectID(userId) }, { $set: { status: true } }).then((response)=>{
+                console.log(response);
+                resolve(response)
+            })
+            
+        })
+        
+    }
+
 
 }

@@ -20,9 +20,12 @@ const adminVerify= (req,res,next)=>{
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if(req.session.users){
-  res.render('admin/login', { title: 'Express' });
+    res.redirect('/admin/dashboard')
   }
-  
+  else{
+    res.render('admin/login', { title: 'Express' });
+  }
+
 });
 
 router.get('/dashboard',adminVerify,(req,res)=>{
@@ -50,9 +53,6 @@ router.post('/',(req,res,next)=>{
   }
 })
 
-router.get('/view-products',(req,res)=>{
-  res.render('admin/view-products',{admin : true})
-})
 
 //Logout 
 
@@ -60,6 +60,43 @@ router.get('/logout',(req,res)=>{
   req.session.users=null
   res.redirect('/admin/')
 })
+
+router.get('/blockUser/:id',(req,res)=>{
+  let userId=req.params.id
+  userHelpers.blockUser(userId).then((user)=>{
+    res.render('admin/dashboard', { admin: true, user })
+  }).then((response)=>{
+    res.redirect('/admin/dashboard')
+  })
+
+  
+})
+
+
+router.get('/unblockUser/:id',(req,res)=>{
+  let userId=req.params.id
+  userHelpers.unblockUser(userId).then((user)=>{
+    res.render('admin/dashboard', { admin: true, user })
+  }).then((response)=>{
+    res.redirect('/admin/dashboard')
+  })
+
+  
+})
+
+// Products display and add
+
+router.get('/view-products',(req,res)=>{
+  res.render('admin/view-products',{admin : true})
+})
+
+
+router.get('/add-products',(req,res)=>{
+  res.render('admin/add-products',{admin : true})
+})
+
+//Category Management
+
 
 
 module.exports = router;

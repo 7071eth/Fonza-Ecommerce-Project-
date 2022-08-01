@@ -102,9 +102,9 @@
                                             <td>2011/04/25</td>
                                             <td>
                                                 {{#if status}}
-                                                <button type="button" class="btn btn-danger " style="width: 125px ;">Block</button>
+                                               <a href="/admin/blockUser/{{_id}}"> <button type="button" class="btn btn-danger " style="width: 125px ;">Block</button></a>
                                                 {{else}}
-                                                <button type="button" class="btn btn-success">Unblock</button>
+                                                <a href="/admin/unblockUser/{{_id}}"><button type="button" class="btn btn-success" style="width: 125px ;">Unblock</button></a>
                                                 {{/if}}
                                             </td>
                                             
