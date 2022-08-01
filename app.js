@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 const { hasSubscribers } = require('diagnostics_channel');
@@ -22,6 +24,10 @@ db.connect((err)=>{
   else console.log("database connected");
 
 })
+
+
+
+
 // //Database connection using mongoose
 
 // const mongoose=require('mongoose')
@@ -41,7 +47,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'public')));
+//Static files serving
+
+app.use(express.static(path.join( __dirname,'public')));
+
 
 app.use(session({secret:"key",
 resave:false,
@@ -54,8 +63,11 @@ cookie:{maxAge:200000}}))
 
 //Routes 
 app.use('/admin', adminRouter);
+app.use('/User', usersRouter);
 app.use('/', usersRouter);
-app.use('/users', usersRouter);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

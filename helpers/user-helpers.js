@@ -8,15 +8,15 @@ module.exports = {
         console.log(userData)
         return new Promise(async (resolve, reject) => {
             let response = {}
-            let email = await db.get().collection(collections.USER_COLLECTION).findOne({ email_2: userData.email_2 });
+            let email = await db.get().collection(collections.USER_COLLECTION).findOne({ email: userData.email });
             if (email) {
                 console.log('same email');
                 response.status = true
                 resolve(response)
 
             } else {
-                userData.password_in_2 = await bcrypt.hash(userData.password_in_2, 10)
-                userData.status= 'verified'
+                userData.password = await bcrypt.hash(userData.password, 10)
+                userData.status= true
                 db.get().collection(collections.USER_COLLECTION).insertOne(userData).then((data) => {
                     resolve(data.insertedId)
                 })
@@ -32,10 +32,10 @@ module.exports = {
             let loginStatus = false
             let response = {}
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({ 
-                email_2: userData.email })
+                email: userData.email })
             if (user) {
-                bcrypt.compare(userData.password_in, user.password_in_2
-                    ).then((status) => {
+                
+                bcrypt.compare(userData.password, user.password).then((status) => {
                     if (status) {
                         console.log("login success")
                         response.user = user
@@ -58,5 +58,6 @@ module.exports = {
             let user=await db.get().collection(collection.USER_COLLECTION).find().toArray()
             resolve(user)
         })
-    }
+    },
+
 }
