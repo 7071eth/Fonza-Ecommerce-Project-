@@ -1,0 +1,95 @@
+
+
+
+<form action="/admin/add-maincategory" method="post" >
+<div class="container col-md-12 d-flex align-items-center justify-content-center" >
+
+    <div style="background-color: rgb(192, 192, 192); width: 50%; border-radius: 10px" class="mt-5" >
+        
+    <div class=" text-center mt-5 ">
+
+            <h1 >ADD MAIN CATEGORY</h1>
+            
+    </div>
+
+        <div class="row">
+                    <div class="col-md-12 d-flex align-items-center justify-content-center">
+                        <div class="form-group mt-3">
+                            <label for="form_name" class="mb-1">Main category</label>
+                            <input id="form_name" type="text" name="category" class="form-control" placeholder="Enter the category *" required="required" data-error="Category is required.">
+                            
+                        </div>
+                    </div>
+                    
+        </div>
+                
+         <div class="row d-flex align-items-center justify-content-center" >
+                        <input type="submit" class="btn btn-success btn-send  pt-2 w-25  mt-3 mb-5
+                            " value="Add category" >                    
+         </div>
+        </div>
+    
+   
+</div>
+
+</form>
+
+
+
+
+<form action="/admin/add-subcategory" method="post" >
+<div class="container col-md-12 d-flex align-items-center justify-content-center" >
+
+    <div style="background-color: rgb(192, 192, 192); width: 50%; border-radius: 10px" class="mt-5" >
+        
+    <div class=" text-center mt-5 ">
+
+            <h1 >ADD SUB CATEGORY</h1>
+            
+    </div>
+
+        <div class="row">
+                    <div class="col-md-12 d-flex align-items-center justify-content-center">
+                        <div class="form-group mt-3">
+
+                            
+                    
+<select class="form-select" name="mainCategory">
+    <option selected>Select a category</option>
+
+    
+
+
+    {{#each mainCategory}}
+
+    
+    <option value={{_id}}> {{category}}</option>
+
+    {{/each}}
+    
+</select>
+
+
+                         <input  id="form_name" type="text" name="subcategory" class="form-control" placeholder="Enter the subcategory *" required="required" data-error="Category is required.">
+                            
+                        </div>
+                    </div>
+                    
+        </div>
+                
+         <div class="row d-flex align-items-center justify-content-center" >
+                        <input type="submit" class="btn btn-success btn-send  pt-2 w-25  mt-3 mb-5
+                            " value="Add category" >
+                    
+         </div>
+    </div>
+    
+   
+</div>
+
+</form>
+
+
+
+
+

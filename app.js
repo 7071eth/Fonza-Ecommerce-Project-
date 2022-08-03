@@ -9,6 +9,18 @@ var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 const { hasSubscribers } = require('diagnostics_channel');
 var hbs=require('express-handlebars')
+
+var hbss = hbs.create({});
+
+
+hbss.handlebars.registerHelper('ifCond', function(v1, v2, options) {
+  if(v1 === v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+
+
 var app = express();
 const bodyParser=require('body-parser')
 var cookieParser = require('cookie-parser');
@@ -40,7 +52,12 @@ db.connect((err)=>{
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials'}))
+app.engine('hbs',
+        hbs.engine({extname:'hbs',
+        defaultLayout:'layout',
+        layoutsDir:__dirname+'/views/layout/',
+        partialsDir:__dirname+'/views/partials'
+      }))
 
 app.use(logger('dev'));
 app.use(express.json());

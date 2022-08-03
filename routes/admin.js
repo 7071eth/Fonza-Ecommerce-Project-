@@ -1,8 +1,10 @@
 var express = require('express');
+const { PRODUCT_COLLECTION } = require('../config/collections');
 var router = express.Router();
 let userName = "owner"
 let Pin = "12345"
 const userHelpers = require('../helpers/user-helpers')
+const productHelpers= require('../helpers/product-helpers')
 
 //Middleware to check the session
 
@@ -91,12 +93,50 @@ router.get('/view-products',(req,res)=>{
 })
 
 
-router.get('/add-products',(req,res)=>{
+router.get('/add-product',(req,res)=>{
   res.render('admin/add-products',{admin : true})
 })
 
 //Category Management
 
+
+// View category 
+
+router.get('/view-categories',(req,res)=>{
+
+productHelpers.viewCategory().then((mainCategory)=>{
+  
+  res.render('admin/categories',{admin : true, mainCategory})
+})
+
+
+})
+
+// Add category
+
+router.post('/add-maincategory',(req,res)=>{
+
+  console.log(req.body)
+
+
+  productHelpers.addCategory(req.body).then((data)=>{
+
+    console.log(data)
+    res.redirect('/admin/view-categories')
+
+  })
+})
+
+// Add Sub Category
+
+router.post('/add-subcategory',(req,res)=>{
+  console.log(req.body)
+  productHelpers.addSubCategory(req.body).then((data)=>{
+    console.log(data)
+    res.redirect('/admin/view-categories')
+  })
+
+})
 
 
 module.exports = router;
