@@ -5,6 +5,8 @@ let userName = "owner"
 let Pin = "12345"
 const userHelpers = require('../helpers/user-helpers')
 const productHelpers= require('../helpers/product-helpers')
+const upload = require("../multer/multer");
+const { ObjectID } = require('bson');
 
 //Middleware to check the session
 
@@ -94,7 +96,44 @@ router.get('/view-products',(req,res)=>{
 
 
 router.get('/add-product',(req,res)=>{
-  res.render('admin/add-products',{admin : true})
+  productHelpers.lookupCategory().then((data)=>{
+    console.log(data)
+    res.render('admin/add-products',{admin:true, data})
+
+  })
+  
+})
+
+router.post('/add-products',upload.array("image",4),(req,res)=>{
+
+  
+  console.log(req.body.mainCategory)
+  console.log("Success")
+  const files = req.files;
+  
+  if (!files) {
+    const err = new Error("please choose the images");
+    
+    console.log(err)
+  }
+
+  var filenames = req.files.map(function (files) {
+    return files.filename;
+  });
+
+  req.body.image = filenames;
+
+  productHelpers.doAdd(req.body).then((resolve)=>{
+
+    console.log(req.body)
+    res.redirect('/admin/add-product')
+    
+  })
+
+ 
+
+  
+
 })
 
 //Category Management
@@ -105,7 +144,7 @@ router.get('/add-product',(req,res)=>{
 router.get('/view-categories',(req,res)=>{
 
 productHelpers.viewCategory().then((mainCategory)=>{
-  
+
   res.render('admin/categories',{admin : true, mainCategory})
 })
 
@@ -116,6 +155,8 @@ productHelpers.viewCategory().then((mainCategory)=>{
 
 router.post('/add-maincategory',(req,res)=>{
 
+  
+  
   console.log(req.body)
 
 
@@ -130,6 +171,9 @@ router.post('/add-maincategory',(req,res)=>{
 // Add Sub Category
 
 router.post('/add-subcategory',(req,res)=>{
+
+  let newIds= ObjectID(req.body.mainCategory)
+  req.body.mainCategory=newIds
   console.log(req.body)
   productHelpers.addSubCategory(req.body).then((data)=>{
     console.log(data)

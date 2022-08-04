@@ -48,6 +48,36 @@ module.exports={
 
             resolve(data)
         })
+    },
+
+    lookupCategory: ()=>{
+        return new Promise (async(resolve,reject)=>{
+            let data = await db.get().collection(collections.CATEGORY_COLLECTION).aggregate([{
+
+                $lookup: {
+                  from: 'subcategory',
+                  localField: '_id',
+                  foreignField: 'mainCategory',
+                  as: 'bookings'
+                }
+              }]).toArray().then((data)=>{
+                
+                resolve(data)
+              });
+
+              resolve(data)
+        })
+    },
+
+    doAdd: (productData) => {
+        return new Promise(async (resolve, reject) => {
+            
+            db.get().collection(collection.PRODUCT_COLLECTION).insertOne(productData).then((data) => {
+                resolve(data.insertedId)
+            })
+
+
+        })
     }
 
     
