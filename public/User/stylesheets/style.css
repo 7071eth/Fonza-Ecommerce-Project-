@@ -2676,7 +2676,7 @@ header.version_1 .main-menu > ul > li:hover > a {
 @media (max-width: 991px) {
   .main-menu ul > li.submenu > a:after {
     font-size: 14px !important;
-    font-size: 14px !important/16pxrem;
+    font-size: 14px !important;
     float: right;
   }
 }

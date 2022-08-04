@@ -61,6 +61,7 @@ module.exports={
                   foreignField: 'mainCategory',
                   as: 'bookings'
                 }
+                
               }]).toArray().then((data)=>{
                 
                 resolve(data)
@@ -92,17 +93,27 @@ module.exports={
             
         })
     },
+
     viewProductDetails: (prodId)=>{
         console.log(prodId)
         return new Promise(async(resolve,reject)=>{
 
             let productOne = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id : ObjectID(prodId)})
-            console.log(productOne,"Hlleot4ttttttttttttttttttttttttttttttttttttttt")
             resolve(productOne)
             
             
         })
-    }
+    },
+    
+    deleteProduct: (prodId)=>{
+        return new Promise(async (resolve,reject)=>{
+            console.log("Success")
+            await db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({_id : ObjectID(prodId)}).then((data)=>{
+                console.log("Deleted")
+            })
+            resolve("Deleted Successfully")
+        })
+    },
 
     
 }

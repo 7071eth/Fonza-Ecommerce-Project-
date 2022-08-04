@@ -93,7 +93,7 @@ router.get('/unblockUser/:id',(req,res)=>{
 router.get('/view-products',(req,res)=>{
 
   productHelpers.viewProduct().then((products)=>{
-    console.log(products)
+    
     res.render('admin/view-products',{admin : true, products})
   })
   
@@ -135,11 +135,35 @@ router.post('/add-products',upload.array("image",4),(req,res)=>{
     
   })
 
- 
+})
+
+//Product delete
+
+router.get('/delete-product/:id',(req,res)=>{
+
+  let deleteIds=req.params.id
+  productHelpers.deleteProduct(deleteIds).then((data)=>{
+    
+    res.redirect('/admin/view-products')
+  }).catch((err)=>{
+    console.log(err)
+  })
+}) 
+
+//Edit product
+
+router.get('/update-product/:id',(req,res)=>{
+
+  let updateIds=req.params.id
+  productHelpers.deleteProduct(deleteIds).then((data)=>{
+    
+    res.redirect('/admin/view-products')
+  }).catch((err)=>{
+    console.log(err)
+  })
+}) 
 
   
-
-})
 
 //Category Management
 
