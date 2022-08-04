@@ -1,5 +1,6 @@
 const { urlencoded } = require('body-parser');
 var express = require('express');
+const productHelpers = require('../helpers/product-helpers');
 var router = express.Router();
 const userHelpers=require('../helpers/user-helpers')
 require("dotenv").config();
@@ -15,7 +16,12 @@ const client = require("twilio")(
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('index');
+
+  productHelpers.viewProduct().then((products)=>{
+    console.log(products)
+    res.render('index',{products});
+  })
+  
 });
 
 router.get('/account',(req,res)=>{

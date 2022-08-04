@@ -91,7 +91,12 @@ router.get('/unblockUser/:id',(req,res)=>{
 // Products display and add
 
 router.get('/view-products',(req,res)=>{
-  res.render('admin/view-products',{admin : true})
+
+  productHelpers.viewProduct().then((products)=>{
+    console.log(products)
+    res.render('admin/view-products',{admin : true, products})
+  })
+  
 })
 
 

@@ -6,23 +6,24 @@
         <table class="table">
   <thead>
     <tr style="background-color: rgb(195, 195, 195) ;">
-      <th scope="col">No</th>
+      
       <th scope="col">Title</th>
       <th scope="col">Category</th>
       <th scope="col">Description</th>
       <th>Image</th>
+      <th>Update</th>
+      <th>Delete</th>
     </tr>
   </thead>
   <tbody>
     {{#each products}}
     
     <tr>
-      <th scope="row">1</th>
+      
       <td>{{this.title}}</td>
-      <td>{{this.category}}</td>
+      <td>{{this.price}}</td>
       <td>{{this.description}}</td>
-      <td>Price : 20m$</td>
-      <td><img style="width: 50px ; height:50px" src="/product-images/{{this._id}}.png" alt=""></td>
+      <td><img style="width: 50px ; height:50px" src="/{{this.image.[0]}}" alt=""></td>
       <td>
                         <a href="/admin/update-user/{{this._id}}" class="btn btn-info">Update</a>
                         </td>

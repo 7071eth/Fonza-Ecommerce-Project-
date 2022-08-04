@@ -78,6 +78,18 @@ module.exports={
 
 
         })
+    },
+
+    viewProduct: ()=>{
+        return new Promise(async(resolve,reject)=>{
+
+            let products= await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray().then((data)=>{
+                resolve(data)
+            })
+            
+            resolve(products)
+            
+        })
     }
 
     
