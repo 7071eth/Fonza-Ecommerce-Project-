@@ -2,51 +2,96 @@
 <html>
   <head>
     <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
 
-<meta charset="utf-8">
+    {{#if admin}}
+
+     <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dashboard - SB Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+
+    {{else}}
+    <link rel='stylesheet' href='/User/stylesheets/style.css' />
+
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <!-- Favicons-->
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" type="image/x-icon" href="images/apple-touch-icon-57x57-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="images/apple-touch-icon-72x72-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="images/apple-touch-icon-114x114-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="images/apple-touch-icon-144x144-precomposed.png">
+    <link rel="shortcut icon" href="/User/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/User/images/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="/User/images/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="/User/images/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="/User/images/apple-touch-icon-144x144-precomposed.png">
 	
     <!-- GOOGLE WEB FONT -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet">
 
     <!-- BASE CSS -->
-    <link href="/stylesheets/bootstrap.custom.min.css" rel="stylesheet">
-    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="stylesheets/bootstrap.custom.min.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet">
 
 	<!-- SPECIFIC CSS -->
-    <link href="/stylesheets/home_1.css" rel="stylesheet">
+    <link href="stylesheets/home_1.css" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
-    <link href="/stylesheets/custom.css" rel="stylesheet">
+    <link href="stylesheets/custom.css" rel="stylesheet">
 
     <!-- Bootstrap cdn links-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   
+    {{/if}}
+    
   </head>
   <body>
+    
+    {{#if admin}}
+    {{>AdminHeader}}
+    {{else}}
     {{>UserHeader}}
+    {{/if}}
+
     {{{body}}}
+
+    {{#if admin}}
+    {{>AdminFooter}}
+    {{else}}
     {{>UserFooter}}
+    {{/if}}
+
+
+     {{#if admin}}
     
 
-   	<!-- COMMON SCRIPTS -->
-    <script src="/javascripts/common_scripts.min.js"></script>
-    <script src="/javascripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+
+
+    {{else}}
+
+    	<!-- COMMON SCRIPTS -->
+    <script src="/User/javascripts/common_scripts.min.js"></script>
+    <script src="/User/javascripts/main.js"></script>
 	
-	<!-- SPECIFIC SCRIPTS -->
-	<script src="/javascripts/carousel-home.min.js"></script>
+      <!-- SPECIFIC SCRIPTS -->
+      <script src="/User/javascripts/carousel-home.min.js"></script>
+
+    {{/if}}
+
+  
   
   
   </body>

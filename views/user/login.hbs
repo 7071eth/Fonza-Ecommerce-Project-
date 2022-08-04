@@ -10,13 +10,16 @@
 								<a href="#0" class="social_bt google">Login with Google</a>
 							</div> --}}
 						</div>
-						
+						<p id="validationAlert" style="color: red ;"></p>
+						<form action="/User/login" method="post" onsubmit = "return(validateForm());" name="myFormLogin">
 						<div class="form-group mt-3">
-							<input type="email" class="form-control" name="email" id="email" placeholder="Email*">
+							<input type="email" class="form-control" name="email" id="email" placeholder="Email*" onchange="validateEmail()">
 						</div>
+						<p id="emailAlert" style="color: red ;"></p>
 						<div class="form-group">
-							<input type="password" class="form-control" name="password_in" id="password_in" value="" placeholder="Password*">
+							<input type="password" class="form-control" name="password" id="password" value="" placeholder="Password*" onchange="validatePassword()">
 						</div>
+						<p id="passwordAlert" style="color: red ;"></p>
 						<div class="clearfix add_bottom_15">
 							<div class="checkboxes float-left">
 								<label class="container_check">Remember me
@@ -26,7 +29,7 @@
 							</div>
 							<div class="float-right"><a id="forgot" href="javascript:void(0);">Lost Password?</a></div>
 						</div>
-						<div class="text-center"><input type="submit" value="Log In" class="btn_1 full-width"></div>
+						<div class="text-center"><input type="submit" value="Log In" class="btn_1 "></div>
 						<div id="forgot_pw">
 							<div class="form-group">
 								<input type="email" class="form-control" name="email_forgot" id="email_forgot" placeholder="Type your email">
@@ -34,6 +37,8 @@
 							<p>A new password will be sent shortly.</p>
 							<div class="text-center"><input type="submit" value="Reset Password" class="btn_1"></div>
 						</div>
+						<a href="/User/getOtp">Login via Otp</a>
+						</form>
 					</div>
 					<!-- /form_container -->
 				</div>
@@ -55,3 +60,83 @@
 				</div>
 				<!-- /row -->
 			</div>
+			
+			
+    
+     <script>
+		
+//VALIDATION SCRIPTS
+
+	//Validate Email
+
+	  function validateEmail(){
+   
+    var text1=document.getElementById("email").value;
+    var regx=/^([a-zA-Z0-9\.-_ ]+)@([a-zA-Z0-9]+).([a-zA-Z]{2,20})(.[a-zA-Z]{2,5})$/;
+    if(regx.test(text1))
+    {
+        mail=1;
+        document.getElementById("emailAlert").innerHTML="";
+   
+    }
+    else{
+        mail=0;
+        document.getElementById("emailAlert").innerHTML="In-Valid Entry";
+        document.getElementById("emailAlert").style.visibility="visible";
+        document.getElementById("emailAlert").style.color="red";
+
+    }
+
+	}
+
+
+ //Password validation
+
+    function validatePassword() {
+
+        const text1 = document.getElementById("password").value;
+        console.log(text1);
+        {{!-- var regx = /^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[a-zA-Z]).{8,}$/; --}}
+        var regx = /^[0-9 a-z]+$/
+        if (regx.test(text1)) {
+            password = 1;
+            document.getElementById("passwordAlert").innerHTML = "";
+			
+           
+        }
+        else {
+            password = 0;
+            document.getElementById("passwordAlert").innerHTML = "In-Valid Entry";
+            document.getElementById("passwordAlert").style.visibility = "visible";
+            document.getElementById("passwordAlert").style.color = "red";
+
+        }
+
+    }
+
+	 function validateForm(){
+        validatePassword();
+        validateEmail();
+        
+
+        if(password==1&&mail==1)
+        {
+
+
+               password=0
+			   mail=0
+			   			   
+			
+            return true;
+            
+        }
+        else{
+            document.getElementById("validationAlert").innerHTML="please enter the correct details";
+            document.getElementById("validationAlert").style.visibility="visible";
+            document.getElementById("validationAlert").style.color="red";
+            return false;
+        }
+    }
+
+
+  </script>

@@ -1,0 +1,49 @@
+<div class="col-xl-6 col-lg-6 col-md-8 mx-auto mt-5">
+				<div class="box_account">
+					<h3 class="client ml-5 mx-auto">Login with Phone Number</h3>
+					<div class="form_container">
+						<div class="row no-gutters">
+							{{!-- <div class="col-lg-6 pr-lg-1">
+								<a href="#0" class="social_bt facebook">Login with Facebook</a>
+							</div>
+							<div class="col-lg-6 pl-lg-1">
+								<a href="#0" class="social_bt google">Login with Google</a>
+							</div> --}}
+						</div>
+						<p id="validationAlert" style="color: red ;"></p>
+						<form action="/User/getOtp" method="post"  name="myFormLogin">
+						<div class="form-group mt-3 mt-5 ">
+							<input type="number" class="form-control mt-5" name="number" id="number" placeholder="Enter your phone number*" ">
+						</div>
+						<p id="otpAlert" style="color: red ;"></p>
+						
+						
+						<div class="text-center"><input type="submit" value="Get OTP" class="btn_1  mt-5 " ></div>
+						
+					
+						</form>
+					</div>
+					<!-- /form_container -->
+				</div>
+				<!-- /box_account -->
+				<div class="row mb-5">
+					{{!-- <div class="col-md-6 d-none d-lg-block">
+						<ul class="list_ok">
+							<li>Find Locations</li>
+							<li>Quality Location check</li>
+							<li>Data Protection</li>
+						</ul>
+					</div>
+					<div class="col-md-6 d-none d-lg-block">
+						<ul class="list_ok">
+							<li>Secure Payments</li>
+							<li>H24 Support</li>
+						</ul>
+					</div> --}}
+				</div>
+				<!-- /row -->
+			</div>
+			
+			
+    
+     
