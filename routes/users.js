@@ -18,11 +18,22 @@ const client = require("twilio")(
 router.get('/', function(req, res, next) {
 
   productHelpers.viewProduct().then((products)=>{
-    console.log(products)
+    // console.log(products)
     res.render('index',{products});
   })
+
   
 });
+
+/* GET product details. */
+router.get('/productDetails/:id',(req,res,next)=>{
+  console.log(req.params.id)
+  productHelpers.viewProductDetails(req.params.id).then((productOne)=>{
+    console.log(productOne)
+    res.render('user/productDetails',{productOne})
+  })
+
+})
 
 router.get('/account',(req,res)=>{
   res.render('user/account',)
@@ -39,7 +50,7 @@ router.post('/account',(req,res)=>{
       req.session.signErr=true
       res.render('user/dashboard',{alertEmail:"Sorry, email Already exists !"})
     }else{
-    res.render('user/dashboard')
+      res.redirect('/User/login')
     }
    })
   }
@@ -51,7 +62,7 @@ router.post('/login',(req,res)=>{
      
       req.session.user=response.user
       req.session.loggedIn=true
-      res.render('user/dashboard')
+      res.redirect('/User/')
     }else{
       req.session.loginErr=true
       res.render('user/login',{alertLogin: "Incorrect Credentials"})

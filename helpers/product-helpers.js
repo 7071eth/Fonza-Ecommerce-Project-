@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const collections = require('../config/collections')
  const { unsubscribe } = require('../routes/admin')
 const { ObjectID } = require('bson')
+const { DeactivationsList } = require('twilio/lib/rest/messaging/v1/deactivation')
 
 module.exports={
     addCategory : (mainCategory)=>{
@@ -88,6 +89,17 @@ module.exports={
             })
             
             resolve(products)
+            
+        })
+    },
+    viewProductDetails: (prodId)=>{
+        console.log(prodId)
+        return new Promise(async(resolve,reject)=>{
+
+            let productOne = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id : ObjectID(prodId)})
+            console.log(productOne,"Hlleot4ttttttttttttttttttttttttttttttttttttttt")
+            resolve(productOne)
+            
             
         })
     }

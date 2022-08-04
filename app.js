@@ -73,6 +73,7 @@ app.use(cookieParser());
 
 app.use(express.static(path.join( __dirname,'public')));
 app.use(express.static(path.join( __dirname,'images')));
+app.use(express.static(path.join( __dirname,'public/User')));
 
 
 app.use(session({secret:"key",
