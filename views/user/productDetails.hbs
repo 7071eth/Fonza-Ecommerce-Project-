@@ -1,12 +1,15 @@
-<main>
+<main>  
 	    <div class="container margin_30">
 	        <div class="countdown_inner">-20% This offer ends in <div data-countdown="2019/05/15" class="countdown"></div>
 	        </div>
 	        <div class="row">
+                
 	            <div class="col-md-6">
+                    <img src="/{{productOne.image.[0]}}" alt="" style="width:300px; height: 300px;">
 	                <div class="all">
 	                    <div class="slider">
 	                        <div class="owl-carousel owl-theme main">
+                                
 	                            <div style="background-image: url(img/products/shoes/1.jpg);" class="item-box"></div>
 	                            <div style="background-image: url(img/products/shoes/2.jpg);" class="item-box"></div>
 	                            <div style="background-image: url(img/products/shoes/3.jpg);" class="item-box"></div>
@@ -41,7 +44,7 @@
 	                </div>
 	                <!-- /page_header -->
 	                <div class="prod_info">
-	                    <h1>Armor Air X Fear</h1>
+	                    <h1>{{productOne.title}}</h1>
 	                    <span class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i><em>4 reviews</em></span>
 	                    <p><small>SKU: MTKRY-001</small><br>Sed ex labitur adolescens scriptorem. Te saepe verear tibique sed. Et wisi ridens vix, lorem iudico blandit mel cu. Ex vel sint zril oportere, amet wisi aperiri te cum.</p>
 	                    <div class="prod_options">
@@ -80,7 +83,7 @@
 	                    </div>
 	                    <div class="row">
 	                        <div class="col-lg-5 col-md-6">
-	                            <div class="price_main"><span class="new_price">$148.00</span><span class="percentage">-20%</span> <span class="old_price">$160.00</span></div>
+	                            <div class="price_main"><span class="new_price">${{productOne.price}}</span><span class="percentage">-20%</span> <span class="old_price">$160.00</span></div>
 	                        </div>
 	                        <div class="col-lg-4 col-md-6">
 	                            <div class="btn_add_to_cart"><a href="#0" class="btn_1">Add to Cart</a></div>
