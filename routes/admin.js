@@ -112,7 +112,6 @@ router.get('/add-product',(req,res)=>{
 router.post('/add-products',upload.array("image",4),(req,res)=>{
 
   
-  console.log(req.body.mainCategory)
   console.log("Success")
   const files = req.files;
   
@@ -256,7 +255,7 @@ router.post('/delete-subcategory/:id',async(req,res)=>{
     console.log(data)
   });
   res.redirect('/admin/edit-subcategories')
-
+  
 })
 
 

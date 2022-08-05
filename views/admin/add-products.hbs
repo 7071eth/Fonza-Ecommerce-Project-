@@ -15,18 +15,16 @@
 
  {{#each data}}
   <div class="form-group">
+    
     <label for="category">{{category}}</label>
     <select class="form-select" name="mainCategory" id="category">
-    <option selected>Select a category</option>
-
-   
+    <option selected name="{{category}}">Select a category</option>
 
      {{#each bookings}}
-    <option value={{_id}}> {{subcategory}}</option>
+
+    <option value={{_id}} > {{subcategory}}</option>
+
     {{/each}}
-    
-  
-   
     
   </select>
   </div>

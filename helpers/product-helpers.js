@@ -61,6 +61,8 @@ module.exports={
                   foreignField: 'mainCategory',
                   as: 'bookings'
                 }
+
+                
                 
               }]).toArray().then((data)=>{
                 
@@ -73,6 +75,14 @@ module.exports={
 
     doAdd: (productData) => {
         return new Promise(async (resolve, reject) => {
+
+            let arr=productData.mainCategory
+            for(i=0;i<arr.length;i++){
+                arr[i] = ObjectID(arr[i])
+            }
+            console.log(arr)
+            productData.mainCategory=arr
+            console.log(productData)
             
             db.get().collection(collection.PRODUCT_COLLECTION).insertOne(productData).then((data) => {
                 resolve(data.insertedId)
@@ -154,7 +164,74 @@ module.exports={
             })
             resolve("Deleted Successfully")
         })
+    },
+
+    viewBrands: ()=>{
+        return new Promise(async(resolve,reject)=>{
+
+            let Brands = await db.get().collection(collection.SUBCATEGORY_COLLECTION).find({ mainCategory : ObjectID('62eb557670dadb7751c34844')}).toArray()
+            
+            resolve(Brands)
+        })
+    },
+
+    viewBrandProducts: ()=>{
+        return new Promise (async(resolve,reject)=>{
+            let data = await db.get().collection(collection.CATEGORY_COLLECTION).aggregate([
+                
+                {
+
+                $match: {
+
+                    _id : ObjectID('62eb557670dadb7751c34844')
+                  
+                }
+                 },
+                 {
+
+                    $lookup: {
+    
+                      from: 'subcategory',
+                      localField: '_id',
+                      foreignField: 'mainCategory',
+                      as: 'Datas'
+                    }
+                     },
+                     {
+    
+                        $unwind: {
+        
+                          path : "$Datas"
+                        }
+                         },
+                         {
+        
+                            $lookup: {
+            
+                              from: 'product',
+                              localField: 'Datas._id',
+                              foreignField: 'mainCategory',
+                              as: 'products'
+                            }
+                             },
+                             {
+            
+                                $unwind: {
+                
+                                  path : "$products"
+                                }
+                                 }
+
+
+
+              ]).toArray().then((data)=>{
+                
+                resolve(data)
+              });
+        })
     }
+
+    
 
     
 }

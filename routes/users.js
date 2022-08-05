@@ -15,12 +15,17 @@ const client = require("twilio")(
 
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
 
-  productHelpers.viewProduct().then((products)=>{
-    // console.log(products)
-    res.render('index',{products});
-  })
+ let products = await productHelpers.viewProduct()
+ let category = await productHelpers.viewBrandProducts();
+ 
+
+  console.log(category)
+  
+
+
+  res.render('index',{products,category});
 
   
 });
@@ -116,6 +121,14 @@ router.post("/otp-matching", function (req, res) {
 router.get('/otpLogin',(req,res)=>{
   res.render('user/otpLogin')
 })
+
+// Account
+
+router.get('/account',(req,res)=>{
+  res.render('user/userAccount')
+})
+
+
 
 
 module.exports = router;
