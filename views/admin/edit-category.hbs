@@ -1,0 +1,48 @@
+<section>
+    <div class="container">
+        <div class="row mt-4">
+            <a href="" class="btn btn-secondary ml-auto mx-auto mb-3" style="width: 200px;">Delete Sub Category</a>
+        </div>
+    
+    
+    
+   {{#each categoryDetails}}
+   
+   {{#each bookings}}
+      
+    <form action="/admin/delete-subcategory/{{_id}}" method="post"> 
+    
+    {{/each}}
+   
+  <div class="form-group">
+    <div class="row mt-4 ">
+    <label for="category"  ><strong>{{category}}</strong></label>
+    
+    <select class="form-select w-75 mt-3" name="mainCategory" id="category" >
+    <option selected>Select a category</option>
+
+   
+
+     {{#each bookings}}
+      
+    <option value={{_id}}> {{subcategory}}</option> 
+    
+    {{/each}}
+    
+
+   
+    
+  </select>
+
+  <button type="submit" class="btn btn-info w-25">Delete</button>
+
+  </div>
+  </form>
+
+ {{/each}}
+
+ 
+
+  
+    </div>
+</section>

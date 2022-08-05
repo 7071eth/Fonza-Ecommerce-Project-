@@ -115,6 +115,20 @@ module.exports={
         })
     },
 
+    
+
+    deleteProducts: (prodId)=>{
+        return new Promise(async (resolve,reject)=>{
+            console.log("Success")
+            await db.get().collection(collection.PRODUCT_COLLECTION).deleteMany(
+                { mainCategory: { $elemMatch: {prodId} } }
+             ).then((data)=>{
+                console.log(data)
+             })
+            resolve("Deleted Successfully")
+        })
+    },
+
     updateProduct: (prodId,prodDetails)=>{
         return new Promise (async (resolve,reject)=>{
             console.log("Success")
@@ -129,6 +143,16 @@ module.exports={
                 }
             })
             resolve("Success")
+        })
+    },
+
+    deleteSubCategory: (prodId)=>{
+        return new Promise(async (resolve,reject)=>{
+            console.log("Success")
+            await db.get().collection(collection.SUBCATEGORY_COLLECTION).deleteOne({_id : ObjectID(prodId)}).then((data)=>{
+                console.log("Deleted")
+            })
+            resolve("Deleted Successfully")
         })
     }
 

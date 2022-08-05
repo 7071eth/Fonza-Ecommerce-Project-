@@ -238,8 +238,25 @@ router.post('/add-subcategory',(req,res)=>{
 
 // Delete Sub Category
 
-router.get('/edit-categories',(req,res)=>{
-  res.render('admin/edit-category')
+router.get('/edit-subcategories',async (req,res)=>{
+
+  let categoryDetails = await productHelpers.lookupCategory();
+  console.log(categoryDetails);
+
+  res.render('admin/edit-category',{admin: true, categoryDetails})
+
+})
+
+router.post('/delete-subcategory/:id',async(req,res)=>{
+
+  console.log(req.params.id)
+  let deleteIds=req.params.id
+  await productHelpers.deleteSubCategory(deleteIds);
+  await productHelpers.deleteProducts(deleteIds).then((data)=>{
+    console.log(data)
+  });
+  res.redirect('/admin/edit-subcategories')
+
 })
 
 
