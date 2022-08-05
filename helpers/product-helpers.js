@@ -104,7 +104,7 @@ module.exports={
             
         })
     },
-    
+
     deleteProduct: (prodId)=>{
         return new Promise(async (resolve,reject)=>{
             console.log("Success")
@@ -114,6 +114,23 @@ module.exports={
             resolve("Deleted Successfully")
         })
     },
+
+    updateProduct: (prodId,prodDetails)=>{
+        return new Promise (async (resolve,reject)=>{
+            console.log("Success")
+            await db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id: ObjectID(prodId)},{
+                $set:{
+
+                    title : prodDetails.title,
+                    price : prodDetails.price,
+                    description : prodDetails.description,
+                    image : prodDetails.image
+                    
+                }
+            })
+            resolve("Success")
+        })
+    }
 
     
 }

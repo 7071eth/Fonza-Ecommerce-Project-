@@ -152,12 +152,35 @@ router.get('/delete-product/:id',(req,res)=>{
 
 //Edit product
 
-router.get('/update-product/:id',(req,res)=>{
+router.get('/edit-product/:id',async (req,res)=>{
+  let product = await productHelpers.viewProductDetails(req.params.id);
+  let categoryDetails = await productHelpers.lookupCategory();
+  console.log(product)
+
+  res.render('admin/edit-product',{admin : true ,product, categoryDetails})
+
+})
+
+// Update product
+
+router.post('/update-product/:id',upload.array("image",4),(req,res)=>{
+
+  var filenames = req.files.map(function (files) {
+    return files.filename;
+  });
+
+  req.body.image = filenames;
 
   let updateIds=req.params.id
-  productHelpers.deleteProduct(deleteIds).then((data)=>{
-    
+  
+  console.log(req.body)
+
+  let prodDetails=req.body
+  productHelpers.updateProduct(updateIds,prodDetails).then((data)=>{
+
+    console.log(data)
     res.redirect('/admin/view-products')
+
   }).catch((err)=>{
     console.log(err)
   })
@@ -209,6 +232,14 @@ router.post('/add-subcategory',(req,res)=>{
     res.redirect('/admin/view-categories')
   })
 
+})
+
+// Delete Main Category
+
+// Delete Sub Category
+
+router.get('/edit-categories',(req,res)=>{
+  res.render('admin/edit-category')
 })
 
 
