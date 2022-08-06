@@ -35,7 +35,7 @@ router.get('/', function(req, res, next) {
 router.get('/dashboard',adminVerify,(req,res)=>{
 
   userHelpers.getAlluser().then((user)=>{
-    console.log(user)
+    
     res.render('admin/dashboard', { admin: true, user })
    })
 
@@ -48,7 +48,7 @@ router.post('/',(req,res,next)=>{
     // req.session.check = true;
     req.session.users = true;
     res.redirect('/admin/dashboard')
-    
+
   }
   else {
     
@@ -65,12 +65,12 @@ router.get('/logout',(req,res)=>{
   res.redirect('/admin/')
 })
 
-router.get('/blockUser/:id',(req,res)=>{
-  let userId=req.params.id
-  userHelpers.blockUser(userId).then((user)=>{
-    res.render('admin/dashboard', { admin: true, user })
-  }).then((response)=>{
-    res.redirect('/admin/dashboard')
+router.post('/blockUser',(req,res)=>{
+  
+  console.log(req.body)
+  
+  userHelpers.userStatus(req.body).then((user)=>{
+    res.json(user)
   })
 
   

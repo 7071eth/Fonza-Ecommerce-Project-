@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const collections = require('../config/collections')
 
 const { ObjectID } = require('bson')
+const { response } = require('../app')
 
 module.exports = {
     doSignup: (userData) => {
@@ -62,29 +63,38 @@ module.exports = {
         })
     },
 
-    blockUser : async function (userId) {
-        const response = await new Promise(async (resolve, reject) => {
+    userStatus :  function (data) {
+         return new Promise(async (resolve, reject) => {
             
-            let user = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: ObjectID(userId) }, { $set: { status: false } }).then((response)=>{
-                console.log(response);
-                resolve(response)
-            })
+            console.log(data)
+            
+
+            if(data.userStatus=='true'){
+               
+                 await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: ObjectID(data._id) }, { $set: { status: false } }).then((response)=>{
+                    console.log("blocked")
+                    resolve(false)
+                })
+
+            }
+            
+            else  {
+
+                 await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: ObjectID(data._id) }, { $set: { status: true } }).then((response)=>{
+                    console.log("unblocked")
+                    resolve(true)
+                })
+
+            }
+            console.log("Success")
+            
+           
             
         })
         
     },
 
-    unblockUser : async function (userId) {
-        const response = await new Promise(async (resolve, reject) => {
-            
-            let user = await db.get().collection(collection.USER_COLLECTION).updateOne({ _id: ObjectID(userId) }, { $set: { status: true } }).then((response)=>{
-                console.log(response);
-                resolve(response)
-            })
-            
-        })
-        
-    }
+    
 
 
 }

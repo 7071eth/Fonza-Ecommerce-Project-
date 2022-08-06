@@ -98,14 +98,12 @@
                                             <td>{{username}}</td>
                                             <td>{{email}}</td>
                                             <td>{{number}}</td>
-                                            <td>{{status}}</td>
+                                            <td  >{{status}}</td> 
                                             <td>2011/04/25</td>
                                             <td>
-                                                {{#if status}}
-                                               <a href="/admin/blockUser/{{_id}}"> <button type="button" class="btn btn-danger " style="width: 125px ;">Block</button></a>
-                                                {{else}}
-                                                <a href="/admin/unblockUser/{{_id}}"><button type="button" class="btn btn-success" style="width: 125px ;">Unblock</button></a>
-                                                {{/if}}
+                                                
+                                                <button  type="button" id="{{_id}}" class="btn btn-danger " style="width: 125px ;" onclick= "changeStatus( event ,'{{_id}}','{{status}}')">{{#if status}}Block{{else}}Unblock{{/if}}</button>
+                                                
                                             </td>
                                             
                                         </tr>
