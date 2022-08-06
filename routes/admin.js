@@ -246,10 +246,10 @@ router.get('/edit-subcategories',async (req,res)=>{
 
 })
 
-router.post('/delete-subcategory/:id',async(req,res)=>{
+router.post('/delete-subcategory',async(req,res)=>{
 
-  console.log(req.params.id)
-  let deleteIds=req.params.id
+  deleteIds=req.body.mainCategory
+  
   await productHelpers.deleteSubCategory(deleteIds);
   await productHelpers.deleteProducts(deleteIds).then((data)=>{
     console.log(data)

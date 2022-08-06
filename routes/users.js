@@ -17,7 +17,7 @@ const client = require("twilio")(
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
 
- let products = await productHelpers.viewProduct()
+ 
  let category = await productHelpers.viewBrandProducts();
  
 
@@ -25,7 +25,7 @@ router.get('/', async function(req, res, next) {
   
 
 
-  res.render('index',{products,category});
+  res.render('index',{category});
 
   
 });

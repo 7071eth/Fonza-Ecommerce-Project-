@@ -131,7 +131,7 @@ module.exports={
         return new Promise(async (resolve,reject)=>{
             console.log("Success")
             await db.get().collection(collection.PRODUCT_COLLECTION).deleteMany(
-                { mainCategory: { $elemMatch: {prodId} } }
+                { mainCategory: ObjectID(prodId) }
              ).then((data)=>{
                 console.log(data)
              })

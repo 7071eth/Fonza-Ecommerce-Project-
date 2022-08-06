@@ -7,27 +7,27 @@
 			</div>
 
 			<div class="row small-gutters">
-				{{#each products}}
+				{{#each category}}
 				<div class="col-6 col-md-4 col-xl-3">
 					
 					<div class="grid_item ">
 						
 						
-						<figure>
+						<figure >
 							<span class="ribbon off">-30%</span>
-							<a href="/User/productDetails/{{this._id}}">
+							<a href="/User/productDetails/{{products._id}}">
 								
-								<img class="img-fluid " src="/{{this.image.[0]}}" data-src="img/products/shoes/1.jpg" alt="">
+								<img class="img-fluid " src="/{{products.image.[0]}}" style="width: 100% ; height: 100%;" data-src="img/products/shoes/1.jpg" alt="">
 								
 							</a>
 							<div data-countdown="2019/05/15" class="countdown"></div>
 						</figure>
 						<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
 						<a href="product-detail-1.html">
-							<h3>{{this.title}}</h3>
+							<h3>{{Datas.subcategory}} {{products.title}}</h3>
 						</a>
 						<div class="price_box">
-							<span class="new_price">₹{{this.price}}</span>
+							<span class="new_price">₹{{products.price}}</span>
 							<span class="old_price">₹60.00</span>
 						</div>
 						<ul>
