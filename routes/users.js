@@ -4,6 +4,7 @@ const productHelpers = require('../helpers/product-helpers');
 var router = express.Router();
 const userHelpers=require('../helpers/user-helpers')
 require("dotenv").config();
+const cartHelpers= require('../helpers/cart-helpers')
 
 const client = require("twilio")(
   process.env.ACCOUNT_SID,
@@ -13,20 +14,44 @@ const client = require("twilio")(
   }
 );
 
+//Middleware to check the session
 
-/* GET users listing. */
+const userVerify= (req,res,next)=>{
+
+  if(req.session.user){
+    next()
+  } else{
+
+    res.redirect('/User/login')
+  }
+
+}
+
+
+/* Home page. */
 router.get('/', async function(req, res, next) {
 
  
  let category = await productHelpers.viewBrandProducts();
  
-
-  console.log(category)
   
+  if(req.session.user)
+  {
+    for(i=0;i<category.length;i++){
+      category[i].userDetails=req.session.user
+    }
+  console.log(category)
+  userD = req.session.user._id
+  console.log(userD)
+  let cart = await cartHelpers.viewCart(userD)
 
+  res.render('index',{category,user: true, cart });
 
-  res.render('index',{category});
+  }
 
+  else {
+    res.render('index',{category});
+  }
   
 });
 
@@ -61,19 +86,46 @@ router.post('/account',(req,res)=>{
   }
 )
 
+//Add product to cart
+
+router.post('/add-to-cart',(req,res)=>{
+
+  
+
+  console.log(req.body)
+  cartHelpers.addToCart(req.body).then((response)=>{
+      console.log(response)
+
+  })
+
+})
+
+//Login 
+
 router.post('/login',(req,res)=>{
   userHelpers.doLogin(req.body).then((response)=>{
     if (response.status){
      
       req.session.user=response.user
       req.session.loggedIn=true
-      res.redirect('/User/')
+      res.redirect('/')
     }else{
       req.session.loginErr=true
       res.render('user/login',{alertLogin: "Incorrect Credentials"})
     }
   })
 })
+
+//Logout
+
+router.get('/logout',(req,res)=>{
+  
+      req.session.user=null
+      res.redirect('/')
+
+})
+
+
 router.get('/getOtp',(req,res)=>{
   res.render('user/getOtp')
 })
@@ -129,6 +181,21 @@ router.get('/account',(req,res)=>{
 })
 
 
+// Cart
+
+router.get('/cart',async (req,res)=>{
+  if(req.session.user){
+
+    let cart = await cartHelpers.viewCart(userD)
+    console.log(cart)
+    res.render('user/cart',{user : true, cart})
+  } else {
+    res.render('user/login')
+  }
+  
+})
+
+//Delete Cart product
 
 
 module.exports = router;

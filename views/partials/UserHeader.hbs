@@ -5,7 +5,7 @@
 				<div class="row small-gutters">
 					<div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
 						<div id="logo">
-							<a href="index.html"><img src="/User/images/logomain.png" alt="" width="100" height="35"></a>
+							<a href="/User/"><img src="/User/images/logomain.png" alt="" width="100" height="35"></a>
 						</div>
 					</div>
 					<nav class="col-xl-6 col-lg-7">
@@ -165,24 +165,19 @@
 									<a href="cart.html" class="cart_bt"><strong>2</strong></a>
 									<div class="dropdown-menu">
 										<ul>
+											{{#each cart}}
 											<li>
 												<a href="product-detail-1.html">
-													<figure><img src="images/products/product_placeholder_square_small.jpg" data-src="images/products/shoes/thumb/1.jpg" alt="" width="50" height="50" class="lazy"></figure>
-													<strong><span>1x Armor Air x Fear</span>$90.00</strong>
+													<figure><img src="/{{cartProducts.image.[0]}}" data-src="/{{cartProducts.image.[0]}}" style="object-fit: contain ;" alt="" width="50" height="50" class="lazy"></figure>
+													<strong><span>{{cartProducts.title}}</span>${{cartProducts.price}}</strong>
 												</a>
 												<a href="#0" class="action"><i class="ti-trash"></i></a>
 											</li>
-											<li>
-												<a href="product-detail-1.html">
-													<figure><img src="images/products/product_placeholder_square_small.jpg" data-src="images/products/shoes/thumb/2.jpg" alt="" width="50" height="50" class="lazy"></figure>
-													<strong><span>1x Armor Okwahn II</span>$110.00</strong>
-												</a>
-												<a href="0" class="action"><i class="ti-trash"></i></a>
-											</li>
+											{{/each}}
 										</ul>
 										<div class="total_drop">
 											<div class="clearfix"><strong>Total</strong><span>$200.00</span></div>
-											<a href="cart.html" class="btn_1 outline">View Cart</a><a href="checkout.html" class="btn_1">Checkout</a>
+											<a href="/User/cart" class="btn_1 outline">View Cart</a><a href="checkout.html" class="btn_1">Checkout</a>
 										</div>
 									</div>
 								</div>
@@ -194,24 +189,41 @@
 							<li>
 								<div class="dropdown dropdown-access">
 									<a href="/User/account" class="access_link"><span>Account</span></a>
-									<div class="dropdown-menu">
-
-										<a href="/User/account" class="btn btn-secondary btntext">Sign Up</a>
-										<a href="/User/login" class="btn btn-success mt-2 btntext">Login</a>
+									<div class="dropdown-menu" >
+										
+										
+										
+										{{#if user}}
+										
 										<ul>
+											
 											<li>
-												<a href="track-order.html"><i class="ti-truck"></i>Track your Order</a>
+												<a href="track-order.html" style="text-decoration: none ;"><i class="ti-truck" ></i>Track your Order</a>
 											</li>
 											<li>
-												<a href="/User/account"><i class="ti-package"></i>My Orders</a>
+												<a href="/User/account" style="text-decoration: none ;"><i class="ti-package"></i>My Orders</a>
 											</li>
 											<li>
-												<a href="/User/account"><i class="ti-user"></i>My Profile</a>
+												<a href="/User/account" style="text-decoration: none ;"><i class="ti-user"></i>My Profile</a>
 											</li>
 											<li>
-												<a href="help.html"><i class="ti-help-alt"></i>Help and Faq</a>
+												<a href="help.html" style="text-decoration: none ;"><i class="ti-help-alt"></i>Help and Faq</a>
 											</li>
+											<li >
+												<a href="/User/logout" style="background-color: rgb(255, 187, 187) ; text-decoration: none ;  "><i class="ti-power-off"></i>Logout</a>
+											</li>
+											
 										</ul>
+
+										
+										{{else}}
+
+										<a href="/User/account" style="color: white; "  class="btn btn-secondary btntext">Sign Up</a>
+										<a href="/User/login" style="color: white; " class="btn btn-success mt-2 btntext">Login</a>
+										
+										{{/if}}
+
+
 									</div>
 								</div>
 								<!-- /dropdown-access-->

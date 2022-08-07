@@ -1,24 +1,20 @@
-function changeQuantity(cartId, proId, count,dummy) {
+function addToCart(event,prodId,userId) {
     event.preventDefault();
-    let quantity = parseInt(document.getElementById(proId).innerHTML);
-    count = parseInt(count);
+    
+    console.log(event,prodId,userId)
     $.ajax({
-      url: "/change-product-quantity",
+      url: "/User/add-to-cart",
       data: {
-        cart: cartId,
-        product: proId,   
-        count: count,
-        quantity: quantity,
+        user: userId,
+        product: prodId,   
+        count: 1,
+        quantity: 1,
       },
       method: "post",
       success: (response) => {
-        if (response.removeProduct) {
-          alert("Product Removed from cart");
-          location.reload();
-        } else {
-          document.getElementById(proId).innerHTML = quantity + count;
-          document.getElementById("total").innerHTML = response.total;
-        }
+
+        console.log(response)
+
       },
     });
 }

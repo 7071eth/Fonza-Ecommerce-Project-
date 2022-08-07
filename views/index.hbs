@@ -5,11 +5,11 @@
 				<span>Products</span>
 				<p>Best deals on smart phones you will ever get.</p>
 			</div>
-
+				<h1></h1>
 			<div class="row small-gutters">
 				{{#each category}}
 				<div class="col-6 col-md-4 col-xl-3">
-					
+						
 					<div class="grid_item ">
 						
 						
@@ -33,7 +33,7 @@
 						<ul>
 							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
 							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+							<li><button onclick="addToCart(event,'{{products._id}}','{{userDetails._id}}')"  class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></button></li>
 						</ul>
 						
 					</div>
