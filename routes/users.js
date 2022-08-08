@@ -4,7 +4,9 @@ const productHelpers = require('../helpers/product-helpers');
 var router = express.Router();
 const userHelpers=require('../helpers/user-helpers')
 require("dotenv").config();
-const cartHelpers= require('../helpers/cart-helpers')
+const cartHelpers= require('../helpers/cart-helpers');
+const { ObjectID } = require('bson');
+const { response } = require('../app');
 
 const client = require("twilio")(
   process.env.ACCOUNT_SID,
@@ -91,12 +93,14 @@ router.post('/account',(req,res)=>{
 router.post('/add-to-cart',(req,res)=>{
 
   
-
+  console.log("reached here");
   console.log(req.body)
   cartHelpers.addToCart(req.body).then((response)=>{
       console.log(response)
-
+      res.json(response)
   })
+  
+
 
 })
 
@@ -197,5 +201,20 @@ router.get('/cart',async (req,res)=>{
 
 //Delete Cart product
 
+router.get('/remove-product/:id',async (req,res)=>{
+  prodId= ObjectID(req.params.id)
+  userId= req.session.user
+  
+  if(req.session.user){
+    
+    await cartHelpers.removeProduct(prodId,userId).then((response)=>{
+      console.log(response)
+      res.redirect('/User/cart')
+    })
+
+  } else {
+    res.render('user/login')
+  }
+})
 
 module.exports = router;

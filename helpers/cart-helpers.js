@@ -9,20 +9,51 @@ const { response } = require('../app')
 module.exports = {
     
     addToCart : (data)=>{
+        
         data.user= ObjectID(data.user)
         data.product=ObjectID(data.product)
-        
+        data.count = parseInt(data.count)
+        let count=parseInt(data.count)
+        console.log(data.count)
         data.quantity=parseInt(data.quantity)
+        
+        
         console.log("Data")
         console.log(data)
         return new Promise(async (resolve,reject)=>{
 
            if(await db.get().collection(collection.CART_COLLECTION).findOne({$and : [{user : data.user},{product : data.product}]}))
+            {   
+                if(count===1)
             {
-                await db.get().collection(collection.CART_COLLECTION).updateOne({$and : [{user : data.user},{product : data.product}]},{$inc : {quantity : 1}}).then((response)=>{
+                await db.get().collection(collection.CART_COLLECTION).updateOne({$and : [{user : data.user},{product : data.product}]},{$inc : {quantity : 1 }}).then((response)=>{
                     console.log(response)
                     console.log(" Changed quantity")
+                    response.c=parseInt(1)
+                    response.quantity=data.quantity
+                    
+                    
+                    
+                    
+                    response.prod=data.product
+                    resolve(response)
+                    
                 })
+            } else {
+
+                await db.get().collection(collection.CART_COLLECTION).updateOne({$and : [{user : data.user},{product : data.product}]},{$inc : {quantity : -1}}).then((response)=>{
+                    console.log(response)
+                    console.log(" Changed quantity")
+                    response.c=parseInt(-1)
+                    response.quantity=parseInt(data.quantity)
+                    response.quantity=response.quantity
+
+                    response.prod=data.product
+                    resolve(response)
+                })
+
+            }
+                
            } else {
             await db.get().collection(collection.CART_COLLECTION).insertOne(data).then((response)=>{
                 console.log(response)
@@ -30,7 +61,8 @@ module.exports = {
                 
             })
            }
-           resolve ("Success")
+           
+           
 
          
 
@@ -77,6 +109,25 @@ module.exports = {
            
         })
 
+    },
+
+    removeProduct : ( prodId,userId )=>{
+
+        console.log(prodId)
+        console.log(userId)
+        let userD= ObjectID(userId._id)
+        console.log(userD)
+
+        return new Promise(async (resolve,reject)=>{
+
+            await db.get().collection(collection.CART_COLLECTION).deleteOne({$and : [{user : userD},{product : prodId}]}).then((response)=>{
+                console.log(response)
+            })
+
+            resolve("Removed successfully")
+            
+
+        })
     }
 
 }
