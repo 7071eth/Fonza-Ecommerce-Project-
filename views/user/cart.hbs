@@ -1,3 +1,4 @@
+
 <main class="bg_gray">
 		<div class="container margin_30">
 		<div class="page_header">
@@ -41,7 +42,7 @@
 										<span class="item_cart">{{cartProducts.title}}</span>
 									</td>
 									<td>
-										<strong>${{cartProducts.price}}</strong>
+										<strong id="{{cartProducts.price}}">${{cartProducts.price}}</strong>
 									</td>
 									<td>
                                         <div class="def-number-input number-input safari_only">
@@ -49,14 +50,10 @@
                                         <input id="{{product}}" class="quantity" min="0" name="quantity" value={{quantity}} type="number">
                                         <button onclick="addToCart(event,'{{product}}','{{user}}','1',{{quantity}})" class="plus"></button>
                                         </div>
-										{{!-- <div class="">
-                                            
-											<input type="text" value="{{quantity}}" id="quantity_1" class="" name="quantity_1">
-                                            <button onclick="addToCart(event,'{{product}}','{{user}}','1')" class="  btn" >+</button> <button onclick="addToCart(event,'{{product}}','{{user}}','-1')" class=" btn"  >-</button>
-										</div> --}}
+										
 									</td>
 									<td>
-										<strong>${{multiply cartProducts.price quantity }}</strong>
+										<strong id="{{cartProducts.title}}">{{subtotal}}</strong>
 									</td>
 									<td class="options" >
 										<a  href="/User/remove-product/{{cartProducts._id}}"><i class="ti-trash"></i></a>
@@ -89,14 +86,10 @@
 			<div class="row justify-content-end">
 				<div class="col-xl-4 col-lg-4 col-md-6">
 			<ul>
+				
+				
 				<li>
-					<span>Subtotal</span> $240.00
-				</li>
-				<li>
-					<span>Shipping</span> $7.00
-				</li>
-				<li>
-					<span>Total</span> $247.00
+					<span id="total">Total</span> ${{total}}
 				</li>
 			</ul>
 			<a href="cart-2.html" class="btn_1 full-width cart">Proceed to Checkout</a>
@@ -107,3 +100,9 @@
 		<!-- /box_cart -->
 		
 	</main>
+
+    
+
+    <script>
+      window.addEventListener("load", myInitFunction)
+    </script>

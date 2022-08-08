@@ -94,8 +94,10 @@ router.post('/add-to-cart',(req,res)=>{
 
   
   console.log("reached here");
+  
   console.log(req.body)
   cartHelpers.addToCart(req.body).then((response)=>{
+    console.log("Reached here")
       console.log(response)
       res.json(response)
   })
@@ -191,8 +193,18 @@ router.get('/cart',async (req,res)=>{
   if(req.session.user){
 
     let cart = await cartHelpers.viewCart(userD)
+    var total=0;
+    for(i=0;i<cart.length;i++){
+      
+      cart[i].subtotal=cart[i].quantity*cart[i].cartProducts.price;
+      total=total+cart[i].quantity*cart[i].cartProducts.price
+      
+     
+    }
+    
     console.log(cart)
-    res.render('user/cart',{user : true, cart})
+    console.log(total)
+    res.render('user/cart',{user : true, cart,total})
   } else {
     res.render('user/login')
   }
