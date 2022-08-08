@@ -20,14 +20,19 @@ function addToCart(event,prodId,userId,count,quantity) {
 
         console.log("gotcha")
         response.price=Number(response.price)
+        cP=document.getElementById('total').innerHTML
+        console.log(cP)
         console.log(response)
         if(response.c===1){
           document.getElementById(response.prod).value=q+1
-        
           document.getElementById(response.title).innerHTML=(q+1)*response.price
+          document.getElementById('total').innerHTML=Number(document.getElementById('total').innerHTML)+response.price
+
         } else{
+          console.log("Gotcha")
           document.getElementById(response.prod).value=q-1
           document.getElementById(response.title).innerHTML=(q-1)*response.price
+          document.getElementById('total').innerHTML=Number(document.getElementById('total').innerHTML)-response.price
         }
 
         

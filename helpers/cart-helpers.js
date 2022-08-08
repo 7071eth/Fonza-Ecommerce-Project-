@@ -43,13 +43,14 @@ module.exports = {
                     
                 })
             } else {
-
+                let price = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id : data.product})
                 await db.get().collection(collection.CART_COLLECTION).updateOne({$and : [{user : data.user},{product : data.product}]},{$inc : {quantity : -1}}).then((response)=>{
                     console.log(response)
                     console.log(" Changed quantity")
                     response.c=parseInt(-1)
-                    response.quantity=parseInt(data.quantity)
-                    response.quantity=response.quantity
+                    response.quantity=data.quantity
+                    response.price=price.price
+                    response.title=price.title
 
                     response.prod=data.product
                     resolve(response)
