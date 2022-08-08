@@ -29,10 +29,15 @@ function addToCart(event,prodId,userId,count,quantity) {
           document.getElementById('total').innerHTML=Number(document.getElementById('total').innerHTML)+response.price
 
         } else{
+
+          if(document.getElementById(response.prod).value==1){
+            location.reload()
+          }
           console.log("Gotcha")
           document.getElementById(response.prod).value=q-1
           document.getElementById(response.title).innerHTML=(q-1)*response.price
           document.getElementById('total').innerHTML=Number(document.getElementById('total').innerHTML)-response.price
+
         }
 
         

@@ -23,7 +23,11 @@ module.exports = {
         return new Promise(async (resolve,reject)=>{
 
            if(await db.get().collection(collection.CART_COLLECTION).findOne({$and : [{user : data.user},{product : data.product}]}))
-            {   
+            {  
+                
+                if(count==-1 && data.quantity==1){
+               await db.get().collection(collection.CART_COLLECTION).deleteOne({$and : [{user : data.user},{product : data.product}]})
+            }
                 if(count===1)
             {
                 let price = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id : data.product})
