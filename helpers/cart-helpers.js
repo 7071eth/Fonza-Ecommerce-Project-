@@ -20,6 +20,7 @@ module.exports = {
         
         console.log("Data")
         console.log(data)
+        
         return new Promise(async (resolve,reject)=>{
 
            if(await db.get().collection(collection.CART_COLLECTION).findOne({$and : [{user : data.user},{product : data.product}]}))

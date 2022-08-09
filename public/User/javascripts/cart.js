@@ -48,9 +48,5 @@ function addToCart(event,prodId,userId,count,quantity) {
     });
 }
 
-function subtotal(event,quantity,price,prod){
-  event.preventDefault();
-  console.log("Hello")
-  document.getElementById(prod).innerHTML=document.getElementById(price)*quantity
 
-}
+

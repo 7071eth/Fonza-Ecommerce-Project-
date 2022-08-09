@@ -229,4 +229,72 @@ router.get('/remove-product/:id',async (req,res)=>{
   }
 })
 
+//Checkout 
+
+router.get('/checkout',async(req,res)=>{
+  
+  if(req.session.user){
+    
+    let cart = await cartHelpers.viewCart(req.session.user._id)
+    var total=0;
+    for(i=0;i<cart.length;i++){
+      
+      cart[i].subtotal=cart[i].quantity*cart[i].cartProducts.price;
+      total=total+cart[i].quantity*cart[i].cartProducts.price
+      
+     
+    }
+    console.log("checkout ongoing");
+    console.log(cart)
+    console.log(req.session.user)
+    let data =req.session.user
+    res.render('user/checkout',{data,cart,total})
+  } else {
+    res.redirect('/User/login')
+  }
+  
+})
+
+//Add address
+
+router.post('/add-address',(req,res)=>{
+  
+  if(req.session.user){
+
+    req.session.user.address.unshift(req.body)
+    console.log(req.session.user)
+  
+    userHelpers.addAddress(req.session.user)
+
+    res.redirect('/User/checkout')
+
+  } else{
+    res.redirect('/User/login')
+  }
+
+})
+
+//Place Order
+
+router.post('/place-order',(req,res)=>{
+  if(req.session.user){
+
+    console.log(req.body)
+    console.log("Hurraaayyyy")
+    res.send("Hurrayyy")
+
+  }
+})
+
+//Orders
+
+router.get('/orders',(req,res)=>{
+  if(req.session.user){
+
+    res.render('user/orders',)
+    
+  } else {
+    res.redirect('/User/login')
+  }
+})
 module.exports = router;
