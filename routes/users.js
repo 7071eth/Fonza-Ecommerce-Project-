@@ -5,8 +5,10 @@ var router = express.Router();
 const userHelpers=require('../helpers/user-helpers')
 require("dotenv").config();
 const cartHelpers= require('../helpers/cart-helpers');
+const orderHelpers=require('../helpers/order-helpers')
 const { ObjectID } = require('bson');
 const { response } = require('../app');
+// const { response } = require('../app');
 
 const client = require("twilio")(
   process.env.ACCOUNT_SID,
@@ -276,25 +278,73 @@ router.post('/add-address',(req,res)=>{
 
 //Place Order
 
-router.post('/place-order',(req,res)=>{
+router.post('/place-order',async (req,res)=>{
   if(req.session.user){
+    req.body.status="pending"
 
+    let cart = await cartHelpers.viewCart(req.session.user._id)
+    var total=0;
+    for(i=0;i<cart.length;i++){
+      
+      cart[i].subtotal=cart[i].quantity*cart[i].cartProducts.price;
+      total=total+cart[i].quantity*cart[i].cartProducts.price
+      
+     
+    }
+
+    req.body.cart=cart
+    req.body.total=total
+    req.body.user=ObjectID(req.body.user)
+    
+    req.body.date=new Date().toDateString()
+    
+    
+    await orderHelpers.placeOrder(req.body).then((response)=>{
+      console.log(response)
+    })
     console.log(req.body)
-    console.log("Hurraaayyyy")
-    res.send("Hurrayyy")
+    await cartHelpers.exitCart(req.session.user).then((response)=>{
+      console.log(response)
+    })
+
+    res.redirect('/User/orders')
 
   }
 })
 
-//Orders
+//Get Orders
 
-router.get('/orders',(req,res)=>{
+router.get('/orders',async (req,res)=>{
   if(req.session.user){
 
-    res.render('user/orders',)
+    
+    userId=ObjectID(req.session.user._id) 
+    
+    await orderHelpers.getOrders(userId).then((orders)=>{
+      
+      res.render('user/orders',{orders})
+      
+    })
+
+    
     
   } else {
     res.redirect('/User/login')
   }
 })
+
+//Cancel Orders
+
+router.post('/cancel-order',async (req,res)=>{
+
+ order=ObjectID(req.body.invoice)
+  await orderHelpers.updateStatus(order).then((response)=>{
+    console.log(response,'hfhhhfhdfhf');
+      res.json(response)
+  })
+  
+  
+})
+
+
 module.exports = router;

@@ -5,6 +5,7 @@ let userName = "owner"
 let Pin = "12345"
 const userHelpers = require('../helpers/user-helpers')
 const productHelpers= require('../helpers/product-helpers')
+const orderHelpers=require('../helpers/order-helpers')
 const upload = require("../multer/multer");
 const { ObjectID } = require('bson');
 
@@ -258,5 +259,26 @@ router.post('/delete-subcategory',async(req,res)=>{
   
 })
 
+router.get('/orders',adminVerify,async (req,res)=>{
+
+  await orderHelpers.getAllOrders().then((orders)=>{
+      
+    res.render('admin/orders',{admin : true, orders })
+    
+  })
+  
+
+})
+
+//Change orders
+
+router.post('/change-order',async(req,res)=>{
+  console.log(req.body)
+
+  await orderHelpers.changeStatus(req.body).then((response)=>{
+    console.log(response)
+    res.json(response)
+  })
+})
 
 module.exports = router;

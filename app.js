@@ -10,7 +10,7 @@ var logger = require('morgan');
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
-const { hasSubscribers } = require('diagnostics_channel');
+// const { hasSubscribers } = require('diagnostics_channel');
 var hbs=require('express-handlebars')
 
 var hbss = hbs.create({});
