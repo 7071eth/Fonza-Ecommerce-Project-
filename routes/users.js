@@ -322,7 +322,7 @@ router.get('/orders',async (req,res)=>{
     
     await orderHelpers.getOrders(userId).then((orders)=>{
       
-      res.render('user/orders',{orders})
+      res.render('user/orders',{orders,user:true})
       
     })
 
@@ -345,6 +345,44 @@ router.post('/cancel-order',async (req,res)=>{
   
   
 })
+
+// profile
+
+router.get('/profile',(req,res)=>{
+  res.render('user/profile',{user:true})
+})
+
+// Edit profile
+
+router.get('/edit-profile',async (req,res)=>{
+  if(req.session.user){
+
+   let data = await userHelpers.viewProfile(req.session.user._id)
+    console.log(data)
+    res.render('user/edit-profile',{data,user:true})
+
+  }else{
+    res.redirect('/User/login')
+  }
+  
+})
+
+router.post('/change-profile',async(req,res)=>{
+  
+  if(req.session.user){
+
+    req.body._id=ObjectID(req.session.user._id) 
+    await userHelpers.updateProfile(req.body)
+    let data = await userHelpers.viewProfile(req.session.user._id)
+    console.log(data)
+    res.redirect('/User/edit-profile')
+    
+
+  }else{
+    res.redirect('/User/login')
+  }
+})
+
 
 
 module.exports = router;

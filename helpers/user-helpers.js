@@ -105,6 +105,23 @@ module.exports = {
         })
     },
 
+    viewProfile: (id)=>{
+        id=ObjectID(id)
+        return new Promise(async(resolve,reject)=>{
+            await db.get().collection(collection.USER_COLLECTION).findOne({_id: id}).then((response)=>{
+            resolve(response)
+           })
+        })
+    },
+
+    updateProfile: (data)=>{
+        return new Promise(async(resolve,reject)=>{
+           db.get().collection(collection.USER_COLLECTION).updateMany({_id : data._id},{$set : {username : data.username, number: data.number, email: data.email}}).then((response)=>{
+            console.log(response)
+           })
+        })
+    }
+
     
 
     
