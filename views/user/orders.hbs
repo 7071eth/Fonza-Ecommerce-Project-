@@ -35,11 +35,11 @@
       
       <th scope="row">{{this.date}}</th>
       <td>{{this.address}}</td>
-      <td id="invoice" name="invoice">{{this._id}}</td>
+      <td id="invoice" name="invoice"><a href="/User/invoice/{{_id}}">{{_id}}</a></td>
       <td>{{this.total}}</td>
       <td>{{this.status}}</td>
       
-      <td><button class="ti-close" onclick="cancel('{{this._id}}')" ></button></td>
+      <td><button class="ti-close btn-danger btn"  onclick="cancel('{{this._id}}')" ></button></td>
       
     </tr>
     {{/each}}

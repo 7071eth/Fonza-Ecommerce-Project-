@@ -321,7 +321,9 @@ router.get('/orders',async (req,res)=>{
     userId=ObjectID(req.session.user._id) 
     
     await orderHelpers.getOrders(userId).then((orders)=>{
-      
+
+      orders=orders.reverse()
+
       res.render('user/orders',{orders,user:true})
       
     })
@@ -372,15 +374,34 @@ router.post('/change-profile',async(req,res)=>{
   if(req.session.user){
 
     req.body._id=ObjectID(req.session.user._id) 
-    await userHelpers.updateProfile(req.body)
-    let data = await userHelpers.viewProfile(req.session.user._id)
-    console.log(data)
-    res.redirect('/User/edit-profile')
+    await userHelpers.updateProfile(req.body).then((response)=>{
+
+      console.log(response)
+      res.redirect('/User/edit-profile')
+    })
+    
+  
     
 
   }else{
     res.redirect('/User/login')
   }
+})
+
+//Invoice
+
+router.get('/invoice/:id',async (req,res)=>{
+  console.log("HElooooooooooooooo")
+  let id=req.params.id
+  console.log(id)
+  
+  
+  await orderHelpers.getinvoice(req.params.id).then((data)=>{
+    console.log(data)
+    console.log(data.cartProducts)
+    res.render('user/invoice',{data})
+  })
+  
 })
 
 

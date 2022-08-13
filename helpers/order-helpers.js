@@ -75,6 +75,16 @@ module.exports = {
             resolve(response)
         })
     })
+   },
+
+   getinvoice : (invoice)=>{
+    console.log(invoice);
+    return new Promise(async(resolve,reject)=>{
+        await db.get().collection(collection.ORDER_COLLECTION).findOne({_id : ObjectID(invoice) }).then((response)=>{
+            console.log(response)
+            resolve(response)
+        })
+    })
    }
 
 

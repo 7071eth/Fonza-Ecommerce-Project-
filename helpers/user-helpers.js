@@ -116,8 +116,10 @@ module.exports = {
 
     updateProfile: (data)=>{
         return new Promise(async(resolve,reject)=>{
-           db.get().collection(collection.USER_COLLECTION).updateMany({_id : data._id},{$set : {username : data.username, number: data.number, email: data.email}}).then((response)=>{
+            console.log(data)
+           db.get().collection(collection.USER_COLLECTION).updateOne({_id : data._id},{$set : {username : data.username, number: data.number, email: data.email}}).then((response)=>{
             console.log(response)
+            resolve(response)
            })
         })
     }

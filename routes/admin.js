@@ -259,10 +259,13 @@ router.post('/delete-subcategory',async(req,res)=>{
   
 })
 
+//Orders
+
 router.get('/orders',adminVerify,async (req,res)=>{
 
   await orderHelpers.getAllOrders().then((orders)=>{
       
+    orders=orders.reverse()
     res.render('admin/orders',{admin : true, orders })
     
   })
