@@ -134,18 +134,14 @@
 											Brands
 										</a>
 									</span>
-									<div id="menu">
+									<div >
 										<ul>
-											{{#each category}}
-											<li><span><a href="#0">{{Datas.subcategory}}</a></span>
-												<ul>
-													
-													<li><a href="listing-grid-1-full.html">{{products.title}}</a></li>
-													
-													
-												</ul>
+											{{#each brands}}
+											<li><span><a href="/User/brands/{{_id}}">{{subcategory}}</a></span>
+												
 											</li>
 											{{/each}}
+											
 										</ul>
 									</div>
 								</li>

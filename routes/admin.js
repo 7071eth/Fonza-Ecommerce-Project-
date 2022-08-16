@@ -8,6 +8,7 @@ const productHelpers= require('../helpers/product-helpers')
 const orderHelpers=require('../helpers/order-helpers')
 const upload = require("../multer/multer");
 const { ObjectID } = require('bson');
+const { revenueTotal } = require('../helpers/order-helpers');
 
 //Middleware to check the session
 
@@ -38,9 +39,18 @@ router.get('/dashboard',adminVerify,(req,res)=>{
 
   userHelpers.getAlluser().then(async (user)=>{
 
-    await orderHelpers.orderCount().then((data)=>{
+    await orderHelpers.orderCount().then(async (data)=>{
+
+      await orderHelpers.orderStatus().then(async (orderStatus)=>{
+
+        await orderHelpers.revenueTotal().then(async(total)=>{
+
+          res.render('admin/dashboard', { admin: true, user,data,orderStatus,total })
+        })
+        
+      })
       
-      res.render('admin/dashboard', { admin: true, user,data })
+      
     })
     
     
@@ -288,6 +298,22 @@ router.post('/change-order',async(req,res)=>{
     console.log(response)
     res.json(response)
   })
+})
+
+//Invoice
+
+router.get('/invoice/:id',adminVerify,async (req,res)=>{
+  console.log("HElooooooooooooooo")
+  let id=req.params.id
+  console.log(id)
+  
+  
+  await orderHelpers.getinvoice(req.params.id).then((data)=>{
+    console.log(data)
+    console.log(data.cartProducts)
+    res.render('admin/invoice',{admin: true,data})
+  })
+  
 })
 
 module.exports = router;

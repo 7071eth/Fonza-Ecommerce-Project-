@@ -263,7 +263,7 @@
 						console.log(response)
 						if (response.COD) {
 							location.href = '/User/orders'
-						} else {
+						} else if(response.RAZORPAY) {
 							razorpayPayment(response)
 							function razorpayPayment(order) {
 								var options = {
@@ -306,6 +306,8 @@
 									method: 'post'
 								})
 							}
+						} else {
+							
 						}
 
 					}

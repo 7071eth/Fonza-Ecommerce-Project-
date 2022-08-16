@@ -37,6 +37,9 @@ router.get('/', async function(req, res, next) {
 
  
  let category = await productHelpers.viewBrandProducts();
+ let brands = await productHelpers.viewBrands();
+ console.log(brands)
+ 
  
   
   if(req.session.user)
@@ -44,17 +47,23 @@ router.get('/', async function(req, res, next) {
     for(i=0;i<category.length;i++){
       category[i].userDetails=req.session.user
     }
-  console.log(category)
+  
   userD = req.session.user._id
   console.log(userD)
   let cart = await cartHelpers.viewCart(userD)
 
-  res.render('index',{category,user: true, cart });
+  
+
+ 
+
+  res.render('index',{category,user: true, cart,brands });
 
   }
 
   else {
-    res.render('index',{category});
+    let brands = await productHelpers.viewBrands();
+    console.log(brands)
+    res.render('index',{category,brands});
   }
   
 });
@@ -414,6 +423,19 @@ router.get('/invoice/:id',async (req,res)=>{
     res.render('user/invoice',{data})
   })
   
+})
+
+router.get('/brands/:id',async (req,res)=>{
+  
+ 
+  
+  let brands = await productHelpers.viewBrands();
+    
+    products = await productHelpers.viewBrand(req.params.id)
+    console.log(products)
+  res.render('user/brands',{products,user:true,brands})
+ 
+
 })
 
 

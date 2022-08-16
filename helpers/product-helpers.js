@@ -229,7 +229,48 @@ module.exports={
                 resolve(data)
               });
         })
+    },
+
+    
+
+    
+
+
+    viewBrand: (id)=>{
+        return new Promise(async(resolve,reject)=>{
+            id=ObjectID(id)
+
+            db.get().collection(collection.SUBCATEGORY_COLLECTION).aggregate([
+                {
+                    $match : {_id : id}
+                },
+                {
+
+                   $lookup: {
+   
+                     from: 'product',
+                     localField: '_id',
+                     foreignField: 'mainCategory',
+                     as: 'products'
+                   }
+                    },{
+            
+                        $unwind: {
+        
+                          path : "$products"
+                        }
+                         }
+            ]).toArray().then((data)=>{
+                console.log(data)
+                resolve(data)
+            })
+
+            
+
+        })
     }
+
+
 
     
 

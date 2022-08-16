@@ -44,7 +44,7 @@ module.exports = {
    
    updateStatus : (id)=>{
     return new Promise(async(resolve,reject)=>{
-        await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id : id},{$set : {status : "cancelled"}}).then((response)=>{
+        await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id : id},{$set : {status : "Cancelled"}}).then((response)=>{
             console.log(response)
             resolve(response)
         })
@@ -122,7 +122,66 @@ module.exports = {
           })
         
     })
-   }
+   },
+
+   orderStatus: ()=>{
+    return new Promise(async (resolve,reject)=>{
+
+        await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+            
+            {
+                $group: { _id : "$status",
+                count: { $count: { } }}
+            },
+            {
+                $sort: { _id : 1 }
+            }
+
+        ]).toArray().then((response)=>{
+            console.log(response)
+            resolve(response)
+        })
+    })
+   },
+
+   revenueTotal : ()=>{
+    return new Promise(async (resolve,reject)=>{
+       let data= await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+        {
+            
+            $project: {
+
+                newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+                total : 1
+               
+            }
+            
+          },
+          {
+            $group: {
+               _id: "$newDate",
+               totalAmount : { $sum: "$total" }
+            }
+
+            
+          },
+          {
+            
+            $sort: {_id: 1}
+
+          },
+          {
+            
+            $limit: 7 
+          }
+        ]).toArray().then((data)=>{
+                
+            console.log(data)
+            resolve(data)
+          })
+        
+    })
+   },
 
 
 

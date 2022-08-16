@@ -20,13 +20,13 @@
       <tr>
       <th scope="row">{{this.date}}</th>
       <td>{{this.address}}</td>
-      <td id="invoice" name="invoice">{{this._id}}</td>
+      <td id="invoice" name="invoice"><a href="/admin/invoice/{{this._id}}">{{this._id}}</a></td>
       <td>{{this.total}}</td>
       <td>{{this.status}}</td>
       <td>
       <select class="form-select" aria-label="Default select example" onchange="canceled('{{this._id}}',value)" >
             <option selected>Open this select menu</option>
-            <option  value="cancelled">Cancel</option>
+            <option  value="Cancelled">Cancel</option>
             <option  value="Pending">Pending</option>
             <option  value="Delivered">Delivered</option>
             <option  value="Out for delivery">Out for delivery</option>
