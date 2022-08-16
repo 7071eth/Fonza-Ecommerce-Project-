@@ -18,9 +18,10 @@ module.exports = {
 
     return new Promise(async (resolve,reject)=>{
         console.log(data)
-       await  db.get().collection(collection.ORDER_COLLECTION).insertOne(data).then((response)=>{
-          
-            resolve(response)
+       await  db.get().collection(collection.ORDER_COLLECTION).insertOne(data).then(async(response)=>{
+
+        await db.get().collection(collection.CART_COLLECTION).deleteMany({user : data.user})
+         resolve(response.insertedId)
         })
         
     })
@@ -84,6 +85,42 @@ module.exports = {
             console.log(response)
             resolve(response)
         })
+    })
+   },
+
+   orderCount: ()=>{
+    return new Promise(async (resolve,reject)=>{
+       let data= await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+        {
+            
+            $project: {
+
+                newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } }
+               
+            }
+            
+          },
+          {
+            $group: {
+               _id: "$newDate",
+               count: { $count: { } }
+            }
+          },
+          {
+            
+            $sort: {_id: -1}
+
+          },
+          {
+            
+            $limit: 7 
+          }
+        ]).toArray().then((data)=>{
+                
+            console.log(data)
+            resolve(data)
+          })
+        
     })
    }
 

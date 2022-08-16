@@ -23,8 +23,9 @@ const adminVerify= (req,res,next)=>{
 }
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
   if(req.session.users){
+    
     res.redirect('/admin/dashboard')
   }
   else{
@@ -35,9 +36,14 @@ router.get('/', function(req, res, next) {
 
 router.get('/dashboard',adminVerify,(req,res)=>{
 
-  userHelpers.getAlluser().then((user)=>{
+  userHelpers.getAlluser().then(async (user)=>{
+
+    await orderHelpers.orderCount().then((data)=>{
+      
+      res.render('admin/dashboard', { admin: true, user,data })
+    })
     
-    res.render('admin/dashboard', { admin: true, user })
+    
    })
 
 })

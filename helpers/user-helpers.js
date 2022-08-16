@@ -4,6 +4,11 @@ const bcrypt = require('bcrypt')
 const collections = require('../config/collections')
 
 const { ObjectID } = require('bson')
+const Razorpay=require('razorpay')
+var instance = new Razorpay({
+    key_id: 'rzp_test_juPuE4kQiJY8mm',
+    key_secret: 'iDwhrTOvemDAsdEmdnDWjBam',
+  });
 // const { response } = require('../app')
 
 module.exports = {
@@ -121,6 +126,27 @@ module.exports = {
             console.log(response)
             resolve(response)
            })
+        })
+    },
+
+    generateRazorpay : (orderId,total)=>{
+        return new Promise((resolve,reject)=>{
+            
+            var options = {
+                amount: parseInt(total),  // amount in the smallest currency unit
+                currency: "INR",
+                receipt: ""+orderId
+              };
+              instance.orders.create(options, function(err, order) {
+                if(err){
+                    console.log(err)
+                } else{
+                    console.log("New order created :",order);
+                    resolve(order)
+                }
+                
+              });
+
         })
     }
 

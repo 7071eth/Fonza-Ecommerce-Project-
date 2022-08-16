@@ -139,23 +139,6 @@ module.exports = {
         })
     },
 
-    //To remove the products from cart after placing the orders
-
-    exitCart : (userId)=>{
-
-        let Id= ObjectID(userId._id)
-        console.log(Id)
-        return new Promise(async (resolve,reject)=>{
-
-            await db.get().collection(collection.CART_COLLECTION).deleteMany({user : Id}).then((response)=>{
-                console.log(response)
-                resolve("Removed successfully")
-            })
-
-            
-            
-
-        })
-    }
+    
 
 }

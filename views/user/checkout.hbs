@@ -1,6 +1,6 @@
 <main class="bg_gray">
-	
-		
+
+
 	<div class="container margin_30">
 		<div class="page_header">
 			<div class="breadcrumbs">
@@ -9,256 +9,313 @@
 					<li><a href="#">Category</a></li>
 					<li>Page active</li>
 				</ul>
+			</div>
+			<h1>Sign In or Create an Account</h1>
+
 		</div>
-		<h1>Sign In or Create an Account</h1>
-			
-	</div>
-	<!-- /page_header -->
-			<div class="row">
-				<div class="col-lg-4 col-md-6">
-					<div class="step first">
-						<h3>1. User Info and Billing address</h3>
-					
+		<!-- /page_header -->
+		<div class="row">
+			<div class="col-lg-4 col-md-6">
+				<div class="step first">
+					<h3>1. User Info and Billing address</h3>
+
 					<div class="tab-content checkout">
 						<div class="tab-pane fade show active" id="tab_1" role="tabpanel" aria-labelledby="tab_1">
-							
+
 							<hr>
-                            <form action="/User/add-address" method="post">
-							<div class="row no-gutters">
-								<div class=" form-group ">
-									<input type="text" class="form-control" placeholder="Name" name="name">
+							<form action="/User/add-address" method="post">
+								<div class="row no-gutters">
+									<div class=" form-group ">
+										<input type="text" class="form-control" placeholder="Name" name="name">
+									</div>
+
 								</div>
-								
-							</div>
-							<!-- /row -->
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Full Address" name="address">
-							</div>
-							<div class="row no-gutters">
-								<div class=" form-group ">
-									<input type="text" class="form-control" placeholder="City" name="city">
+								<!-- /row -->
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="Full Address" name="address">
 								</div>
-								<div class=" form-group ">
-									<input type="text" class="form-control" placeholder="Postal code" name="postalCode">
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="row no-gutters">
-								<div class=" form-group" >
-									<div class="custom-select-form" >
-										<select class="wide add_bottom_5 h-2" name="country" id="country"  >
-											<option value="" selected>Country</option>
-											<option value=”Andaman and Nicobar Islands”>Andaman and Nicobar Islands</option>
-                                        <option value=”Andhra Pradesh”>Andhra Pradesh</option>
-                                        
-                                        <option value=Daman and Diu>Daman and Diu</option>
-                                        <option value=Delhi>Delhi</option>
-                                        <option value=Goa>Goa</option>
-                                        <option value=Gujarat>Gujarat</option>
-                                        <option value=Haryana>Haryana</option>
-                                        <option value=Himachal Pradesh”>Himachal Pradesh</option>
-                                        <option value=Jammu and Kashmir”>Jammu and Kashmir</option>
-                                        <option value=Jharkhand>Jharkhand</option>
-                                        <option value=Karnataka>Karnataka</option>
-                                        <option value=Kerala>Kerala</option>
-                                        
-										</select>
+								<div class="row no-gutters">
+									<div class=" form-group ">
+										<input type="text" class="form-control" placeholder="City" name="city">
+									</div>
+									<div class=" form-group ">
+										<input type="text" class="form-control" placeholder="Postal code"
+											name="postalCode">
 									</div>
 								</div>
-							</div>
-							<!-- /row -->
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Telephone">
-							</div>
-							<hr>
-							<div class="form-group ">
-								<button type="submit" class="btn btn-success">Add new address</button>
-							</div>
-                        </form>
+								<!-- /row -->
+								<div class="row no-gutters">
+									<div class=" form-group">
+										<div class="custom-select-form">
+											<select class="wide add_bottom_5 h-2" name="country" id="country">
+												<option value="" selected>Country</option>
+												<option value=”Andaman and Nicobar Islands”>Andaman and Nicobar Islands
+												</option>
+												<option value=”Andhra Pradesh”>Andhra Pradesh</option>
+
+												<option value=Daman and Diu>Daman and Diu</option>
+												<option value=Delhi>Delhi</option>
+												<option value=Goa>Goa</option>
+												<option value=Gujarat>Gujarat</option>
+												<option value=Haryana>Haryana</option>
+												<option value=Himachal Pradesh”>Himachal Pradesh</option>
+												<option value=Jammu and Kashmir”>Jammu and Kashmir</option>
+												<option value=Jharkhand>Jharkhand</option>
+												<option value=Karnataka>Karnataka</option>
+												<option value=Kerala>Kerala</option>
+
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- /row -->
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="Telephone">
+								</div>
+								<hr>
+								<div class="form-group ">
+									<button type="submit" class="btn btn-success">Add new address</button>
+								</div>
+							</form>
 
 							<div id="other_addr_c" class="pt-2">
-							<div class="row no-gutters">
-								<div class="col-6 form-group pr-1">
-									<input type="text" class="form-control" placeholder="Name">
-								</div>
-								<div class="col-6 form-group pl-1">
-									<input type="text" class="form-control" placeholder="Last Name">
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Full Address">
-							</div>
-							<div class="row no-gutters">
-								<div class="col-6 form-group pr-1">
-									<input type="text" class="form-control" placeholder="City">
-								</div>
-								<div class="col-6 form-group pl-1">
-									<input type="text" class="form-control" placeholder="Postal code">
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="row no-gutters">
-								<div class="col-md-12 form-group">
-									<div class="custom-select-form">
-										<select class="wide add_bottom_15" name="country" id="country_2">
-											<option value="" selected>Country</option>
-											<option value="Europe">Europe</option>
-											<option value="United states">United states</option>
-											<option value="Asia">Asia</option>
-										</select>
+								<div class="row no-gutters">
+									<div class="col-6 form-group pr-1">
+										<input type="text" class="form-control" placeholder="Name">
+									</div>
+									<div class="col-6 form-group pl-1">
+										<input type="text" class="form-control" placeholder="Last Name">
 									</div>
 								</div>
-							</div>
-							<!-- /row -->
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Telephone">
-							</div>
+								<!-- /row -->
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="Full Address">
+								</div>
+								<div class="row no-gutters">
+									<div class="col-6 form-group pr-1">
+										<input type="text" class="form-control" placeholder="City">
+									</div>
+									<div class="col-6 form-group pl-1">
+										<input type="text" class="form-control" placeholder="Postal code">
+									</div>
+								</div>
+								<!-- /row -->
+								<div class="row no-gutters">
+									<div class="col-md-12 form-group">
+										<div class="custom-select-form">
+											<select class="wide add_bottom_15" name="country" id="country_2">
+												<option value="" selected>Country</option>
+												<option value="Europe">Europe</option>
+												<option value="United states">United states</option>
+												<option value="Asia">Asia</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- /row -->
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="Telephone">
+								</div>
 							</div>
 							<!-- /other_addr_c -->
 							<hr>
 						</div>
 						<!-- /tab_1 -->
-            <form id="placeorder">
+						<form id="placeorder">
 
-					  
-						<!-- /tab_2 -->
-					</div>
-					</div>
-					<!-- /step -->
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<div class="step middle payments">
-						<h3>2. Payment and Shipping</h3>
-							<ul>
-								{{!-- <li>
-									<label class="container_radio">Credit Card<a href="#0" class="info" data-toggle="modal" data-target="#payments_method"></a>
-										<input type="radio" name="payment" checked>
-										<span class="checkmark"></span>
-									</label>
-								</li>
-								<li>
-									<label class="container_radio">Paypal<a href="#0" class="info" data-toggle="modal" data-target="#payments_method"></a>
-										<input type="radio" name="payment">
-										<span class="checkmark"></span>
-									</label>
-								</li> --}}
-								<li>
-									<label class="container_radio">Cash on delivery<a href="#0" class="info" data-toggle="modal" data-target="#payments_method"></a>
-										<input type="radio" name="payment" value="COD">
-										<span class="checkmark"></span>
-									</label>
-								</li>
-								{{!-- <li>
-									<label class="container_radio">Bank Transfer<a href="#0" class="info" data-toggle="modal" data-target="#payments_method"></a>
-										<input type="radio" name="payment">
-										<span class="checkmark"></span>
-									</label>
-								</li> --}}
-							</ul>
-							<div class="payment_info d-none d-sm-block" ><figure><img src="img/cards_all.svg" alt=""></figure>	<p>Fonza support only COD at the moment. New payment methods will be added soon.</p></div>
-							
-							<h6 class="pb-2">Select Address</h6>
-							
-						
-						    <ul >    
-                                {{#each data.address}}
-								<li >
-									<label class="container_radio" name="address" value="Hello">{{name}} {{address}} {{city}} {{postalCode}} {{country}}<a href="#0" class="info" data-toggle="modal" data-target="#payments_method"></a>
-										<input type="radio" name="address" value="{{name}} {{address}} {{city}} {{postalCode}} {{country}}" >
-										<span class="checkmark"></span>
-									</label>
-								</li>
-                                {{/each}}
-								
-								
-							</ul>
-						
-					</div>
-					<!-- /step -->
-				</div>
 
-				<div class="col-lg-4 col-md-6">
-					<div class="step last">
-						<h3>3. Order Summary</h3>
+							<!-- /tab_2 -->
+					</div>
+				</div>
+				<!-- /step -->
+			</div>
+			<div class="col-lg-4 col-md-6">
+				<div class="step middle payments">
+					<h3>2. Payment and Shipping</h3>
+					<ul>
+						{{!-- <li>
+							<label class="container_radio">Credit Card<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment" checked>
+								<span class="checkmark"></span>
+							</label>
+						</li>
+						<li>
+							<label class="container_radio">Paypal<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment">
+								<span class="checkmark"></span>
+							</label>
+						</li> --}}
+						<li>
+							<label class="container_radio">Cash on delivery<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment" value="COD">
+								<span class="checkmark"></span>
+							</label>
+						</li>
+						<li>
+							<label class="container_radio">RazorPay<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment" value="RAZORPAY">
+								<span class="checkmark"></span>
+							</label>
+						</li>
+					</ul>
+					<div class="payment_info d-none d-sm-block">
+						<figure><img src="img/cards_all.svg" alt=""></figure>
+						<p>Fonza support only COD at the moment. New payment methods will be added soon.</p>
+					</div>
+
+					<h6 class="pb-2">Select Address</h6>
+
+
+					<ul>
+						{{#each data.address}}
+						<li>
+							<label class="container_radio" name="address" value="Hello">{{name}} {{address}} {{city}}
+								{{postalCode}} {{country}}<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="address"
+									value="{{name}} {{address}} {{city}} {{postalCode}} {{country}}">
+								<span class="checkmark"></span>
+							</label>
+						</li>
+						{{/each}}
+					</ul>
+
+				</div>
+				<!-- /step -->
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="step last">
+					<h3>3. Order Summary</h3>
 					<div class="box_general summary">
-                        
+
 						<ul>
-                            {{#each cart}}
-							<li class="clearfix"><em>{{quantity}}x {{cartProducts.title}}</em>  <span>${{cartProducts.price}}</span></li>
-                            {{/each}}
-							
+							{{#each cart}}
+							<li class="clearfix"><em>{{quantity}}x {{cartProducts.title}}</em>
+								<span>${{cartProducts.price}}</span>
+							</li>
+							{{/each}}
+
 						</ul>
 						<ul>
-                            
-							<li class="clearfix"><em><strong>Subtotal</strong></em>  <span>${{total}}</span></li>
-							
-                            
-							
+
+							<li class="clearfix"><em><strong>Subtotal</strong></em> <span>${{total}}</span></li>
+
+
+
 						</ul>
 						<div class="total clearfix" name="total">TOTAL <span>${{total}}</span></div>
 						<div class="form-group">
-								<label class="container_check">Register to the Newsletter.
-								  <input type="checkbox" checked>
-								  <span class="checkmark"></span>
-								</label>
-							</div>
-						
+							<label class="container_check">Register to the Newsletter.
+								<input type="checkbox" checked>
+								<span class="checkmark"></span>
+							</label>
+						</div>
+
 						<button type="submit" class="btn btn-success">Place order</button>
 					</div>
 					<!-- /box_general -->
-					</div>
-					<!-- /step -->
 				</div>
+				<!-- /step -->
 			</div>
-            
-            <input type="hidden" name="user" value="{{data._id}}"> 
-            </form>
-			<!-- /row -->
 		</div>
-    
-		<!-- /container -->
-	</main>
+
+		<input type="hidden" name="user" value="{{data._id}}">
+		</form>
+		<!-- /row -->
+	</div>
+
+	<!-- /container -->
+</main>
 
 
-    <script>
-		
-
-        $("#placeorder").submit((event) => {
-  event.preventDefault();
-
-  
-  swal({
-  title: "Order placed Successfully!",
-  text: "Redirecting...",
-  icon: "success",
-  buttons: false,
-});
-
-  setTimeout(hello,1000)
-
-  function hello (){
-
-   {
-        $.ajax({
-
-      url: "/User/place-order",
-      method: "post",
-      data: $("#placeorder").serialize(),
-      success: (response) => {
-
-        console.log(response)
-
-        
-        location.href='/User/orders'
-        
-      }
-
-    });
-  }
-
-  }
+<script>
 
 
-});
-    </script>
+	$("#placeorder").submit((event) => {
+		event.preventDefault();
+
+
+		swal({
+			title: "Order Processing",
+			text: "Redirecting...",
+			icon: "success",
+			buttons: false,
+		});
+
+		setTimeout(hello, 1000)
+
+		function hello() {
+
+			{
+				$.ajax({
+
+					url: "/User/place-order",
+					method: "post",
+					data: $("#placeorder").serialize(),
+					success: (response) => {
+
+						console.log("Ordereddddd")
+						console.log(response)
+						if (response.COD) {
+							location.href = '/User/orders'
+						} else {
+							razorpayPayment(response)
+							function razorpayPayment(order) {
+								var options = {
+									"key": "rzp_test_juPuE4kQiJY8mm", // Enter the Key ID generated from the Dashboard
+									"amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+									"currency": "INR",
+									"name": "Fonza Ecom",
+									"description": "Test Transaction",
+									"image": "https://example.com/your_logo",
+									"order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+									"handler": function (response) {
+										alert(response.razorpay_payment_id);
+										alert(response.razorpay_order_id);
+										alert(response.razorpay_signature)
+
+										verifyPayment(response, order)
+									},
+									"prefill": {
+										"name": "Gaurav Kumar",
+										"email": "gaurav.kumar@example.com",
+										"contact": "9999999999"
+									},
+									"notes": {
+										"address": "Razorpay Corporate Office"
+									},
+									"theme": {
+										"color": "#3399cc"
+									}
+								};
+								var rzp1 = new Razorpay(options);
+								rzp1.open()
+							}
+							function verifyPayment(payment, order) {
+								$.ajax({
+									url: '/verify-payment',
+									data: {
+										payment,
+										order
+									},
+									method: 'post'
+								})
+							}
+						}
+
+					}
+
+
+				});
+			}
+
+		}
+
+
+	});
+</script>

@@ -296,20 +296,33 @@ router.post('/place-order',async (req,res)=>{
     req.body.total=total
     req.body.user=ObjectID(req.body.user)
     
-    req.body.date=new Date().toDateString()
+    
+    req.body.date= new Date()
+
     
     
-    await orderHelpers.placeOrder(req.body).then((response)=>{
-      console.log(response)
-    })
-    console.log(req.body)
-    await cartHelpers.exitCart(req.session.user).then((response)=>{
-      console.log(response)
+    await orderHelpers.placeOrder(req.body).then((orderId)=>{
+      console.log(orderId)
+      if(req.body.payment=="COD"){
+        res.json({COD:true})
+      } else {
+        userHelpers.generateRazorpay(orderId,total).then((response)=>{
+
+          console.log(response)
+          res.json(response)
+          
+        })
+      }
+
     })
 
-    res.redirect('/User/orders')
+    
 
   }
+})
+
+router.post('/verify-payment',(req,res)=>{
+  console.log(req.body)
 })
 
 //Get Orders
@@ -317,7 +330,6 @@ router.post('/place-order',async (req,res)=>{
 router.get('/orders',async (req,res)=>{
   if(req.session.user){
 
-    
     userId=ObjectID(req.session.user._id) 
     
     await orderHelpers.getOrders(userId).then((orders)=>{
