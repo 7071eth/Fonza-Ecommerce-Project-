@@ -26,7 +26,7 @@ const adminVerify= (req,res,next)=>{
 /* GET home page. */
 router.get('/', async function(req, res, next) {
   if(req.session.users){
-    
+    console.log("Hellooo")
     res.redirect('/admin/dashboard')
   }
   else{
@@ -59,6 +59,7 @@ router.get('/dashboard',adminVerify,(req,res)=>{
 })
 
 router.post('/',(req,res,next)=>{
+  
   const { email, password } = req.body;
   console.log(req.body)
   if (userName === email && Pin === password) {
@@ -306,8 +307,7 @@ router.get('/invoice/:id',adminVerify,async (req,res)=>{
   console.log("HElooooooooooooooo")
   let id=req.params.id
   console.log(id)
-  
-  
+
   await orderHelpers.getinvoice(req.params.id).then((data)=>{
     console.log(data)
     console.log(data.cartProducts)

@@ -9,6 +9,17 @@ var instance = new Razorpay({
     key_id: 'rzp_test_juPuE4kQiJY8mm',
     key_secret: 'iDwhrTOvemDAsdEmdnDWjBam',
   });
+
+  const paypal = require("paypal-rest-sdk");
+  require("dotenv").config();
+
+  paypal.configure({
+    mode: "sandbox",
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
+  });
+
+  const CC = require("currency-converter-lt");
 // const { response } = require('../app')
 
 module.exports = {
@@ -148,7 +159,71 @@ module.exports = {
               });
 
         })
-    }
+    },
+
+    
+  generatePayPal: (orderId, totalPrice) => {
+    
+   
+    return new Promise((resolve, reject) => {
+      const create_payment_json = {
+        intent: "sale",
+        payer: { 
+          payment_method: "paypal",
+        },
+        redirect_urls: {
+          return_url: "http://localhost:3000/User/orders",
+          cancel_url: "http://localhost:3000/cancel",
+        },
+        transactions: [
+          {
+            item_list: {
+              items: [
+                {
+                  name: "Red Sox Hat",
+                  sku: "001",
+                  price: "0",
+                  currency: "USD",
+                  quantity: 1,
+                },
+              ],
+            },
+            amount: {
+              currency: "USD",
+              total: totalPrice,
+            },
+            description: "Hat for the best team ever",
+          },
+        ],
+      };
+
+      paypal.payment.create(create_payment_json, function (error, payment) {
+        if (error) {
+          throw error;
+        } else {
+          resolve(payment);
+        }
+      });
+    });
+  },
+
+  converter: (price) => {
+    return new Promise((resolve, reject) => {
+     
+        let currencyConverter = new CC({
+          from: "INR",
+          to: "USD",
+          amount: price,
+          isDecimalComma: false,
+        });
+      currencyConverter.convert().then((response) => {
+       resolve(response)
+      });
+      
+    });
+ },
+
+
 
     
 

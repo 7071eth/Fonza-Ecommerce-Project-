@@ -8,6 +8,8 @@ const cartHelpers= require('../helpers/cart-helpers');
 const orderHelpers=require('../helpers/order-helpers')
 const { ObjectID } = require('bson');
 const { response } = require('../app');
+
+const paypal = require("paypal-rest-sdk");
 // const { response } = require('../app');
 
 const client = require("twilio")(
@@ -17,6 +19,12 @@ const client = require("twilio")(
     lazyLoading: true,
   }
 );
+
+//Navbar middleware
+
+
+
+
 
 //Middleware to check the session
 
@@ -83,7 +91,12 @@ router.get('/account',(req,res)=>{
 })
 
 router.get('/login',(req,res)=>{
-  res.render('user/login')
+  if(req.session.user){
+    res.redirect('/')
+  } else{
+    res.render('user/login')
+  }
+  
 })
 
 
@@ -122,7 +135,6 @@ router.post('/add-to-cart',(req,res)=>{
 router.post('/login',(req,res)=>{
   userHelpers.doLogin(req.body).then((response)=>{
     if (response.status){
-     
       req.session.user=response.user
       req.session.loggedIn=true
       res.redirect('/')
@@ -289,7 +301,7 @@ router.post('/add-address',(req,res)=>{
 
 router.post('/place-order',async (req,res)=>{
   if(req.session.user){
-    req.body.status="pending"
+    req.body.status="Pending"
 
     let cart = await cartHelpers.viewCart(req.session.user._id)
     var total=0;
@@ -314,21 +326,40 @@ router.post('/place-order',async (req,res)=>{
       console.log(orderId)
       if(req.body.payment=="COD"){
         res.json({COD:true})
-      } else {
+      } else  if (req.body.payment=='RAZORPAY'){
         userHelpers.generateRazorpay(orderId,total).then((response)=>{
 
           console.log(response)
           res.json(response)
           
         })
+      } else {
+
+        userHelpers.converter(total).then((price) => {
+          let converted = parseInt(price)
+          
+             
+             userHelpers
+               .generatePayPal(orderId.toString(), converted)
+               .then((data) => {
+
+                console.log(data)
+                 res.json(data);
+
+               });
+           
+        })
+       
+      }
+    }); 
+
       }
 
     })
 
     
 
-  }
-})
+
 
 router.post('/verify-payment',(req,res)=>{
   console.log(req.body)

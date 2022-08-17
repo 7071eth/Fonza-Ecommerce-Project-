@@ -161,6 +161,13 @@
 								<span class="checkmark"></span>
 							</label>
 						</li>
+						<li>
+							<label class="container_radio">Paypal<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment" value="PAYPAL">
+								<span class="checkmark"></span>
+							</label>
+						</li>
 					</ul>
 					<div class="payment_info d-none d-sm-block">
 						<figure><img src="img/cards_all.svg" alt=""></figure>
@@ -307,6 +314,12 @@
 								})
 							}
 						} else {
+
+								 for (let i = 0; i < response.links.length; i++) {
+          						 if (response.links[i].rel === "approval_url") {
+            					 location.href = response.links[i].href;
+								}
+								}
 							
 						}
 
