@@ -489,6 +489,10 @@ router.get('/brands/:id',async (req,res)=>{
 
 })
 
+router.get('/products',(req,res)=>{
+  res.render('user/products')
+})
+
 
 
 module.exports = router;
