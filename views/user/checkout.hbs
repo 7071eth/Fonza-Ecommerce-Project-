@@ -10,128 +10,15 @@
 					<li>Page active</li>
 				</ul>
 			</div>
-			<h1>Sign In or Create an Account</h1>
+			<h1><strong></strong>Checkout</h1>
 
 		</div>
 		<!-- /page_header -->
-		<div class="row">
+		<div class="row d-flex justify-content-center">
+			
 			<div class="col-lg-4 col-md-6">
-				<div class="step first">
-					<h3>1. User Info and Billing address</h3>
-
-					<div class="tab-content checkout">
-						<div class="tab-pane fade show active" id="tab_1" role="tabpanel" aria-labelledby="tab_1">
-
-							<hr>
-							<form action="/User/add-address" method="post">
-								<div class="row no-gutters">
-									<div class=" form-group ">
-										<input type="text" class="form-control" placeholder="Name" name="name">
-									</div>
-
-								</div>
-								<!-- /row -->
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Full Address" name="address">
-								</div>
-								<div class="row no-gutters">
-									<div class=" form-group ">
-										<input type="text" class="form-control" placeholder="City" name="city">
-									</div>
-									<div class=" form-group ">
-										<input type="text" class="form-control" placeholder="Postal code"
-											name="postalCode">
-									</div>
-								</div>
-								<!-- /row -->
-								<div class="row no-gutters">
-									<div class=" form-group">
-										<div class="custom-select-form">
-											<select class="wide add_bottom_5 h-2" name="country" id="country">
-												<option value="" selected>Country</option>
-												<option value=”Andaman and Nicobar Islands”>Andaman and Nicobar Islands
-												</option>
-												<option value=”Andhra Pradesh”>Andhra Pradesh</option>
-
-												<option value=Daman and Diu>Daman and Diu</option>
-												<option value=Delhi>Delhi</option>
-												<option value=Goa>Goa</option>
-												<option value=Gujarat>Gujarat</option>
-												<option value=Haryana>Haryana</option>
-												<option value=Himachal Pradesh”>Himachal Pradesh</option>
-												<option value=Jammu and Kashmir”>Jammu and Kashmir</option>
-												<option value=Jharkhand>Jharkhand</option>
-												<option value=Karnataka>Karnataka</option>
-												<option value=Kerala>Kerala</option>
-
-											</select>
-										</div>
-									</div>
-								</div>
-								<!-- /row -->
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Telephone">
-								</div>
-								<hr>
-								<div class="form-group ">
-									<button type="submit" class="btn btn-success">Add new address</button>
-								</div>
-							</form>
-
-							<div id="other_addr_c" class="pt-2">
-								<div class="row no-gutters">
-									<div class="col-6 form-group pr-1">
-										<input type="text" class="form-control" placeholder="Name">
-									</div>
-									<div class="col-6 form-group pl-1">
-										<input type="text" class="form-control" placeholder="Last Name">
-									</div>
-								</div>
-								<!-- /row -->
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Full Address">
-								</div>
-								<div class="row no-gutters">
-									<div class="col-6 form-group pr-1">
-										<input type="text" class="form-control" placeholder="City">
-									</div>
-									<div class="col-6 form-group pl-1">
-										<input type="text" class="form-control" placeholder="Postal code">
-									</div>
-								</div>
-								<!-- /row -->
-								<div class="row no-gutters">
-									<div class="col-md-12 form-group">
-										<div class="custom-select-form">
-											<select class="wide add_bottom_15" name="country" id="country_2">
-												<option value="" selected>Country</option>
-												<option value="Europe">Europe</option>
-												<option value="United states">United states</option>
-												<option value="Asia">Asia</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<!-- /row -->
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Telephone">
-								</div>
-							</div>
-							<!-- /other_addr_c -->
-							<hr>
-						</div>
-						<!-- /tab_1 -->
-						<form id="placeorder">
-
-
-							<!-- /tab_2 -->
-					</div>
-				</div>
-				<!-- /step -->
-			</div>
-			<div class="col-lg-4 col-md-6">
-				<div class="step middle payments">
-					<h3>2. Payment and Shipping</h3>
+				<div class="step first payments">
+					<h3>1. Payment and Shipping</h3>
 					<ul>
 						{{!-- <li>
 							<label class="container_radio">Credit Card<a href="#0" class="info" data-toggle="modal"
@@ -174,7 +61,7 @@
 						<p>Fonza support only COD at the moment. New payment methods will be added soon.</p>
 					</div>
 
-					<h6 class="pb-2">Select Address</h6>
+					<h6 class="pb-2">Select Address/ <a href="/User/address">Add new address</a></h6>
 
 
 					<ul>
@@ -197,7 +84,7 @@
 
 			<div class="col-lg-4 col-md-6">
 				<div class="step last">
-					<h3>3. Order Summary</h3>
+					<h3>2. Order Summary</h3>
 					<div class="box_general summary">
 
 						<ul>
@@ -282,9 +169,7 @@
 									"image": "https://example.com/your_logo",
 									"order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
 									"handler": function (response) {
-										alert(response.razorpay_payment_id);
-										alert(response.razorpay_order_id);
-										alert(response.razorpay_signature)
+										
 
 										verifyPayment(response, order)
 									},
@@ -305,12 +190,21 @@
 							}
 							function verifyPayment(payment, order) {
 								$.ajax({
-									url: '/verify-payment',
+									url: '/User/verify-payment',
 									data: {
 										payment,
 										order
 									},
-									method: 'post'
+									method: 'post',
+									success : (response)=>{
+										swal({
+										title: "Order Placed",
+										text: "Redirecting...",
+										icon: "Payment success",
+										buttons: false,
+									});
+										location.href = '/User/orders'
+									}
 								})
 							}
 						} else {

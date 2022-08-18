@@ -1,6 +1,7 @@
 var db = require('../config/connection')
 var collection = require('../config/collections')
 const bcrypt = require('bcrypt')
+require("dotenv").config();
 
 
 const {
@@ -393,6 +394,29 @@ module.exports = {
         })
         
         
+    },
+    verifyPayment: (details) => {
+        return new Promise((resolve, reject) => {
+            console.log('userHelpers-verifyPayment');
+            const crypto = require("crypto");
+            let hmac = crypto.createHmac('sha256', process.env.KEY_SECRET)
+            console.log(details)
+            hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]'])
+            hmac = hmac.digest('hex')
+
+            console.log(hmac)
+            console.log(details['payment[razorpay_signature]'])
+            
+
+            if (hmac == details['payment[razorpay_signature]']) {
+                console.log("Payment success")
+                resolve()
+
+            } else {
+                reject()
+
+            }
+        })
     }
 
 

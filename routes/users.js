@@ -278,6 +278,14 @@ router.get('/checkout',async(req,res)=>{
   
 })
 
+//Address
+
+router.get('/address',(req,res)=>{
+  if(req.session.user){
+    res.render('user/address')
+  }
+})
+
 //Add address
 
 router.post('/add-address',(req,res)=>{
@@ -360,12 +368,22 @@ router.post('/place-order',async (req,res)=>{
 
     
 
+    // Payment verifications
 
+    router.post('/verify-payment', (req, res) => {
+      console.log('verifyPayment');
+      console.log(req.body);
+      orderHelpers.verifyPayment(req.body).then((response) => {
+        
+        console.log("AM Herrrrrrrrrrrrrrr")
+        res.json("Success")
 
-router.post('/verify-payment',(req,res)=>{
-  console.log(req.body)
-  
-})
+      }).catch((err) => {
+        console.log('Payment failed!!!');
+        console.log(err);
+        res.json({ status: false })
+      })
+    })
 
 //Get Orders
 
