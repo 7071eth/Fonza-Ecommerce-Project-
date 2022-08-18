@@ -10,6 +10,10 @@ const upload = require("../multer/multer");
 const { ObjectID } = require('bson');
 const { revenueTotal } = require('../helpers/order-helpers');
 
+const dayjs = require('dayjs')
+//import dayjs from 'dayjs' // ES 2015
+dayjs().format()
+
 //Middleware to check the session
 
 const adminVerify= (req,res,next)=>{
@@ -45,7 +49,22 @@ router.get('/dashboard',adminVerify,(req,res)=>{
 
         await orderHelpers.revenueTotal().then(async(total)=>{
 
-          res.render('admin/dashboard', { admin: true, user,data,orderStatus,total })
+         await orderHelpers.weeklyData().then(async (dailyData)=>{
+
+          await orderHelpers.yearlyData().then((yearlydata)=>{
+
+            console.log(yearlydata)
+            res.render('admin/dashboard', { admin: true, user,data,orderStatus,total, dailyData, yearlydata  })
+
+          })
+
+          
+          
+
+         })
+          
+          
+          
         })
         
       })
@@ -313,6 +332,74 @@ router.get('/invoice/:id',adminVerify,async (req,res)=>{
     console.log(data.cartProducts)
     res.render('admin/invoice',{admin: true,data})
   })
+  
+})
+
+//Sales report
+
+router.get('/sales-report/:id',adminVerify,async(req,res)=>{
+
+  if(req.params.id=='daily'){
+
+    await orderHelpers.dailyData().then(async(total)=>{
+      if(total.length==1){
+
+        
+        
+      } else{
+        
+      let Ftotal=0
+      let s=1
+      for(i=0;i<total.length;i++){
+        total[i].index=s
+        Ftotal=Ftotal+total[i].totalAmount
+        s++;
+      }
+      }
+      
+
+      var dateObj = new Date();
+      var month = dateObj.getUTCMonth() + 1; //months from 1-12
+      var day = dateObj.getUTCDate();
+      var year = dateObj.getUTCFullYear();
+
+      dt = year + "/" + month + "/" + day;                 
+      res.render('admin/sales-report',{admin:true,total,title:'weekly',dt})
+     
+    })
+  } else if(req.params.id=='monthly'){
+      await orderHelpers.yearlyData().then(async(total)=>{
+        var dateObj = new Date();
+      var month = dateObj.getUTCMonth() + 1; //months from 1-12
+      var day = dateObj.getUTCDate();
+      var year = dateObj.getUTCFullYear();
+
+      dt = year + "/" + month + "/" + day;     
+
+        let Ftotal=0
+      let s=1
+      for(i=0;i<total.length;i++){
+        total[i].index=s
+        Ftotal=Ftotal+total[i].totalAmount
+        s++;
+      }
+        res.render('admin/sales-report',{admin:true,total,Ftotal,title: 'Yearly',dt})
+      })
+  } else{
+
+    await orderHelpers.monthlyData().then(async(total)=>{
+      let Ftotal=0
+    let s=1
+    for(i=0;i<total.length;i++){
+      total[i].index=s
+      Ftotal=Ftotal+total[i].totalAmount
+      s++;
+    }
+      res.render('admin/sales-report',{admin:true,total,Ftotal,title: 'Yearly'})
+    })
+
+  }
+  
   
 })
 

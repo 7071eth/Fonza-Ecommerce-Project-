@@ -80,6 +80,21 @@ app.use(express.static(path.join( __dirname,'public/User/images/banners')));
 app.use(express.static(path.join( __dirname,'public/admin')));
 app.use(express.static(path.join( __dirname,'public/User/stylesheets')));
 
+app.use((req, res, next) => {
+  if (!req.users) {
+    res.header("cache-control", "private,no-cache,no-store,must revalidate");
+    res.header("Express", "-3");
+  }
+  next();
+});
+
+app.use((req, res, next) => {
+  if (!req.user) {
+    res.header("cache-control", "private,no-cache,no-store,must revalidate");
+    res.header("Express", "-3");
+  }
+  next();
+});
 
 app.use(session({secret:"key",
 resave:false,

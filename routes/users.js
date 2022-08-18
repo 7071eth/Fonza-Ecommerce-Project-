@@ -330,6 +330,7 @@ router.post('/place-order',async (req,res)=>{
         userHelpers.generateRazorpay(orderId,total).then((response)=>{
 
           console.log(response)
+          response.RAZORPAY=true
           res.json(response)
           
         })
@@ -363,6 +364,7 @@ router.post('/place-order',async (req,res)=>{
 
 router.post('/verify-payment',(req,res)=>{
   console.log(req.body)
+  
 })
 
 //Get Orders
