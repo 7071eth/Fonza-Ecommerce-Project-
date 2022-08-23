@@ -144,7 +144,7 @@ module.exports = {
         return new Promise((resolve,reject)=>{
             
             var options = {
-                amount: parseInt(total),  // amount in the smallest currency unit
+                amount: parseInt(total*100),  // amount in the smallest currency unit
                 currency: "INR",
                 receipt: ""+orderId
               };
@@ -223,7 +223,33 @@ module.exports = {
     });
  },
 
+couponAdd: (data)=>{
+  return new Promise((resolve,reject)=>{
+    console.log("About to add coupon")
+    console.log(data._id)
+    console.log(data)
+    data._id=ObjectID(data._id)
+    db.get().collection(collection.USER_COLLECTION).updateOne({_id : data._id},{$push : {coupons : data.coupon}},{upsert: true}).then((response)=>{
+      console.log(response)
+      resolve(response)
+    })
+  })
+  
+},
 
+checkCoupon: (data)=>{
+  console.log(data)
+  return new Promise((resolve,reject)=>{
+    db.get().collection(collection.USER_COLLECTION).findOne({$and :[{_id: data._id},{ coupons :  data.coupon }]}).then((response)=>{
+      console.log(response)
+      if(response==null){
+        resolve(true)
+      }else {
+        resolve(false)
+      }
+    })
+  })
+}
 
     
 

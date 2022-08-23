@@ -139,6 +139,24 @@ module.exports = {
         })
     },
 
+    insertCoupon : (data)=>{
+        return new Promise(async (resolve,reject)=>{
+            await db.get().collection(collection.CART_COLLECTION).updateMany({user : data._id},{$set : {coupon:data.coupon}}).then((response)=>{
+                console.log(response)
+            })
+        })
+    },
+
+    removeCoupon : (data)=>{
+        console.log(data)
+        return new Promise (async (resolve,reject)=>{
+            await db.get().collection(collection.CART_COLLECTION).updateMany({user : data._id},{$set : {coupon:""}}).then((response)=>{
+                console.log(response)
+                resolve(response)
+            })
+        })
+    }
+
     
 
 }

@@ -6,6 +6,7 @@ let Pin = "12345"
 const userHelpers = require('../helpers/user-helpers')
 const productHelpers= require('../helpers/product-helpers')
 const orderHelpers=require('../helpers/order-helpers')
+const couponHelpers=require('../helpers/coupon-helpers')
 const upload = require("../multer/multer");
 const { ObjectID } = require('bson');
 const { revenueTotal } = require('../helpers/order-helpers');
@@ -401,6 +402,35 @@ router.get('/sales-report/:id',adminVerify,async(req,res)=>{
   }
   
   
+})
+
+//Coupons
+
+router.get('/coupons',(req,res)=>{
+  res.render('admin/coupons',{admin : true})
+})
+
+//Edit coupons
+
+router.get('/edit-coupon',(req,res)=>{
+  res.render('admin/edit-coupons',{admin : true})
+})
+
+//Add coupon
+
+router.get('/add-coupon',async (req,res)=>{
+
+    res.render('admin/add-coupon',{admin : true})
+
+   
+  
+})
+
+router.post('/add-coupons',async (req,res)=>{
+  console.log(req.body)
+
+  await couponHelpers.addCoupon(req.body)
+
 })
 
 module.exports = router;

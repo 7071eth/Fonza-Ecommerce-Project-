@@ -268,9 +268,9 @@ module.exports={
             
 
         })
-    }
+    },
 
-
+    
 
     
 
