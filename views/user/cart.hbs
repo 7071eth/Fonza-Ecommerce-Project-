@@ -102,6 +102,7 @@
 						<div>
 							<span>Total</span>
 							<span>$</span>
+							<li id="tricked" hidden>{{cart.cName}}</li>
 							<li id="total">
 								{{total}}
 							</li>
@@ -120,14 +121,29 @@
 
 
 
+
+
 <script>
+	if({{cart.cStatus}}){
+		
+		
+		document.getElementById('total').innerHTML={{cart.newPrice}}
+		zname = document.getElementById('tricked').innerHTML
+		document.getElementById('couponName').value = zname
+		document.getElementById('couponName').disabled = true
+		document.getElementById('cButton').hidden=true
+		document.getElementById('rButton').hidden=false
+		document.getElementById('applied').innerHTML='Coupon Applied !'
+
+	}
 	window.addEventListener("load", myInitFunction)
 </script>
+
 <script>
 	
 	function apply2() {
 
-
+		document.getElementById('applied').innerHTML=''
 		document.getElementById('couponAlert').innerHTML = ''
 
 		let coupon = document.getElementById('couponName').value
@@ -202,7 +218,7 @@
 
 
 		document.getElementById('couponAlert').innerHTML = ''
-		document.getElementById('applied').innerHTML='Coupon Applied !'
+		document.getElementById('applied').innerHTML=''
 
 		let coupon = document.getElementById('couponName').value
 		console.log(coupon)
@@ -233,3 +249,4 @@
 	}
 
 </script>
+

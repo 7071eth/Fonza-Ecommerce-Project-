@@ -64,6 +64,14 @@ module.exports = {
                 
             })
         })
+    },
+
+    findCoupon: (coupon)=>{
+        return new Promise (async (resolve,reject)=>{
+            await db.get().collection(collection.COUPON_COLLECTION).findOne({_id: coupon}).then((response)=>{
+                resolve(response)
+            })
+        })
     }
 
 

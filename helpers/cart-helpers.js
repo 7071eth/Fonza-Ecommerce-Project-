@@ -140,9 +140,12 @@ module.exports = {
     },
 
     insertCoupon : (data)=>{
+        console.log(data)
+        data._id=ObjectID(data._id)
         return new Promise(async (resolve,reject)=>{
             await db.get().collection(collection.CART_COLLECTION).updateMany({user : data._id},{$set : {coupon:data.coupon}}).then((response)=>{
                 console.log(response)
+                resolve(response)
             })
         })
     },
@@ -150,7 +153,7 @@ module.exports = {
     removeCoupon : (data)=>{
         console.log(data)
         return new Promise (async (resolve,reject)=>{
-            await db.get().collection(collection.CART_COLLECTION).updateMany({user : data._id},{$set : {coupon:""}}).then((response)=>{
+            await db.get().collection(collection.CART_COLLECTION).updateMany({user : data._id},{$set : {coupon: null}}).then((response)=>{
                 console.log(response)
                 resolve(response)
             })

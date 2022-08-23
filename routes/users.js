@@ -28,6 +28,19 @@ const client = require("twilio")(
 
 //Navbar middleware
 
+router.use((req,res,next)=>{
+  req.session.user={
+    _id: '62e7c5f1200fba3c81dd2324',
+    username: 'Kelvin George',
+    email: 'kelvin@gmail.com',
+    password: '$2b$10$vCFDpjvIHIqVUcIJu01s0uP65l6blzKBysb9fQ1AYvnQGR6tmj0Jy',
+    number: '1234124232314',
+    agree: 'on',
+    status: true,
+    coupons: []
+  }
+  next ()
+})
 
 
 
@@ -234,8 +247,9 @@ router.get('/account', (req, res) => {
 
 router.get('/cart', async (req, res) => {
   if (req.session.user) {
-
+    let userD=req.session.user._id
     let cart = await cartHelpers.viewCart(userD)
+
     var total = 0;
     for (i = 0; i < cart.length; i++) {
 
@@ -244,6 +258,33 @@ router.get('/cart', async (req, res) => {
 
 
     }
+    cart.total=total
+
+    if(cart[0].coupon!=null){
+      
+      cart.cStatus=true
+      findId=cart[0].coupon
+     let data = await couponHelpers.findCoupon(findId)
+     
+      cart.cName=data.name
+      data.percent=parseInt(data.percent)
+      data.disAmount=parseInt(data.disAmount)
+      console.log(data)
+      
+     disPrice = (data.percent * cart.total) / 100
+     if(disPrice>data.disAmount){
+      newPrice =cart.total-data.disAmount
+      cart.newPrice=newPrice
+     }else{
+      newPrice=cart.total-disPrice
+      cart.newPrice=newPrice
+     }
+
+     console.log(cart)
+     
+
+    }
+    
 
     console.log(cart)
     console.log(total)
@@ -279,7 +320,7 @@ router.get('/remove-product/:id', async (req, res) => {
 //Checkout 
 
 router.get('/checkout', async (req, res) => {
-
+  
   if (req.session.user) {
 
     let cart = await cartHelpers.viewCart(req.session.user._id)
@@ -569,7 +610,7 @@ router.post('/apply-coupon', async (req, res) => {
               Cdata._id = req.session.user._id
               Cdata.coupon = response._id
 
-             
+              await cartHelpers.insertCoupon(Cdata)
               console.log("Coupon added")
               let cart = await cartHelpers.viewCart(req.session.user._id)
               var total = 0;
