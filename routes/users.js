@@ -275,6 +275,7 @@ router.get('/cart', async (req, res) => {
      if(disPrice>data.disAmount){
       newPrice =cart.total-data.disAmount
       cart.newPrice=newPrice
+      
      }else{
       newPrice=cart.total-disPrice
       cart.newPrice=newPrice
@@ -323,7 +324,9 @@ router.get('/checkout', async (req, res) => {
   
   if (req.session.user) {
 
-    let cart = await cartHelpers.viewCart(req.session.user._id)
+    let userD=req.session.user._id
+    let cart = await cartHelpers.viewCart(userD)
+
     var total = 0;
     for (i = 0; i < cart.length; i++) {
 
@@ -332,11 +335,45 @@ router.get('/checkout', async (req, res) => {
 
 
     }
+    cart.total=total
+
+    if(cart[0].coupon!=null){
+      
+      cart.cStatus=true
+      findId=cart[0].coupon
+     let data = await couponHelpers.findCoupon(findId)
+     
+      cart.cName=data.name
+      data.percent=parseInt(data.percent)
+      data.disAmount=parseInt(data.disAmount)
+      console.log(data)
+      
+     disPrice = (data.percent * cart.total) / 100
+     if(disPrice>data.disAmount){
+      newPrice =cart.total-data.disAmount
+      cart.newPrice=newPrice
+      cart.disAmt=data.disAmount
+     }else{
+      newPrice=cart.total-disPrice
+      cart.newPrice=newPrice
+      cart.disAmt=disPrice
+     }
+
+     console.log(cart)
+     
+
+    }
+    
+
+    console.log(cart)
+    console.log(total)
+
     console.log("checkout ongoing");
     console.log(cart)
     console.log(req.session.user)
     let data = req.session.user
     res.render('user/checkout', {
+      user: true,
       data,
       cart,
       total

@@ -97,12 +97,15 @@
 						</ul>
 						<ul>
 
-							<li class="clearfix"><em><strong>Subtotal</strong></em> <span>${{total}}</span></li>
+							<li class="clearfix"><em><strong>Subtotal</strong></em> <span id="price">${{total}}</span></li>
+							<li class="clearfix"><em><strong id="disTitle"></strong></em><span id="discount"></span></li>
+							
 
 
 
 						</ul>
-						<div class="total clearfix" name="total">TOTAL <span>${{total}}</span></div>
+						<div class="total clearfix"  name="total">TOTAL <span id="oldPrice">${{total}}</span></div>
+						<div class="total clearfix"  name="total"> <span id="newPrice"></span></div>
 						<div class="form-group">
 							<label class="container_check">Register to the Newsletter.
 								<input type="checkbox" checked>
@@ -129,6 +132,14 @@
 
 <script>
 
+	if({{cart.cStatus}}){
+		
+		document.getElementById('discount').innerHTML="-$"+{{cart.disAmt}}
+		document.getElementById('disTitle').innerHTML="Discount"
+		document.getElementById('newPrice').innerHTML="$"+{{cart.newPrice}}
+		document.getElementById('oldPrice').style='text-decoration: Line-Through'
+		document.getElementById('newPrice').style='color: green'
+	}
 
 	$("#placeorder").submit((event) => {
 		event.preventDefault();
