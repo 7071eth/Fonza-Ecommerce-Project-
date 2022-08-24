@@ -160,7 +160,7 @@
 						if (response.COD) {
 							location.href = '/User/orders'
 						} else if(response.RAZORPAY) {
-							alert("razorpay")
+							
 							razorpayPayment(response)
 							function razorpayPayment(order) {
 								var options = {

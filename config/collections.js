@@ -5,5 +5,6 @@ module.exports={
     SUBCATEGORY_COLLECTION: 'subcategory',
     CART_COLLECTION: 'cart',
     ORDER_COLLECTION: 'orders',
-    COUPON_COLLECTION: 'coupon'
+    COUPON_COLLECTION: 'coupon',
+    OFFER_COLLECTION:'offer'
 }

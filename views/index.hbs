@@ -74,19 +74,21 @@
 				<h1></h1>
 			<div class="row small-gutters">
 				{{#each category}}
+					{{#if products.offer}}
+					
 				<div class="col-6 col-md-4 col-xl-3">
 						
 					<div class="grid_item ">
 						
 						
 						<figure >
-							{{!-- <span class="ribbon off">-30%</span> --}}
+							<span class="ribbon off">-{{products.cent}}%</span>
 							<a href="/User/productDetails/{{products._id}}">
 								
 								<img class="img-fluid " src="/{{products.image.[0]}}" style="width: 100% ; height: 100%;" data-src="img/products/shoes/1.jpg" alt="">
 								
 							</a>
-							{{!-- <div data-countdown="2022/09/15" class="countdown"></div> --}}
+							<div data-countdown="{{products.expire}}" class="countdown"></div>
 						</figure>
 						<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
 						<a href="product-detail-1.html">
@@ -94,7 +96,7 @@
 						</a>
 						<div class="price_box">
 							<span class="new_price">₹{{products.price}}</span>
-							<span class="old_price">₹60.00</span>
+							<span class="old_price">₹{{products.ogPrice}}</span>
 						</div>
 						<ul>
 							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
@@ -108,6 +110,42 @@
 					
 					<!-- /grid_item -->
 				</div>
+				{{else}}
+				<div class="col-6 col-md-4 col-xl-3">
+						
+					<div class="grid_item ">
+						
+						
+						<figure >
+							
+							<a href="/User/productDetails/{{products._id}}">
+								
+								<img class="img-fluid " src="/{{products.image.[0]}}" style="width: 100% ; height: 100%;" data-src="img/products/shoes/1.jpg" alt="">
+								
+							</a>
+							
+						</figure>
+						<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
+						<a href="product-detail-1.html">
+							<h3>{{Datas.subcategory}} {{products.title}}</h3>
+						</a>
+						<div class="price_box">
+							<span class="new_price">₹{{products.price}}</span>
+							
+						</div>
+						<ul>
+							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
+							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
+							<li><a href="#0" onclick="addToCart(event,'{{products._id}}','{{userDetails._id}}','1','1')" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					<!-- /grid_item -->
+				</div>
+				{{/if}}
 				{{/each}}
 				<!-- /col -->
 			</div>

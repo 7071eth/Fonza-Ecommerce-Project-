@@ -66,7 +66,8 @@ router.get('/', async function (req, res, next) {
   let category = await productHelpers.viewBrandProducts();
   let brands = await productHelpers.viewBrands();
   console.log(brands)
-
+  console.log(category)
+  
 
 
   if (req.session.user) {
@@ -410,7 +411,7 @@ router.get('/address', (req, res) => {
 router.post('/add-address', (req, res) => {
     console.log(req.body)
   if (req.session.user) {
-    req.session.user.address=[]
+    
     req.session.user.address.unshift(req.body)
     console.log(req.session.user)
 
@@ -430,7 +431,9 @@ router.post('/place-order', async (req, res) => {
   if (req.session.user) {
     req.body.status = "Pending"
 
-    let cart = await cartHelpers.viewCart(req.session.user._id)
+    let userD=req.session.user._id
+    let cart = await cartHelpers.viewCart(userD)
+
     var total = 0;
     for (i = 0; i < cart.length; i++) {
 
@@ -439,6 +442,41 @@ router.post('/place-order', async (req, res) => {
 
 
     }
+    cart.total=total
+    console.log(cart)
+    if(cart.length!=0){
+
+    
+    if(cart[0].coupon!=null){
+      
+      cart.cStatus=true
+      findId=cart[0].coupon
+     let data = await couponHelpers.findCoupon(findId)
+     
+      cart.cName=data.name
+      data.percent=parseInt(data.percent)
+      data.disAmount=parseInt(data.disAmount)
+      console.log(data)
+      
+     disPrice = (data.percent * cart.total) / 100
+     if(disPrice>data.disAmount){
+      newPrice =cart.total-data.disAmount
+      cart.newPrice=newPrice
+      cart.disAmt=data.disAmount
+      total=newPrice
+     }else{
+      newPrice=cart.total-disPrice
+      cart.newPrice=newPrice
+      cart.disAmt=disPrice
+      total=newPrice
+     }
+
+     console.log(cart)
+     
+
+    }
+  }
+
 
     req.body.cart = cart
     req.body.total = total

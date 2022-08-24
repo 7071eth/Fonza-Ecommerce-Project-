@@ -270,6 +270,28 @@ module.exports={
         })
     },
 
+    addCatOffer : (brand,percent,end)=>{
+
+        return new Promise(async (resolve,reject)=>{
+
+            db.get().collection(collection.PRODUCT_COLLECTION).find({mainCategory : ObjectID(brand) }).toArray().then(async (response)=>{
+                console.log(response)
+                for(i=0;i<response.length;i++){
+                    response[i].price=parseInt(response[i].price)
+                    let ogPrice =response[i].price
+                    let newPrice=ogPrice-((ogPrice*percent)/100)
+                    
+                    console.log(end)
+                    
+
+                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[i]._id},{$set : {price : newPrice , oldPrice : ogPrice,offer: true, cent : percent, expire: end} },{upsert:true}).then((response)=>{
+                    console.log(response)
+                   })
+                }
+            })
+        })
+    }
+
     
 
     
