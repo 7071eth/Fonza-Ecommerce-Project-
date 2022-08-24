@@ -28,19 +28,19 @@ const client = require("twilio")(
 
 //Navbar middleware
 
-router.use((req,res,next)=>{
-  req.session.user={
-    _id: '62e7c5f1200fba3c81dd2324',
-    username: 'Kelvin George',
-    email: 'kelvin@gmail.com',
-    password: '$2b$10$vCFDpjvIHIqVUcIJu01s0uP65l6blzKBysb9fQ1AYvnQGR6tmj0Jy',
-    number: '1234124232314',
-    agree: 'on',
-    status: true,
-    coupons: []
-  }
-  next ()
-})
+// router.use((req,res,next)=>{
+//   req.session.user={
+//     _id: '62e7c5f1200fba3c81dd2324',
+//     username: 'Kelvin George',
+//     email: 'kelvin@gmail.com',
+//     password: '$2b$10$vCFDpjvIHIqVUcIJu01s0uP65l6blzKBysb9fQ1AYvnQGR6tmj0Jy',
+//     number: '1234124232314',
+//     agree: 'on',
+//     status: true,
+//     coupons: []
+//   }
+//   next ()
+// })
 
 
 
@@ -260,6 +260,15 @@ router.get('/cart', async (req, res) => {
     }
     cart.total=total
 
+    if(cart.length==0){
+    
+      cart.empty=true
+      
+    }
+
+    else
+
+    {
     if(cart[0].coupon!=null){
       
       cart.cStatus=true
@@ -285,6 +294,7 @@ router.get('/cart', async (req, res) => {
      
 
     }
+  } 
     
 
     console.log(cart)
@@ -292,7 +302,7 @@ router.get('/cart', async (req, res) => {
     res.render('user/cart', {
       user: true,
       cart,
-      total
+      total,
     })
   } else {
     res.render('user/login')
@@ -336,7 +346,10 @@ router.get('/checkout', async (req, res) => {
 
     }
     cart.total=total
+    console.log(cart)
+    if(cart.length!=0){
 
+    
     if(cart[0].coupon!=null){
       
       cart.cStatus=true
@@ -363,7 +376,7 @@ router.get('/checkout', async (req, res) => {
      
 
     }
-    
+  }
 
     console.log(cart)
     console.log(total)
@@ -395,9 +408,9 @@ router.get('/address', (req, res) => {
 //Add address
 
 router.post('/add-address', (req, res) => {
-
+    console.log(req.body)
   if (req.session.user) {
-
+    req.session.user.address=[]
     req.session.user.address.unshift(req.body)
     console.log(req.session.user)
 
@@ -503,8 +516,11 @@ router.get('/orders', async (req, res) => {
     userId = ObjectID(req.session.user._id)
 
     await orderHelpers.getOrders(userId).then((orders) => {
-
+      console.log(orders)
       orders = orders.reverse()
+      for(i=0;i<orders.length;i++){
+        orders[i].date=orders[i].date.toDateString()
+      }
 
       res.render('user/orders', {
         orders,

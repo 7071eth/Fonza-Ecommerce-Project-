@@ -303,6 +303,9 @@ router.get('/orders',adminVerify,async (req,res)=>{
   await orderHelpers.getAllOrders().then((orders)=>{
       
     orders=orders.reverse()
+    for(i=0;i<orders.length;i++){
+      orders[i].date=orders[i].date.toDateString()
+    }
     res.render('admin/orders',{admin : true, orders })
     
   })
@@ -420,6 +423,7 @@ router.get('/edit-coupon',(req,res)=>{
 
 router.get('/add-coupon',async (req,res)=>{
 
+
     res.render('admin/add-coupon',{admin : true})
 
    
@@ -430,6 +434,8 @@ router.post('/add-coupons',async (req,res)=>{
   console.log(req.body)
 
   await couponHelpers.addCoupon(req.body)
+
+  res.redirect('/admin/coupons')
 
 })
 

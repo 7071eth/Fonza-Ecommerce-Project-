@@ -11,7 +11,9 @@
 			<h1>Cart page</h1>
 		</div>
 		<!-- /page_header -->
-		<table class="table table-striped cart-list">
+		<h3 id="emptyAlert"></h3>
+		<a href="/" class="btn btn-success" id="emptyButton" hidden="false"></a>
+		<table class="table table-striped cart-list" id="tablecart">
 			<thead>
 				<tr>
 					<th id="hello">
@@ -124,6 +126,12 @@
 
 
 <script>
+	if({{cart.empty}})
+	{
+		
+		document.getElementById('cButton').hidden=true
+		document.getElementById('couponName').hidden=true
+	}
 	if({{cart.cStatus}}){
 		
 		
@@ -136,6 +144,8 @@
 		document.getElementById('applied').innerHTML='Coupon Applied !'
 
 	}
+
+	
 	window.addEventListener("load", myInitFunction)
 </script>
 

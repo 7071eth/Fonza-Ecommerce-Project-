@@ -111,12 +111,14 @@ module.exports = {
     },
 
     addAddress: (data)=>{
+      console.log(data)
         data._id=ObjectID(data._id)
         return new Promise(async (resolve,reject)=>{
             
             console.log(data)
             await db.get().collection(collection.USER_COLLECTION).update({_id : data._id},{$push: {address : data.address[0]}}).then((response)=>{
                 console.log(response)
+                resolve(response)
             })
         })
     },

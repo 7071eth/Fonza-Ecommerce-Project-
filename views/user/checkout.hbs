@@ -132,15 +132,6 @@
 
 <script>
 
-	if({{cart.cStatus}}){
-		
-		document.getElementById('discount').innerHTML="-$"+{{cart.disAmt}}
-		document.getElementById('disTitle').innerHTML="Discount"
-		document.getElementById('newPrice').innerHTML="$"+{{cart.newPrice}}
-		document.getElementById('oldPrice').style='text-decoration: Line-Through'
-		document.getElementById('newPrice').style='color: green'
-	}
-
 	$("#placeorder").submit((event) => {
 		event.preventDefault();
 
@@ -169,6 +160,7 @@
 						if (response.COD) {
 							location.href = '/User/orders'
 						} else if(response.RAZORPAY) {
+							alert("razorpay")
 							razorpayPayment(response)
 							function razorpayPayment(order) {
 								var options = {
@@ -238,4 +230,15 @@
 
 
 	});
+</script>
+
+<script>
+	if({{cart.cStatus}}){
+		
+		document.getElementById('discount').innerHTML="-$"+{{cart.disAmt}}
+		document.getElementById('disTitle').innerHTML="Discount"
+		document.getElementById('newPrice').innerHTML="$"+{{cart.newPrice}}
+		document.getElementById('oldPrice').style='text-decoration: Line-Through'
+		document.getElementById('newPrice').style='color: green'
+	}
 </script>

@@ -4,6 +4,7 @@ function addToCart(event,prodId,userId,count,quantity) {
     
     console.log(event,prodId,userId,count,quantity)
     console.log("Hello")
+    
     $.ajax({
       url: "/User/add-to-cart",
       data: {
@@ -24,6 +25,7 @@ function addToCart(event,prodId,userId,count,quantity) {
         console.log(cP)
         console.log(response)
         if(response.c===1){
+          
           document.getElementById(response.prod).value=q+1
           document.getElementById(response.title).innerHTML=(q+1)*response.price
           document.getElementById('total').innerHTML=Number(document.getElementById('total').innerHTML)+response.price

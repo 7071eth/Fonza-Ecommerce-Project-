@@ -17,13 +17,13 @@ module.exports = {
         console.log(data)
         data.start= new Date(data.start)
         data.end= new Date(data.end)
-        data.category = ObjectID(data.category)
-        data.product = ObjectID(data.product)
+        
 
         return new Promise(async (resolve, reject) => {
 
             await db.get().collection(collection.COUPON_COLLECTION).insertOne(data).then((response) => {
                 console.log(response)
+                resolve(response)
             })
 
 
