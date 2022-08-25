@@ -494,8 +494,12 @@ router.get('/add-coupon', async (req, res) => {
     admin: true
   })
 
+})
 
+//Remove coupon
 
+router.post('/remove-coupon',(req,res)=>{
+  console.log("Success")
 })
 
 router.post('/add-coupons', async (req, res) => {
@@ -536,25 +540,50 @@ router.post('/add-offers', async (req, res) => {
   await offerHelpers.addOffer(req.body)
 
   if (req.body.brand) {
-
-    for (i = 0; i < req.body.brands.length; i++) {
-      brnd = req.body.brands[i]
-      offerName = req.body.name
-      percent = req.body.percent
-      expire = req.body.end
+    
+    if(Array.isArray(req.body.brands)){
+      
+      for (i = 0; i < req.body.brands.length; i++) {
+        brnd = req.body.brands[i]
+        offerName = req.body.name
+        percent = req.body.percent
+        expire = req.body.end
+        console.log(expire)
+        expire=new Date(expire)
+        let  year = expire.getFullYear();
+        // 👇️ getMonth returns integer from 0(January) to 11(December)
+        let  month = expire.getMonth() + 1;
+        let day = expire.getDate();
+  
+      expire = [year, month, day].join('/');
+  
       console.log(expire)
-      expire=new Date(expire)
-      let  year = expire.getFullYear();
-      // 👇️ getMonth returns integer from 0(January) to 11(December)
-      let  month = expire.getMonth() + 1;
-      let day = expire.getDate();
+        console.log(brnd,percent,expire)
+        productHelpers.addCatOffer(brnd, percent, expire)
+      }
 
-    expire = [year, month, day].join('/');
-
-    console.log(expire)
-
-      productHelpers.addCatOffer(brnd, percent, expire)
+    } else {
+      
+        brnd = req.body.brands
+        offerName = req.body.name
+        percent = req.body.percent
+        expire = req.body.end
+        console.log(expire)
+        expire=new Date(expire)
+        let  year = expire.getFullYear();
+        // 👇️ getMonth returns integer from 0(January) to 11(December)
+        let  month = expire.getMonth() + 1;
+        let day = expire.getDate();
+  
+      expire = [year, month, day].join('/');
+  
+      console.log(expire)
+        console.log(brnd,percent,expire)
+        productHelpers.addCatOffer(brnd, percent, expire)
+      
     }
+
+    
   }
 
   res.redirect('/admin/offers')

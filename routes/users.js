@@ -8,6 +8,7 @@ const userHelpers = require('../helpers/user-helpers')
 require("dotenv").config();
 const cartHelpers = require('../helpers/cart-helpers');
 const orderHelpers = require('../helpers/order-helpers')
+const referralCodeGenerator = require("referral-code-generator");
 const {
   ObjectID
 } = require('bson');
@@ -67,7 +68,7 @@ router.get('/', async function (req, res, next) {
   let brands = await productHelpers.viewBrands();
   console.log(brands)
   console.log(category)
-  
+
 
 
   if (req.session.user) {
@@ -128,6 +129,9 @@ router.get('/login', (req, res) => {
 
 
 router.post('/account', (req, res) => {
+  let rCode = referralCodeGenerator.alphaNumeric("uppercase", 2, 2);
+  req.body.refferalCode = rCode;
+  console.log(rCode)
   userHelpers.doSignup(req.body).then((response) => {
     if (response.status) {
       req.session.signErr = true
@@ -595,6 +599,7 @@ router.get('/profile', (req, res) => {
   })
 })
 
+
 // Edit profile
 
 router.get('/edit-profile', async (req, res) => {
@@ -631,6 +636,7 @@ router.post('/change-profile', async (req, res) => {
     res.redirect('/User/login')
   }
 })
+
 
 //Invoice
 
@@ -670,6 +676,7 @@ router.get('/brands/:id', async (req, res) => {
 router.get('/products', (req, res) => {
   res.render('user/products')
 })
+
 
 //Apply coupon
 
@@ -797,5 +804,8 @@ router.post('/remove-coupon',async (req,res)=>{
     })
 
 })
+
+
+//
 
 module.exports = router;

@@ -83,6 +83,8 @@ module.exports={
             console.log(arr)
             productData.mainCategory=arr
             console.log(productData)
+            productData.ogPrice=productData.price
+
             
             db.get().collection(collection.PRODUCT_COLLECTION).insertOne(productData).then((data) => {
                 resolve(data.insertedId)
@@ -277,14 +279,14 @@ module.exports={
             db.get().collection(collection.PRODUCT_COLLECTION).find({mainCategory : ObjectID(brand) }).toArray().then(async (response)=>{
                 console.log(response)
                 for(i=0;i<response.length;i++){
-                    response[i].price=parseInt(response[i].price)
-                    let ogPrice =response[i].price
-                    let newPrice=ogPrice-((ogPrice*percent)/100)
-                    
+                    response[i].ogPrice=parseInt(response[i].ogPrice)
+                    let oldPrice =response[i].ogPrice
+                    let newPrice=oldPrice-((oldPrice*percent)/100)
+                    newPrice=newPrice.toString()
                     console.log(end)
                     
 
-                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[i]._id},{$set : {price : newPrice , oldPrice : ogPrice,offer: true, cent : percent, expire: end} },{upsert:true}).then((response)=>{
+                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[i]._id},{$set : {price : newPrice , oldPrice : oldPrice,offer: true, cent : percent, expire: end} },{upsert:true}).then((response)=>{
                     console.log(response)
                    })
                 }
