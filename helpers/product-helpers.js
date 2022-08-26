@@ -292,6 +292,29 @@ module.exports={
                 }
             })
         })
+    },
+
+    addProOffer : (prod,percent,end)=>{
+
+        return new Promise(async (resolve,reject)=>{
+
+            db.get().collection(collection.PRODUCT_COLLECTION).find({_id : ObjectID(prod) }).toArray().then(async (response)=>{
+                console.log(response)
+                console.log("heerererer")
+                
+                response[0].ogPrice=parseInt(response[0].ogPrice)
+                let oldPrice =response[0].ogPrice
+                let newPrice=oldPrice-((oldPrice*percent)/100)
+                newPrice=newPrice.toString()
+                console.log(end)
+
+
+                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[0]._id},{$set : {price : newPrice , oldPrice : oldPrice,offer: true, cent : percent, expire: end} },{upsert:true}).then((response)=>{
+                    console.log(response)
+                   })
+                
+            })
+        })
     }
 
     

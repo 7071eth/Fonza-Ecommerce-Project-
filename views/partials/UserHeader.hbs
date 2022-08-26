@@ -158,21 +158,12 @@
 						<ul class="top_tools">
 							<li>
 								<div class="dropdown dropdown-cart">
-									<a href="cart.html" class="cart_bt"><strong>2</strong></a>
+									<a href="cart.html" class="cart_bt"><strong id="tQuantity">{{tQuantity}}</strong></a>
 									<div class="dropdown-menu">
-										<ul>
-											{{#each cart}}
-											<li>
-												<a href="product-detail-1.html">
-													<figure><img src="/{{cartProducts.image.[0]}}" data-src="/{{cartProducts.image.[0]}}" style="object-fit: contain ;" alt="" width="50" height="50" class="lazy"></figure>
-													<strong><span>{{cartProducts.title}}</span>${{cartProducts.price}}</strong>
-												</a>
-												<a href="#0" class="action"><i class="ti-trash"></i></a>
-											</li>
-											{{/each}}
-										</ul>
+										
+										
 										<div class="total_drop">
-											<div class="clearfix"><strong>Total</strong><span>$200.00</span></div>
+											<div class="clearfix"><strong>Total  $</strong><span id="tTotal">{{total}}</span></div>
 											<a href="/User/cart" class="btn_1 outline">View Cart</a><a href="/User/checkout" class="btn_1">Checkout</a>
 										</div>
 									</div>

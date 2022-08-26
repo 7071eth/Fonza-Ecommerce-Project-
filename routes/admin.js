@@ -536,13 +536,13 @@ router.get('/add-offers', async (req, res) => {
 })
 
 router.post('/add-offers', async (req, res) => {
-
+  console.log(req.body)
   await offerHelpers.addOffer(req.body)
-
-  if (req.body.brand) {
+  
+  if (req.body.brand==='true') {
     
     if(Array.isArray(req.body.brands)){
-      
+      console.log("checkpoint 1")
       for (i = 0; i < req.body.brands.length; i++) {
         brnd = req.body.brands[i]
         offerName = req.body.name
@@ -555,15 +555,16 @@ router.post('/add-offers', async (req, res) => {
         let  month = expire.getMonth() + 1;
         let day = expire.getDate();
   
-      expire = [year, month, day].join('/');
+        expire = [year, month, day].join('/');
   
-      console.log(expire)
+        console.log(expire)
         console.log(brnd,percent,expire)
         productHelpers.addCatOffer(brnd, percent, expire)
       }
 
     } else {
       
+      console.log("checkpoint 1")
         brnd = req.body.brands
         offerName = req.body.name
         percent = req.body.percent
@@ -575,15 +576,59 @@ router.post('/add-offers', async (req, res) => {
         let  month = expire.getMonth() + 1;
         let day = expire.getDate();
   
-      expire = [year, month, day].join('/');
+        expire = [year, month, day].join('/');
   
-      console.log(expire)
+        console.log(expire)
         console.log(brnd,percent,expire)
         productHelpers.addCatOffer(brnd, percent, expire)
       
     }
 
     
+  } else {
+    if(Array.isArray(req.body.products)){
+
+      console.log("checkpoint 3")
+      for (i = 0; i < req.body.products.length; i++) {
+        prod = req.body.products[i]
+        offerName = req.body.name
+        percent = req.body.percent
+        expire = req.body.end
+        console.log(expire)
+        expire=new Date(expire)
+        let  year = expire.getFullYear();
+        // 👇️ getMonth returns integer from 0(January) to 11(December)
+        let  month = expire.getMonth() + 1;
+        let day = expire.getDate();
+  
+        expire = [year, month, day].join('/');
+  
+        console.log(expire)
+        console.log(prod,percent,expire)
+        productHelpers.addProOffer(prod, percent, expire)
+      }
+
+    } else {
+      
+
+        brnd = req.body.brands
+        offerName = req.body.name
+        percent = req.body.percent
+        expire = req.body.end
+        console.log(expire)
+        expire=new Date(expire)
+        let  year = expire.getFullYear();
+        // 👇️ getMonth returns integer from 0(January) to 11(December)
+        let  month = expire.getMonth() + 1;
+        let day = expire.getDate();
+  
+        expire = [year, month, day].join('/');
+  
+        console.log(expire)
+        console.log(brnd,percent,expire)
+        productHelpers.addCatOffer(brnd, percent, expire)
+      
+    }
   }
 
   res.redirect('/admin/offers')

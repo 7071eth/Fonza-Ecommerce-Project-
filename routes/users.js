@@ -69,7 +69,7 @@ router.get('/', async function (req, res, next) {
   console.log(brands)
   console.log(category)
 
-
+  console.log(req.session.user)
 
   if (req.session.user) {
     for (i = 0; i < category.length; i++) {
@@ -78,7 +78,13 @@ router.get('/', async function (req, res, next) {
 
     userD = req.session.user._id
     console.log(userD)
+    let tQuantity=0
+    let total=0
     let cart = await cartHelpers.viewCart(userD)
+    for(i=0;i<cart.length;i++){
+      tQuantity=tQuantity+cart[i].quantity
+      total=total+parseInt(cart[i].cartProducts.price)*cart[i].quantity
+    }
 
 
 
@@ -88,7 +94,9 @@ router.get('/', async function (req, res, next) {
       category,
       user: true,
       cart,
-      brands
+      brands,
+      tQuantity,
+      total
     });
 
   } else {
@@ -152,8 +160,9 @@ router.post('/add-to-cart', (req, res) => {
   console.log("reached here");
 
   console.log(req.body)
+
   cartHelpers.addToCart(req.body).then((response) => {
-    console.log("Reached here")
+    
     console.log(response)
     res.json(response)
   })
@@ -341,6 +350,7 @@ router.get('/checkout', async (req, res) => {
 
     let userD=req.session.user._id
     let cart = await cartHelpers.viewCart(userD)
+    
 
     var total = 0;
     for (i = 0; i < cart.length; i++) {
