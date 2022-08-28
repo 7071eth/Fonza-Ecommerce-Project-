@@ -272,21 +272,23 @@ module.exports={
         })
     },
 
-    addCatOffer : (brand,percent,end)=>{
-
+    addCatOffer : (brand,percent,end,offerName)=>{
+        console.log(offerName)
         return new Promise(async (resolve,reject)=>{
-
-            db.get().collection(collection.PRODUCT_COLLECTION).find({mainCategory : ObjectID(brand) }).toArray().then(async (response)=>{
+            console.log("working")
+            db.get().collection(collection.PRODUCT_COLLECTION).find({mainCategory : ObjectID(brand)  }).toArray().then(async (response)=>{
                 console.log(response)
+                console.log("check 3")
                 for(i=0;i<response.length;i++){
                     response[i].ogPrice=parseInt(response[i].ogPrice)
                     let oldPrice =response[i].ogPrice
                     let newPrice=oldPrice-((oldPrice*percent)/100)
                     newPrice=newPrice.toString()
-                    console.log(end)
+                    console.log("fffffffffffffffffffffff")
+                    console.log(offerName);
                     
 
-                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[i]._id},{$set : {price : newPrice , oldPrice : oldPrice,offer: true, cent : percent, expire: end} },{upsert:true}).then((response)=>{
+                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[i]._id},{$set : {price : newPrice , oldPrice : oldPrice,offer: true, cent : percent, expire: end, offerId : offerName} },{upsert:true}).then((response)=>{
                     console.log(response)
                    })
                 }

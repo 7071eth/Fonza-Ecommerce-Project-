@@ -19,7 +19,8 @@ const {
 } = require('../helpers/order-helpers');
 
 
-const dayjs = require('dayjs')
+const dayjs = require('dayjs');
+const { response } = require('../app');
 //import dayjs from 'dayjs' // ES 2015
 dayjs().format()
 
@@ -513,9 +514,98 @@ router.post('/add-coupons', async (req, res) => {
 
 //offers
 
-router.get('/offers', (req, res) => {
+router.get('/offers',async  (req, res) => {
+  
+  console.log(req.query)
+  const {
+    page=1,
+    limit=10,
+    select="category"
+
+  } = req.query
+  let selectId ={
+
+  }
+  console.log(select)
+  if(select==="offer"){
+    console.log("got it")
+    selectId.offer=true
+    selectId.pro=false
+    selectId.cat=false
+    
+  }else if (select==="product") {
+    selectId.offer=false
+    selectId.pro=true
+    selectId.cat=false
+
+  }else {
+    selectId.offer=false
+    selectId.pro=false
+    selectId.cat=true
+    
+  }
+  console.log(selectId);
+  let oPage = page
+  let oLimit = limit
+
+  let catOffers = await offerHelpers.catOffers()
+
+  let offers = await offerHelpers.getOffers(oPage,oLimit)
+
+  let offerCount = await offerHelpers.getCount()
+  console.log(offerCount)
+  let pagination =[]
+  console.log(oPage)
+
+  
+  for(i=0;i<offerCount/10;i++){
+    if(oPage==i+1){
+
+      pagination.push({
+        limit : 10,
+        page : i+1,
+        selected : true
+      })
+      console.log("Selectied")
+
+    } else{
+      pagination.push({
+        limit : 10,
+        page : i+1
+      })
+      console.log("Not found");
+    }
+   
+  }
+  console.log(pagination)
+  
+  for (i = 0; i < catOffers.length; i++) {
+    catOffers[i].Offer.end = catOffers[i].Offer.end.toDateString()
+    catOffers[i].offers=offers
+  }
+  console.log(catOffers)
+
+  //
+
+  let proOffers = await offerHelpers.proOffers()
+  for (i = 0; i < proOffers.length; i++) {
+    proOffers[i].Offer.end = proOffers[i].Offer.end.toDateString()
+    proOffers[i].offers=offers
+  }
+  console.log(proOffers)
+
+  //
+  
+  
+  
+
   res.render('admin/offers', {
-    admin: true
+    admin: true,
+    catOffers,
+    proOffers,
+    offers,
+    pagination,
+    selectId
   })
 })
 
@@ -537,7 +627,20 @@ router.get('/add-offers', async (req, res) => {
 
 router.post('/add-offers', async (req, res) => {
   console.log(req.body)
-  await offerHelpers.addOffer(req.body)
+  if(Array.isArray(req.body.brands)){
+    for(i=0;i<req.body.brands;i++){
+      req.body.brands[i] =ObjectID(req.body.brands[i]) 
+    }
+  } else {
+    req.body.brands =ObjectID(req.body.brands)
+  }
+  console.log("Reached here")
+  offer =await offerHelpers.addOffer(req.body)
+  
+  oid=offer.insertedId
+  console.log(oid);
+  console.log("fhgfbgfgfh");
+  
   
   if (req.body.brand==='true') {
     
@@ -545,11 +648,12 @@ router.post('/add-offers', async (req, res) => {
       console.log("checkpoint 1")
       for (i = 0; i < req.body.brands.length; i++) {
         brnd = req.body.brands[i]
-        offerName = req.body.name
         percent = req.body.percent
         expire = req.body.end
         console.log(expire)
+        
         expire=new Date(expire)
+        offerN=oid
         let  year = expire.getFullYear();
         // 👇️ getMonth returns integer from 0(January) to 11(December)
         let  month = expire.getMonth() + 1;
@@ -559,16 +663,19 @@ router.post('/add-offers', async (req, res) => {
   
         console.log(expire)
         console.log(brnd,percent,expire)
-        productHelpers.addCatOffer(brnd, percent, expire)
+        console.log(offerN)
+        await offerHelpers.addCoffer(offerN,brnd)
+        await productHelpers.addCatOffer(brnd, percent, expire,offerN)
       }
 
     } else {
       
-      console.log("checkpoint 1")
+      console.log("checkpoint 2")
         brnd = req.body.brands
         offerName = req.body.name
         percent = req.body.percent
         expire = req.body.end
+        offerN=oid
         console.log(expire)
         expire=new Date(expire)
         let  year = expire.getFullYear();
@@ -579,8 +686,9 @@ router.post('/add-offers', async (req, res) => {
         expire = [year, month, day].join('/');
   
         console.log(expire)
+        await offerHelpers.addCoffer(offerN,brnd)
         console.log(brnd,percent,expire)
-        productHelpers.addCatOffer(brnd, percent, expire)
+        productHelpers.addCatOffer(brnd, percent, expire,offerN)
       
     }
 
@@ -611,22 +719,22 @@ router.post('/add-offers', async (req, res) => {
     } else {
       
 
-        brnd = req.body.brands
-        offerName = req.body.name
-        percent = req.body.percent
-        expire = req.body.end
-        console.log(expire)
-        expire=new Date(expire)
-        let  year = expire.getFullYear();
-        // 👇️ getMonth returns integer from 0(January) to 11(December)
-        let  month = expire.getMonth() + 1;
-        let day = expire.getDate();
-  
-        expire = [year, month, day].join('/');
-  
-        console.log(expire)
-        console.log(brnd,percent,expire)
-        productHelpers.addCatOffer(brnd, percent, expire)
+      prod = req.body.products
+      offerName = req.body.name
+      percent = req.body.percent
+      expire = req.body.end
+      console.log(expire)
+      expire=new Date(expire)
+      let  year = expire.getFullYear();
+      // 👇️ getMonth returns integer from 0(January) to 11(December)
+      let  month = expire.getMonth() + 1;
+      let day = expire.getDate();
+
+      expire = [year, month, day].join('/');
+
+      console.log(expire)
+      console.log(prod,percent,expire)
+      productHelpers.addProOffer(prod, percent, expire)
       
     }
   }
