@@ -6,27 +6,27 @@
 
     <ul class="nav nav-tabs container-fluid" id="myTab" role="tablist">
       <li class="nav-item">
-       
+
 
         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
           aria-selected="true">Category offers</a>
 
-        
+
       </li>
       <li class="nav-item">
-        
+
 
         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
           aria-selected="false">Product offers</a>
-       
+
       </li>
 
       <li class="nav-item">
-      
+
 
         <a class="nav-link" id="offer-tab" data-toggle="tab" href="#offer" role="tab" aria-controls="offer"
           aria-selected="false">All offers</a>
-        
+
       </li>
 
     </ul>
@@ -42,7 +42,7 @@
                   <th>Offer Name</th>
                   <th>Discount %</th>
                   <th>Expiry Date</th>
-                  <th>Change Offer</th>
+
                   <th>Remove</th>
                 </tr>
 
@@ -57,19 +57,9 @@
                   <td id="invoice" name="invoice"><span style="font-weight:900;">{{Offer.percent}}</span></td>
                   <td>{{Offer.end}}</td>
 
-                  <td>
 
-                    <select class="form-select" aria-label="Default select example"
-                      onchange="canceled('{{this._id}}',value)">
-                      <option selected>Open this select menu</option>
-                      {{#each offers}}
-                      <option value="Cancelled">{{name}}</option>
-                      {{/each}}
-                    </select>
 
-                  </td>
-
-                  <td> <a href=""><i class="fas fa-trash-alt" style="color:red ;"></i></a></td>
+                   <td><button class="btn" onclick="rCategoryOffer('{{_id}}')"><i class="fas fa-trash-alt" style="color: red ;"></i></button></td>
 
                 </tr>
 
@@ -90,12 +80,13 @@
               <table class="table table-striped">
                 <thead style="text-align:center ;">
                   <tr>
-                    <th style="text-align: left ;">Offer Name</th>
+                    <th style="text-align: left ;">Product </th>
+                    <th >Offer Name</th>
 
                     <th>Discount %</th>
                     <th>Expiry Date</th>
 
-                    <th>Change Offer</th>
+
                     <th>Remove</th>
 
                   </tr>
@@ -104,21 +95,13 @@
 
                   {{#each proOffers}}
                   <tr>
-                    <td style="text-align: left ;">{{Offer.name}}</td>
+                    <td style="text-align: left ;">{{title}}</td>
+                    <td >{{Offer.name}}</td>
                     <td id="invoice" name="invoice"><span style="font-weight:900;">{{Offer.percent}}</span></td>
                     <td>{{Offer.end}}</td>
-                    <td>
 
-                      <select class="form-select" aria-label="Default select example"
-                        onchange="canceled('{{this._id}}',value)">
-                        <option selected>Open this select menu</option>
-                        <option value="Cancelled">Extend</option>
-                        <option value="Pending">Delete</option>
-                      </select>
 
-                    </td>
-
-                    <td><a href=""><i class="fas fa-trash-alt" style="color: red ;"></i></a></td>
+                    <td><button class="btn" onclick="rProductOffer('{{_id}}')"><i class="fas fa-trash-alt" style="color: red ;"></i></button></td>
 
                   </tr>
                   {{/each}}
@@ -142,7 +125,7 @@
                     <th>Discount %</th>
                     <th>Expiry Date</th>
 
-                    <th>Change Offer</th>
+
                     <th>Remove</th>
 
                   </tr>
@@ -156,15 +139,8 @@
                     <td>{{end}}</td>
 
 
-                    <td>
-                      <select class="form-select" aria-label="Default select example"
-                        onchange="canceled('{{this._id}}',value)">
-                        <option selected>Open this select menu</option>
-                        <option value="Cancelled">Extend</option>
-                        <option value="Pending">Delete</option>
-                      </select>
-                    </td>
-                    <td><a href=""><i class="fas fa-trash-alt" style="color: red ;"></i></a></td>
+
+                   <td><button class="btn" onclick="rOffer('{{_id}}')"><i class="fas fa-trash-alt" style="color: red ;"></i></button></td>
 
 
 
@@ -206,34 +182,154 @@
   </div>
 
 </section>
+<script>
+  function rCategoryOffer(id) {
 
+    swal({
+  title: "Are you sure you want to cancel this order ?",
+  text: "Once cancelled, you will not be able to revert it!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Your order has been cancelled !", {
+      icon: "success",
+      buttons: false,
+    });
+
+    setTimeout(hello,800)
+
+  function hello (){
+
+     {
+        $.ajax({
+      url: "/admin/remove-categoryOffer/"+id,
+      
+      method: "get",
+      success: (response) => {
+
+        location.reload()
+        
+      },
+    })
+  }
+  }
+  }
+});
+    
+
+  }
+</script>
+
+<script>
+  function rProductOffer(id) {
+
+    swal({
+  title: "Are you sure you want to cancel this order ?",
+  text: "Once cancelled, you will not be able to revert it!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Your order has been cancelled !", {
+      icon: "success",
+      buttons: false,
+    });
+
+    setTimeout(hello,800)
+
+  function hello (){
+
+     {
+        $.ajax({
+      url: "/admin/remove-productOffer/"+id,
+      
+      method: "get",
+      success: (response) => {
+
+        location.reload()
+        
+      },
+    })
+  }
+  }
+  }
+});
+    
+
+  }
+</script>
+
+<script>
+  function rOffer(id) {
+
+    swal({
+  title: "Are you sure you want to cancel this order ?",
+  text: "Once cancelled, you will not be able to revert it!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Your order has been cancelled !", {
+      icon: "success",
+      buttons: false,
+    });
+
+    setTimeout(hello,800)
+
+  function hello (){
+
+     {
+        $.ajax({
+      url: "/admin/remove-Offer/"+id,
+      
+      method: "get",
+      success: (response) => {
+
+        location.reload()
+        
+      },
+    })
+  }
+  }
+  }
+});
+    
+
+  }
+</script>
 
 
 <script>
 
-  if({{selectId.offer}}){
+  if ({{ selectId.offer }}) {
 
     $(window).on('DOMContentLoaded', function (e) {
-    e.preventDefault()
-    $('#offer-tab').tab('show')
-  })
+      e.preventDefault()
+      $('#offer-tab').tab('show')
+    })
   } 
-  else if({{selectId.pro}}){
+  else if ({{ selectId.pro }}) {
 
     $(window).on('DOMContentLoaded', function (e) {
-    e.preventDefault()
-    $('#pro-tab').tab('show')
-  })
+      e.preventDefault()
+      $('#pro-tab').tab('show')
+    })
   } else {
-     $(window).on('DOMContentLoaded', function (e) {
-    e.preventDefault()
-    $('#cat-tab').tab('show')
-  })
+    $(window).on('DOMContentLoaded', function (e) {
+      e.preventDefault()
+      $('#cat-tab').tab('show')
+    })
   }
-  
+
   $('#myTab a').on('click', function (e) {
     e.preventDefault()
     $(this).tab('show')
   })
 </script>
-

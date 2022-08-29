@@ -212,7 +212,7 @@ router.get('/delete-product/:id', (req, res) => {
   let deleteIds = req.params.id
   productHelpers.deleteProduct(deleteIds).then((data) => {
 
-    res.redirect('/admin/view-products')
+    res.json("Success")
   }).catch((err) => {
     console.log(err)
   })
@@ -551,6 +551,7 @@ router.get('/offers',async  (req, res) => {
   let catOffers = await offerHelpers.catOffers()
 
   let offers = await offerHelpers.getOffers(oPage,oLimit)
+  
 
   let offerCount = await offerHelpers.getCount()
   console.log(offerCount)
@@ -702,6 +703,7 @@ router.post('/add-offers', async (req, res) => {
         offerName = req.body.name
         percent = req.body.percent
         expire = req.body.end
+        offerN=oid
         console.log(expire)
         expire=new Date(expire)
         let  year = expire.getFullYear();
@@ -713,7 +715,7 @@ router.post('/add-offers', async (req, res) => {
   
         console.log(expire)
         console.log(prod,percent,expire)
-        productHelpers.addProOffer(prod, percent, expire)
+        productHelpers.addProOffer(prod, percent, expire,offerN)
       }
 
     } else {
@@ -724,6 +726,7 @@ router.post('/add-offers', async (req, res) => {
       percent = req.body.percent
       expire = req.body.end
       console.log(expire)
+      offerN=oid
       expire=new Date(expire)
       let  year = expire.getFullYear();
       // 👇️ getMonth returns integer from 0(January) to 11(December)
@@ -734,12 +737,40 @@ router.post('/add-offers', async (req, res) => {
 
       console.log(expire)
       console.log(prod,percent,expire)
-      productHelpers.addProOffer(prod, percent, expire)
+      productHelpers.addProOffer(prod, percent, expire,offerN)
       
     }
   }
 
   res.redirect('/admin/offers')
+})
+
+//Remove Cat offer
+
+router.get('/remove-categoryOffer/:id',async (req,res)=>{
+
+  let id = req.params.id
+  let r = await offerHelpers.removeCategoryOffer(id)
+  console.log(r)
+  res.json("success")
+})
+
+//Remove Pro offer
+
+router.get('/remove-productOffer/:id',async(req,res)=>{
+  let id=req.params.id
+  await offerHelpers.removeProductOffer(id)
+  res.json("Success")
+})
+
+//Remove offers
+
+router.get('/remove-offer/:id',async(req,res)=>{
+  let id=req.params.id
+  await offerHelpers.removeOffer(id).then((response)=>{
+    res.json("Success")
+  })
+  
 })
 
 module.exports = router;

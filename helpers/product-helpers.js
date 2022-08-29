@@ -296,7 +296,7 @@ module.exports={
         })
     },
 
-    addProOffer : (prod,percent,end)=>{
+    addProOffer : (prod,percent,end,offerName)=>{
 
         return new Promise(async (resolve,reject)=>{
 
@@ -311,7 +311,7 @@ module.exports={
                 console.log(end)
 
 
-                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[0]._id},{$set : {price : newPrice , oldPrice : oldPrice,offer: true, cent : percent, expire: end} },{upsert:true}).then((response)=>{
+                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[0]._id},{$set : {price : newPrice , oldPrice : oldPrice,offer: true, cent : percent, expire: end, offerId: offerName} },{upsert:true}).then((response)=>{
                     console.log(response)
                    })
                 

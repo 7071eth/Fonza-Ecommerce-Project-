@@ -111,6 +111,81 @@ module.exports = {
             console.log(count)
             resolve(count)
         })
+    },
+
+    removeCategoryOffer: (brand)=>{
+        return new Promise (async (resolve,reject)=>{
+            await db.get().collection(collection.SUBCATEGORY_COLLECTION).updateOne({_id: ObjectID(brand)},{$unset: {offerId: 1}})
+            db.get().collection(collection.PRODUCT_COLLECTION).find({mainCategory : ObjectID(brand)  }).toArray().then(async (response)=>{
+                console.log(response)
+                console.log("check 3")
+                for(i=0;i<response.length;i++){
+                    let id =response[i]._id
+                    newPrice=response[i].ogPrice
+                    
+                    
+
+                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[i]._id},{$set : {price : newPrice} }).then(async (response)=>{
+
+                    await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : id},{$unset : {offerId : 1,offer: 1,oldPrice: 1, expire: 1,cent: 1}}).then((response)=>{
+                        console.log(response)
+                        resolve(response)
+                   })
+                        
+                   })
+                }
+            })
+        })
+    },
+
+    removeProductOffer: (product)=>{
+        return new Promise (async (resolve,reject)=>{
+            
+            db.get().collection(collection.PRODUCT_COLLECTION).find({_id : ObjectID(product)}).toArray().then(async (response)=>{
+                console.log(response)
+                console.log("check 3")
+               
+
+                    let id =response[0]._id
+                    newPrice=response[0].ogPrice
+                    
+                   await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[0]._id},{$set : {price : newPrice} }).then(async (response)=>{
+
+                    await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : id},{$unset : {offerId : 1,offer: 1,oldPrice: 1, expire: 1,cent: 1}}).then((response)=>{
+                        console.log(response)
+                        resolve(response)
+                   })
+                        
+                   })
+                
+            })
+        })
+    },
+
+    removeOffer: (id)=>{
+        return new Promise(async (resolve,reject)=>{
+            db.get().collection(collection.OFFER_COLLECTION).deleteOne({_id: ObjectID(id) }).then(async (response)=>{
+                await db.get().collection(collection.SUBCATEGORY_COLLECTION).updateOne({offerId: ObjectID(id)},{$unset: {offerId: 1}})
+                db.get().collection(collection.PRODUCT_COLLECTION).find({offerId : ObjectID(id)  }).toArray().then(async (response)=>{
+                    console.log(response)
+                    console.log("check 3")
+                    for(i=0;i<response.length;i++){
+                        let id =response[i]._id
+                        newPrice=response[i].ogPrice
+                        
+                       await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[i]._id},{$set : {price : newPrice} }).then(async (response)=>{
+    
+                        await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : id},{$unset : {offerId : 1,offer: 1,oldPrice: 1, expire: 1,cent: 1}}).then((response)=>{
+                            console.log(response)
+                            
+                       })
+                            
+                       })
+                    }
+                    resolve(response)
+                })
+            })
+        })
     }
 
     
