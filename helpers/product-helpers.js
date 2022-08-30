@@ -56,10 +56,12 @@ module.exports={
             let data = await db.get().collection(collections.CATEGORY_COLLECTION).aggregate([{
 
                 $lookup: {
+                
                   from: 'subcategory',
                   localField: '_id',
                   foreignField: 'mainCategory',
                   as: 'bookings'
+
                 }
 
                 
@@ -110,11 +112,70 @@ module.exports={
         console.log(prodId)
         return new Promise(async(resolve,reject)=>{
 
-            let productOne = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id : ObjectID(prodId)})
-            resolve(productOne)
+          let productOne =   await db.get().collection(collection.PRODUCT_COLLECTION).aggregate([{
+
+                $match : {
+                    _id : ObjectID(prodId)
+                }
+            },{
+                $lookup: {
+                    from: 'subcategory',
+                    localField: 'mainCategory',
+                    foreignField: '_id',
+                    as: 'category'
+                  }
+            },{
+                $unwind : "$category"
+            },
+            {
+              $lookup: {
+                from: "category",
+                localField: "category.mainCategory",
+                foreignField: "_id",
+                as: "category.user"
+              }
+            },
+            {
+              $unwind: "$category.user"
+            },{
+                $group: {
+                  _id: "$_id",
+                  title: {
+                    $first: "$title"
+                  },price: {
+                    $first: "$price"
+                  },ogprice: {
+                    $first: "$ogPrice"
+                  },description: {
+                    $first: "$description"
+                  },image: {
+                    $first: "$image"
+                  },
+                  
+                  category: {
+                    $push: {
+                      _id: "$category._id",
+                      Subcategory: "$category.subcategory",
+                      Maincategory: "$category.user.category",
+                      
+                    }
+                  }
+                }
+              }
+
+            ]).toArray().then((response)=>{
+
+
+                data=response[0]
+                console.log(data)
+                resolve(data)
+                
+
+            })
             
-            
+           
         })
+        
     },
 
     deleteProduct: (prodId)=>{
@@ -232,6 +293,8 @@ module.exports={
               });
         })
     },
+
+    
 
     
 

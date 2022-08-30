@@ -18,6 +18,7 @@ const {
 
 const paypal = require("paypal-rest-sdk");
 const couponHelpers = require('../helpers/coupon-helpers');
+const { array } = require('../multer/multer');
 // const { response } = require('../app');
 
 const client = require("twilio")(
@@ -113,11 +114,20 @@ router.get('/', async function (req, res, next) {
 /* GET product details. */
 router.get('/productDetails/:id', (req, res, next) => {
   console.log(req.params.id)
-  productHelpers.viewProductDetails(req.params.id).then((productOne) => {
-    console.log(productOne)
+  id=req.params.id
+  productHelpers.viewProductDetails(id).then((productOne) => {
+
+   console.log(productOne)
+   
+
+
     res.render('user/productDetails', {
       productOne
-    })
+    
+
+   })
+   
+    
   })
 
 })
@@ -816,6 +826,6 @@ router.post('/remove-coupon',async (req,res)=>{
 })
 
 
-//
+
 
 module.exports = router;
