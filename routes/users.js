@@ -324,13 +324,33 @@ router.get('/cart', async (req, res) => {
     let cart = await cartHelpers.viewCart(userD)
 
     var total = 0;
+    var offerDis=0
+    var offerS=false
     for (i = 0; i < cart.length; i++) {
 
-      cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
-      total = total + cart[i].quantity * cart[i].cartProducts.price
+      if(cart[i].cartProducts.offer){
 
+        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+        total = total + cart[i].quantity * cart[i].cartProducts.price
+        offerDis=offerDis+(parseInt(cart[i].cartProducts.ogPrice)-parseInt(cart[i].cartProducts.price))
+        offerS=true
+      } else {
 
+        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+        total = total + cart[i].quantity * cart[i].cartProducts.price
+
+      }
+      
+
+      
     }
+    if(offerS){
+      cart.offerD=offerDis
+      cart.offerS=true
+    }
+    console.log(offerS)
+    console.log(offerDis)
+    
     cart.total = total
 
     if (cart.length == 0) {
@@ -352,13 +372,16 @@ router.get('/cart', async (req, res) => {
         console.log(data)
 
         disPrice = (data.percent * cart.total) / 100
+        
         if (disPrice > data.disAmount) {
           newPrice = cart.total - data.disAmount
           cart.newPrice = newPrice
+          cart.disAmt=data.disAmount
 
         } else {
           newPrice = cart.total - disPrice
           cart.newPrice = newPrice
+          cart.disAmt=disPrice
         }
 
         console.log(cart)
@@ -366,6 +389,7 @@ router.get('/cart', async (req, res) => {
 
       }
     }
+
 
 
     console.log(cart)
@@ -408,14 +432,29 @@ router.get('/checkout', async (req, res) => {
     let userD = req.session.user._id
     let cart = await cartHelpers.viewCart(userD)
 
-
+    let offerDis =0
     var total = 0;
     for (i = 0; i < cart.length; i++) {
 
-      cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
-      total = total + cart[i].quantity * cart[i].cartProducts.price
+      if(cart[i].cartProducts.offer){
 
+        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+        total = total + cart[i].quantity * cart[i].cartProducts.price
+        offerDis=offerDis+(parseInt(cart[i].cartProducts.ogPrice)-parseInt(cart[i].cartProducts.price))
+        offerS=true
+      } else {
 
+        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+        total = total + cart[i].quantity * cart[i].cartProducts.price
+
+      }
+
+      
+    }
+
+    if(offerS){
+      cart.offerD=offerDis
+      cart.offerS=true
     }
     cart.total = total
     console.log(cart)

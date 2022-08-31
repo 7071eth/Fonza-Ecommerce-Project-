@@ -90,7 +90,7 @@
 						<ul>
 							{{#each cart}}
 							<li class="clearfix"><em>{{quantity}}x {{cartProducts.title}}</em>
-								<span>${{cartProducts.price}}</span>
+								<span>${{cartProducts.ogPrice}}</span>
 							</li>
 							{{/each}}
 
@@ -98,6 +98,11 @@
 						<ul>
 
 							<li class="clearfix"><em><strong>Subtotal</strong></em> <span id="price">${{total}}</span></li>
+							{{#if cart.offerS}}
+
+							<li class="clearfix"><em><strong>Category discount</strong></em> <span id="price">-${{cart.offerD}}</span></li>
+
+							{{/if}}
 							<li class="clearfix"><em><strong id="disTitle"></strong></em><span id="discount"></span></li>
 							
 

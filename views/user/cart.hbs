@@ -100,15 +100,22 @@
 		<div class="container">
 			<div class="row justify-content-end">
 				<div class="col-xl-4 col-lg-4 col-md-6">
-					<ul>
-						<div>
-							<span>Total</span>
-							<span>$</span>
+					<ul class="mr-2">
+							
+							<span id="discountlabel"> Coupon discount : </span><li style="color: green ;" id="discounted">-{{cart.disAmt}}</li>
+							
+							{{#if cart.offerS}}
+							<span> Category discount : </span><li style="color: green ;" id="discounted">-{{cart.offerD}}</li>
+							{{/if}}
+							
 							<li id="tricked" hidden>{{cart.cName}}</li>
+							
+							
+							<h3>Total</h3>
 							<li id="total">
 								{{total}}
 							</li>
-						</div>
+						
 
 					</ul>
 
@@ -176,7 +183,7 @@
 								});
 
 								document.getElementById('total').innerHTML = newData.newPrice
-
+								document.getElementById('discounted').innerHTML = "-"+newData.amt
 								document.getElementById('couponName').disabled = true
 								document.getElementById('cButton').hidden=true
 								document.getElementById('rButton').hidden=false
@@ -228,6 +235,11 @@
 
 		document.getElementById('rButton').hidden=true
 		document.getElementById('cButton').hidden=false
+
+		document.getElementById('discounted').innerHTML = ""
+		document.getElementById('discounted').hidden = true
+		document.getElementById('discountlabel').hidden = true
+
 
 
 
