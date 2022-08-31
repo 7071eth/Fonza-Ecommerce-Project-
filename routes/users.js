@@ -434,6 +434,7 @@ router.get('/checkout', async (req, res) => {
 
     let offerDis =0
     var total = 0;
+    let offerS=false
     for (i = 0; i < cart.length; i++) {
 
       if(cart[i].cartProducts.offer){
@@ -549,14 +550,32 @@ router.post('/place-order', async (req, res) => {
     let userD = req.session.user._id
     let cart = await cartHelpers.viewCart(userD)
 
+    let offerDis =0
     var total = 0;
+    let offerS=false
     for (i = 0; i < cart.length; i++) {
 
-      cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
-      total = total + cart[i].quantity * cart[i].cartProducts.price
+      if(cart[i].cartProducts.offer){
+
+        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+        total = total + cart[i].quantity * cart[i].cartProducts.price
+        offerDis=offerDis+(parseInt(cart[i].cartProducts.ogPrice)-parseInt(cart[i].cartProducts.price))
+        offerS=true
+      } else {
+
+        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+        total = total + cart[i].quantity * cart[i].cartProducts.price
+
+      }
 
 
     }
+
+    if(offerS){
+      cart.offerD=offerDis
+      cart.offerS=true
+    }
+
     cart.total = total
     console.log(cart)
     if (cart.length != 0) {
@@ -592,7 +611,15 @@ router.post('/place-order', async (req, res) => {
       }
     }
 
-
+    if(offerS){
+      req.body.offerD=offerDis
+      req.body.offerS=true
+    }
+    if (cart[0].coupon != null){
+      req.body.couponDis=cart.disAmt
+      req.body.coupon=true
+    }
+    
     req.body.cart = cart
     req.body.total = total
     req.body.user = ObjectID(req.body.user)
@@ -758,8 +785,7 @@ router.get('/invoice/:id', async (req, res) => {
 
 
   await orderHelpers.getinvoice(req.params.id).then((data) => {
-    console.log(data)
-    console.log(data.cartProducts)
+    console.log(data.cart.cartProducts);
     res.render('user/invoice', {
       data
     })

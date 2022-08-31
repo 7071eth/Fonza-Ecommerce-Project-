@@ -62,9 +62,9 @@
               <tr>
                 <th scope="row"></th>
                 <td>{{cartProducts.title}}</td>
-                <td>{{quantity}}</td>
-                <td>${{cartProducts.price}}</td>
-                <td>${{subtotal}}</td>
+                <td id="quantity">{{quantity}}</td>
+                <td id="ogprice">{{cartProducts.ogPrice}}</td>
+                <td id="subtotal"></td>
               </tr>
               {{/each}}
             </tbody>
@@ -78,6 +78,16 @@
           </div>
           <div class="col-xl-3">
             <ul class="list-unstyled">
+              {{#if data.offerS}}
+
+							<li class="clearfix"><em><strong>Category discount</strong></em> <span id="price">-${{data.offerD}}</span></li>
+
+							{{/if}}
+              {{#if data.coupon}}
+
+							<li class="clearfix"><em><strong>Category discount</strong></em> <span id="price">-${{data.couponDis}}</span></li>
+
+							{{/if}}
               
             </ul>
             <p class="text-black float-start"><span class="text-black me-3"> Total Amount</span><span
@@ -96,3 +106,7 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.getElementById('subtotal').innerHTML='$'+(document.getElementById('quantity').innerHTML*document.getElementById('ogprice').innerHTML)
+</script>
