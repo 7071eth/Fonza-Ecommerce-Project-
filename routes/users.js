@@ -482,8 +482,13 @@ router.get('/address', (req, res) => {
 router.post('/add-address', (req, res) => {
   console.log(req.body)
   if (req.session.user) {
-
-    req.session.user.address.unshift(req.body)
+    if(req.session.user.address){
+      req.session.user.address.unshift(req.body)
+    } else {
+      req.session.user.address=[]
+      req.session.user.address.push(req.body)
+    }
+    
     console.log(req.session.user)
 
     userHelpers.addAddress(req.session.user)
