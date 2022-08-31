@@ -61,6 +61,7 @@
 
 
 					<p id="validationAlert" style="color: red ; font-size :14px ;"></p>
+					<p id="emailcheckalert" style="color: red ; font-size :14px ;">{{alertEmail}}</p>
 
 					<small class="float-right pt-2">* Required Fields</small>
 					<form action="/User/account" method="POST" onsubmit = "return(validateForm());" name="myForm">
@@ -84,6 +85,11 @@
 							<input type="text" class="form-control" name="number" id="phoneNumber" value="" placeholder="Phone*" onchange="validatenum()">
 						</div>
 						<p id="numberAlert" style="color: red ; font-size :14px ;"></p>
+
+						<div class="form-group">
+							<input type="text" class="form-control" name="referal" id="referal" value="" placeholder="Referal code*" >
+						</div>
+						
 
 						
 

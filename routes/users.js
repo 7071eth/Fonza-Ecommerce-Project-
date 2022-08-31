@@ -18,7 +18,9 @@ const {
 
 const paypal = require("paypal-rest-sdk");
 const couponHelpers = require('../helpers/coupon-helpers');
-const { array } = require('../multer/multer');
+const {
+  array
+} = require('../multer/multer');
 // const { response } = require('../app');
 
 const client = require("twilio")(
@@ -79,12 +81,12 @@ router.get('/', async function (req, res, next) {
 
     userD = req.session.user._id
     console.log(userD)
-    let tQuantity=0
-    let total=0
+    let tQuantity = 0
+    let total = 0
     let cart = await cartHelpers.viewCart(userD)
-    for(i=0;i<cart.length;i++){
-      tQuantity=tQuantity+cart[i].quantity
-      total=total+parseInt(cart[i].cartProducts.price)*cart[i].quantity
+    for (i = 0; i < cart.length; i++) {
+      tQuantity = tQuantity + cart[i].quantity
+      total = total + parseInt(cart[i].cartProducts.price) * cart[i].quantity
     }
 
 
@@ -114,26 +116,31 @@ router.get('/', async function (req, res, next) {
 /* GET product details. */
 router.get('/productDetails/:id', (req, res, next) => {
   console.log(req.params.id)
-  id=req.params.id
+  id = req.params.id
   productHelpers.viewProductDetails(id).then((productOne) => {
 
-   console.log(productOne)
-   
+    console.log(productOne)
+
 
 
     res.render('user/productDetails', {
       productOne
-    
 
-   })
-   
-    
+
+    })
+
+
   })
 
 })
 
 router.get('/account', (req, res) => {
-  res.render('user/account', )
+  if (req.session.user) {
+    res.redirect('/', )
+  } else {
+    res.render('user/account')
+  }
+
 })
 
 router.get('/login', (req, res) => {
@@ -146,20 +153,62 @@ router.get('/login', (req, res) => {
 })
 
 
-router.post('/account', (req, res) => {
-  let rCode = referralCodeGenerator.alphaNumeric("uppercase", 2, 2);
-  req.body.refferalCode = rCode;
-  console.log(rCode)
-  userHelpers.doSignup(req.body).then((response) => {
-    if (response.status) {
-      req.session.signErr = true
-      res.render('user/dashboard', {
-        alertEmail: "Sorry, email Already exists !"
-      })
-    } else {
-      res.redirect('/User/login')
-    }
-  })
+router.post('/account', async (req, res) => {
+  if (req.body.referal != "") {
+    await userHelpers.checkReferal(req.body.referal).then((response) => {
+      if (response) {
+        delete(req.body.referal)
+        let rCode = referralCodeGenerator.alphaNumeric("uppercase", 2, 2);
+        req.body.refferalCode = rCode;
+        req.body.wallet = 200
+        console.log(rCode)
+        userHelpers.doSignup(req.body).then((response) => {
+          console.log(response)
+          if (response) {
+            req.session.signErr = true
+            res.render('user/account', {
+              alertEmail: "Sorry, email Already exists !"
+            })
+          } else {
+            res.redirect('/User/login')
+          }
+        })
+      } else {
+
+        delete(req.body.referal)
+        let rCode = referralCodeGenerator.alphaNumeric("uppercase", 2, 2);
+        req.body.refferalCode = rCode;
+        console.log(rCode)
+        userHelpers.doSignup(req.body).then((response) => {
+          if (response.status) {
+            req.session.signErr = true
+            res.render('user/account', {
+              alertEmail: "Sorry, email Already exists !"
+            })
+          } else {
+            res.redirect('/User/login')
+          }
+        })
+      }
+    })
+
+  } else {
+
+    let rCode = referralCodeGenerator.alphaNumeric("uppercase", 2, 2);
+    req.body.refferalCode = rCode;
+    console.log(rCode)
+    userHelpers.doSignup(req.body).then((response) => {
+      if (response.status) {
+        req.session.signErr = true
+        res.render('user/account', {
+          alertEmail: "Sorry, email Already exists !"
+        })
+      } else {
+        res.redirect('/User/login')
+      }
+    })
+
+  }
 })
 
 //Add product to cart
@@ -172,7 +221,7 @@ router.post('/add-to-cart', (req, res) => {
   console.log(req.body)
 
   cartHelpers.addToCart(req.body).then((response) => {
-    
+
     console.log(response)
     res.json(response)
   })
@@ -249,7 +298,7 @@ router.post("/otp-matching", function (req, res) {
       if (resp.valid == false) {
         req.session.otp = true;
         let otpvalidation = req.session.otp;
-        res.send("Success")
+        res.send("Success1232")
       } else if (resp.valid == true) {
         res.redirect("/");
       }
@@ -271,7 +320,7 @@ router.get('/account', (req, res) => {
 
 router.get('/cart', async (req, res) => {
   if (req.session.user) {
-    let userD=req.session.user._id
+    let userD = req.session.user._id
     let cart = await cartHelpers.viewCart(userD)
 
     var total = 0;
@@ -282,44 +331,42 @@ router.get('/cart', async (req, res) => {
 
 
     }
-    cart.total=total
+    cart.total = total
 
-    if(cart.length==0){
-    
-      cart.empty=true
-      
-    }
+    if (cart.length == 0) {
 
-    else
+      cart.empty = true
+
+    } else
 
     {
-    if(cart[0].coupon!=null){
-      
-      cart.cStatus=true
-      findId=cart[0].coupon
-     let data = await couponHelpers.findCoupon(findId)
-     
-      cart.cName=data.name
-      data.percent=parseInt(data.percent)
-      data.disAmount=parseInt(data.disAmount)
-      console.log(data)
-      
-     disPrice = (data.percent * cart.total) / 100
-     if(disPrice>data.disAmount){
-      newPrice =cart.total-data.disAmount
-      cart.newPrice=newPrice
-      
-     }else{
-      newPrice=cart.total-disPrice
-      cart.newPrice=newPrice
-     }
+      if (cart[0].coupon != null) {
 
-     console.log(cart)
-     
+        cart.cStatus = true
+        findId = cart[0].coupon
+        let data = await couponHelpers.findCoupon(findId)
 
+        cart.cName = data.name
+        data.percent = parseInt(data.percent)
+        data.disAmount = parseInt(data.disAmount)
+        console.log(data)
+
+        disPrice = (data.percent * cart.total) / 100
+        if (disPrice > data.disAmount) {
+          newPrice = cart.total - data.disAmount
+          cart.newPrice = newPrice
+
+        } else {
+          newPrice = cart.total - disPrice
+          cart.newPrice = newPrice
+        }
+
+        console.log(cart)
+
+
+      }
     }
-  } 
-    
+
 
     console.log(cart)
     console.log(total)
@@ -355,12 +402,12 @@ router.get('/remove-product/:id', async (req, res) => {
 //Checkout 
 
 router.get('/checkout', async (req, res) => {
-  
+
   if (req.session.user) {
 
-    let userD=req.session.user._id
+    let userD = req.session.user._id
     let cart = await cartHelpers.viewCart(userD)
-    
+
 
     var total = 0;
     for (i = 0; i < cart.length; i++) {
@@ -370,38 +417,38 @@ router.get('/checkout', async (req, res) => {
 
 
     }
-    cart.total=total
+    cart.total = total
     console.log(cart)
-    if(cart.length!=0){
+    if (cart.length != 0) {
 
-    
-    if(cart[0].coupon!=null){
-      
-      cart.cStatus=true
-      findId=cart[0].coupon
-     let data = await couponHelpers.findCoupon(findId)
-     
-      cart.cName=data.name
-      data.percent=parseInt(data.percent)
-      data.disAmount=parseInt(data.disAmount)
-      console.log(data)
-      
-     disPrice = (data.percent * cart.total) / 100
-     if(disPrice>data.disAmount){
-      newPrice =cart.total-data.disAmount
-      cart.newPrice=newPrice
-      cart.disAmt=data.disAmount
-     }else{
-      newPrice=cart.total-disPrice
-      cart.newPrice=newPrice
-      cart.disAmt=disPrice
-     }
 
-     console.log(cart)
-     
+      if (cart[0].coupon != null) {
 
+        cart.cStatus = true
+        findId = cart[0].coupon
+        let data = await couponHelpers.findCoupon(findId)
+
+        cart.cName = data.name
+        data.percent = parseInt(data.percent)
+        data.disAmount = parseInt(data.disAmount)
+        console.log(data)
+
+        disPrice = (data.percent * cart.total) / 100
+        if (disPrice > data.disAmount) {
+          newPrice = cart.total - data.disAmount
+          cart.newPrice = newPrice
+          cart.disAmt = data.disAmount
+        } else {
+          newPrice = cart.total - disPrice
+          cart.newPrice = newPrice
+          cart.disAmt = disPrice
+        }
+
+        console.log(cart)
+
+
+      }
     }
-  }
 
     console.log(cart)
     console.log(total)
@@ -433,9 +480,9 @@ router.get('/address', (req, res) => {
 //Add address
 
 router.post('/add-address', (req, res) => {
-    console.log(req.body)
+  console.log(req.body)
   if (req.session.user) {
-    
+
     req.session.user.address.unshift(req.body)
     console.log(req.session.user)
 
@@ -455,7 +502,7 @@ router.post('/place-order', async (req, res) => {
   if (req.session.user) {
     req.body.status = "Pending"
 
-    let userD=req.session.user._id
+    let userD = req.session.user._id
     let cart = await cartHelpers.viewCart(userD)
 
     var total = 0;
@@ -466,40 +513,40 @@ router.post('/place-order', async (req, res) => {
 
 
     }
-    cart.total=total
+    cart.total = total
     console.log(cart)
-    if(cart.length!=0){
+    if (cart.length != 0) {
 
-    
-    if(cart[0].coupon!=null){
-      
-      cart.cStatus=true
-      findId=cart[0].coupon
-     let data = await couponHelpers.findCoupon(findId)
-     
-      cart.cName=data.name
-      data.percent=parseInt(data.percent)
-      data.disAmount=parseInt(data.disAmount)
-      console.log(data)
-      
-     disPrice = (data.percent * cart.total) / 100
-     if(disPrice>data.disAmount){
-      newPrice =cart.total-data.disAmount
-      cart.newPrice=newPrice
-      cart.disAmt=data.disAmount
-      total=newPrice
-     }else{
-      newPrice=cart.total-disPrice
-      cart.newPrice=newPrice
-      cart.disAmt=disPrice
-      total=newPrice
-     }
 
-     console.log(cart)
-     
+      if (cart[0].coupon != null) {
 
+        cart.cStatus = true
+        findId = cart[0].coupon
+        let data = await couponHelpers.findCoupon(findId)
+
+        cart.cName = data.name
+        data.percent = parseInt(data.percent)
+        data.disAmount = parseInt(data.disAmount)
+        console.log(data)
+
+        disPrice = (data.percent * cart.total) / 100
+        if (disPrice > data.disAmount) {
+          newPrice = cart.total - data.disAmount
+          cart.newPrice = newPrice
+          cart.disAmt = data.disAmount
+          total = newPrice
+        } else {
+          newPrice = cart.total - disPrice
+          cart.newPrice = newPrice
+          cart.disAmt = disPrice
+          total = newPrice
+        }
+
+        console.log(cart)
+
+
+      }
     }
-  }
 
 
     req.body.cart = cart
@@ -580,8 +627,8 @@ router.get('/orders', async (req, res) => {
     await orderHelpers.getOrders(userId).then((orders) => {
       console.log(orders)
       orders = orders.reverse()
-      for(i=0;i<orders.length;i++){
-        orders[i].date=orders[i].date.toDateString()
+      for (i = 0; i < orders.length; i++) {
+        orders[i].date = orders[i].date.toDateString()
       }
 
       res.render('user/orders', {
@@ -813,18 +860,27 @@ router.post('/apply-coupon', async (req, res) => {
 
 //Remove Coupon
 
-router.post('/remove-coupon',async (req,res)=>{
-  
-  total=req.body.total
+router.post('/remove-coupon', async (req, res) => {
+
+  total = req.body.total
   let removeData = {}
   removeData._id = ObjectID(req.session.user._id)
-    cartHelpers.removeCoupon(removeData).then((response)=>{
-      response.total=total
-      res.json(response)
-    })
+  cartHelpers.removeCoupon(removeData).then((response) => {
+    response.total = total
+    res.json(response)
+  })
 
 })
 
+//Referrals
+
+router.get('/referals', (req, res) => {
+  console.log(req.session.user)
+  code = req.session.user.refferalCode
+  res.render('user/referals', {
+    code
+  })
+})
 
 
 

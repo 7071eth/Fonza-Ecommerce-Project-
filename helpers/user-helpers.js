@@ -27,20 +27,21 @@ module.exports = {
         console.log(userData)
         return new Promise(async (resolve, reject) => {
             let response = {}
+            console.log("Helllooooooooooo")
             let email = await db.get().collection(collections.USER_COLLECTION).findOne({ email: userData.email });
             if (email) {
                 console.log('same email');
                 response.status = true
-                resolve(response)
+                resolve(true)
 
             } else {
                 userData.password = await bcrypt.hash(userData.password, 10)
                 userData.status= true
                 db.get().collection(collections.USER_COLLECTION).insertOne(userData).then((data) => {
-                    resolve(data.insertedId)
+                    
+                    resolve(false)
                 })
-                console.log('no same email');
-                resolve({ status: false })
+                
             }
 
 
@@ -251,9 +252,22 @@ checkCoupon: (data)=>{
       }
     })
   })
-}
+},
 
-    
+checkReferal : (code)=>{
+  return new Promise((resolve,reject)=>{
+    db.get().collection(collection.USER_COLLECTION).findOne({refferalCode : code }).then(async (response)=>{
+      if(response){
+        console.log("True")
+        console.log(response)
+        await db.get().collection(collection.USER_COLLECTION).updateOne({_id : response._id},{$inc : {wallet : 200}},{upsert: true})
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
+  })
+}
 
     
 
