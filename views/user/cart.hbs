@@ -102,7 +102,7 @@
 				<div class="col-xl-4 col-lg-4 col-md-6">
 					<ul class="mr-2">
 							
-							<span id="discountlabel"> Coupon discount : </span><li style="color: green ;" id="discounted">-{{cart.disAmt}}</li>
+							<span id="discountlabel" hidden="true"> Coupon discount : </span><li style="color: green ;" id="discounted">-{{cart.disAmt}}</li>
 							
 							{{#if cart.offerS}}
 							<span> Category discount : </span><li style="color: green ;" id="discounted">-{{cart.offerD}}</li>
@@ -154,6 +154,7 @@
 <script>
 	
 	function apply2() {
+		
 
 		document.getElementById('applied').innerHTML=''
 		document.getElementById('couponAlert').innerHTML = ''
@@ -188,6 +189,8 @@
 								document.getElementById('cButton').hidden=true
 								document.getElementById('rButton').hidden=false
 								document.getElementById('applied').innerHTML='Coupon Applied !'
+
+								document.getElementById("discountlabel").hidden=false
 								
 
 

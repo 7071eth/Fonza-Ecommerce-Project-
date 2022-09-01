@@ -56,6 +56,7 @@
 							</label>
 						</li>
 					</ul>
+
 					<div class="payment_info d-none d-sm-block">
 						<figure><img src="img/cards_all.svg" alt=""></figure>
 						<p>Fonza support only COD at the moment. New payment methods will be added soon.</p>
@@ -98,14 +99,19 @@
 						<ul>
 
 							<li class="clearfix"><em><strong>Subtotal</strong></em> <span id="price">${{total}}</span></li>
+
 							{{#if cart.offerS}}
-
 							<li class="clearfix"><em><strong>Category discount</strong></em> <span id="price">-${{cart.offerD}}</span></li>
-
 							{{/if}}
 							<li class="clearfix"><em><strong id="disTitle"></strong></em><span id="discount"></span></li>
 							
+							{{#if wStatus}}
 
+							<li class="clearfix"><em><strong>Wallet discount</strong></em> <span id="price">-${{minus}}</span></li>
+							<li class="clearfix"><em><strong>Wallet balance</strong></em> <span id="price">${{bal}}</span></li>
+							
+
+							{{/if}}
 
 
 						</ul>

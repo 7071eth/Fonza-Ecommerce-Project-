@@ -117,6 +117,7 @@ router.get('/', async function (req, res, next) {
 router.get('/productDetails/:id', (req, res, next) => {
   console.log(req.params.id)
   id = req.params.id
+  userId = req.session.user._id
   productHelpers.viewProductDetails(id).then((productOne) => {
 
     console.log(productOne)
@@ -124,7 +125,8 @@ router.get('/productDetails/:id', (req, res, next) => {
 
 
     res.render('user/productDetails', {
-      productOne
+      productOne,
+      userId
 
 
     })
@@ -324,33 +326,33 @@ router.get('/cart', async (req, res) => {
     let cart = await cartHelpers.viewCart(userD)
 
     var total = 0;
-    var offerDis=0
-    var offerS=false
+    var offerDis = 0
+    var offerS = false
     for (i = 0; i < cart.length; i++) {
 
-      if(cart[i].cartProducts.offer){
+      if (cart[i].cartProducts.offer) {
 
         cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
         total = total + cart[i].quantity * cart[i].cartProducts.price
-        offerDis=offerDis+(parseInt(cart[i].cartProducts.ogPrice)-parseInt(cart[i].cartProducts.price))
-        offerS=true
+        offerDis = offerDis + (parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))
+        offerS = true
       } else {
 
         cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
         total = total + cart[i].quantity * cart[i].cartProducts.price
 
       }
-      
 
-      
+
+
     }
-    if(offerS){
-      cart.offerD=offerDis
-      cart.offerS=true
+    if (offerS) {
+      cart.offerD = offerDis
+      cart.offerS = true
     }
     console.log(offerS)
     console.log(offerDis)
-    
+
     cart.total = total
 
     if (cart.length == 0) {
@@ -372,16 +374,16 @@ router.get('/cart', async (req, res) => {
         console.log(data)
 
         disPrice = (data.percent * cart.total) / 100
-        
+
         if (disPrice > data.disAmount) {
           newPrice = cart.total - data.disAmount
           cart.newPrice = newPrice
-          cart.disAmt=data.disAmount
+          cart.disAmt = data.disAmount
 
         } else {
           newPrice = cart.total - disPrice
           cart.newPrice = newPrice
-          cart.disAmt=disPrice
+          cart.disAmt = disPrice
         }
 
         console.log(cart)
@@ -429,80 +431,180 @@ router.get('/checkout', async (req, res) => {
 
   if (req.session.user) {
 
-    let userD = req.session.user._id
-    let cart = await cartHelpers.viewCart(userD)
+    if (req.session.user.wallet && req.session.user.wallet != 0) {
 
-    let offerDis =0
-    var total = 0;
-    let offerS=false
-    for (i = 0; i < cart.length; i++) {
+      let wallet = req.session.user.wallet
+      let userD = req.session.user._id
+      let cart = await cartHelpers.viewCart(userD)
 
-      if(cart[i].cartProducts.offer){
+      let offerDis = 0
+      var total = 0;
+      let offerS = false
 
-        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
-        total = total + cart[i].quantity * cart[i].cartProducts.price
-        offerDis=offerDis+(parseInt(cart[i].cartProducts.ogPrice)-parseInt(cart[i].cartProducts.price))
-        offerS=true
-      } else {
+      for (i = 0; i < cart.length; i++) {
 
-        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
-        total = total + cart[i].quantity * cart[i].cartProducts.price
+        if (cart[i].cartProducts.offer) {
 
-      }
-
-      
-    }
-
-    if(offerS){
-      cart.offerD=offerDis
-      cart.offerS=true
-    }
-    cart.total = total
-    console.log(cart)
-    if (cart.length != 0) {
-
-
-      if (cart[0].coupon != null) {
-
-        cart.cStatus = true
-        findId = cart[0].coupon
-        let data = await couponHelpers.findCoupon(findId)
-
-        cart.cName = data.name
-        data.percent = parseInt(data.percent)
-        data.disAmount = parseInt(data.disAmount)
-        console.log(data)
-
-        disPrice = (data.percent * cart.total) / 100
-        if (disPrice > data.disAmount) {
-          newPrice = cart.total - data.disAmount
-          cart.newPrice = newPrice
-          cart.disAmt = data.disAmount
+          cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+          total = total + cart[i].quantity * cart[i].cartProducts.price
+          offerDis = offerDis + (parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))
+          offerS = true
         } else {
-          newPrice = cart.total - disPrice
-          cart.newPrice = newPrice
-          cart.disAmt = disPrice
+
+          cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+          total = total + cart[i].quantity * cart[i].cartProducts.price
+
         }
 
-        console.log(cart)
+
+      }
+
+      if (offerS) {
+        cart.offerD = offerDis
+        cart.offerS = true
+      }
+      cart.total = total
+      console.log(cart)
+      if (cart.length != 0) {
+
+
+        if (cart[0].coupon != null) {
+
+          cart.cStatus = true
+          findId = cart[0].coupon
+          let data = await couponHelpers.findCoupon(findId)
+
+          cart.cName = data.name
+          data.percent = parseInt(data.percent)
+          data.disAmount = parseInt(data.disAmount)
+          console.log(data)
+
+          disPrice = (data.percent * cart.total) / 100
+          if (disPrice > data.disAmount) {
+            newPrice = cart.total - data.disAmount
+            cart.newPrice = newPrice
+            cart.disAmt = data.disAmount
+          } else {
+            newPrice = cart.total - disPrice
+            cart.newPrice = newPrice
+            cart.disAmt = disPrice
+          }
+
+          console.log(cart)
+
+
+        }
+      }
+      let bal = 0
+      let minus = 0
+      let wStatus = true
+      if (total > wallet) {
+
+        total = total - wallet
+        bal = 0
+        minus = wallet
+      } else {
+        bal = wallet - total
+        total = 0
+        minus = total
+      }
+      console.log(cart)
+      console.log(total)
+
+      console.log("checkout ongoing");
+      console.log(cart)
+      console.log(req.session.user)
+      let data = req.session.user
+      res.render('user/checkout', {
+        user: true,
+        data,
+        cart,
+        total,
+        bal,
+        minus,
+        wStatus
+
+      })
+    } else {
+      let userD = req.session.user._id
+      let cart = await cartHelpers.viewCart(userD)
+
+      let offerDis = 0
+      var total = 0;
+      let offerS = false
+
+      for (i = 0; i < cart.length; i++) {
+
+        if (cart[i].cartProducts.offer) {
+
+          cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+          total = total + cart[i].quantity * cart[i].cartProducts.price
+          offerDis = offerDis + (parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))
+          offerS = true
+        } else {
+
+          cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+          total = total + cart[i].quantity * cart[i].cartProducts.price
+
+        }
 
 
       }
+
+      if (offerS) {
+        cart.offerD = offerDis
+        cart.offerS = true
+      }
+      cart.total = total
+      console.log(cart)
+      if (cart.length != 0) {
+
+
+        if (cart[0].coupon != null) {
+
+          cart.cStatus = true
+          findId = cart[0].coupon
+          let data = await couponHelpers.findCoupon(findId)
+
+          cart.cName = data.name
+          data.percent = parseInt(data.percent)
+          data.disAmount = parseInt(data.disAmount)
+          console.log(data)
+
+          disPrice = (data.percent * cart.total) / 100
+          if (disPrice > data.disAmount) {
+            newPrice = cart.total - data.disAmount
+            cart.newPrice = newPrice
+            cart.disAmt = data.disAmount
+          } else {
+            newPrice = cart.total - disPrice
+            cart.newPrice = newPrice
+            cart.disAmt = disPrice
+          }
+
+          console.log(cart)
+
+
+        }
+      }
+
+      console.log(cart)
+      console.log(total)
+
+      console.log("checkout ongoing");
+      console.log(cart)
+      console.log(req.session.user)
+      let data = req.session.user
+      res.render('user/checkout', {
+        user: true,
+        data,
+        cart,
+        total
+      })
     }
 
-    console.log(cart)
-    console.log(total)
 
-    console.log("checkout ongoing");
-    console.log(cart)
-    console.log(req.session.user)
-    let data = req.session.user
-    res.render('user/checkout', {
-      user: true,
-      data,
-      cart,
-      total
-    })
+
   } else {
     res.redirect('/User/login')
   }
@@ -522,13 +624,13 @@ router.get('/address', (req, res) => {
 router.post('/add-address', (req, res) => {
   console.log(req.body)
   if (req.session.user) {
-    if(req.session.user.address){
+    if (req.session.user.address) {
       req.session.user.address.unshift(req.body)
     } else {
-      req.session.user.address=[]
+      req.session.user.address = []
       req.session.user.address.push(req.body)
     }
-    
+
     console.log(req.session.user)
 
     userHelpers.addAddress(req.session.user)
@@ -545,22 +647,23 @@ router.post('/add-address', (req, res) => {
 
 router.post('/place-order', async (req, res) => {
   if (req.session.user) {
+
     req.body.status = "Pending"
 
     let userD = req.session.user._id
     let cart = await cartHelpers.viewCart(userD)
 
-    let offerDis =0
+    let offerDis = 0
     var total = 0;
-    let offerS=false
+    let offerS = false
     for (i = 0; i < cart.length; i++) {
 
-      if(cart[i].cartProducts.offer){
+      if (cart[i].cartProducts.offer) {
 
         cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
         total = total + cart[i].quantity * cart[i].cartProducts.price
-        offerDis=offerDis+(parseInt(cart[i].cartProducts.ogPrice)-parseInt(cart[i].cartProducts.price))
-        offerS=true
+        offerDis = offerDis + (parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))
+        offerS = true
       } else {
 
         cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
@@ -571,9 +674,9 @@ router.post('/place-order', async (req, res) => {
 
     }
 
-    if(offerS){
-      cart.offerD=offerDis
-      cart.offerS=true
+    if (offerS) {
+      cart.offerD = offerDis
+      cart.offerS = true
     }
 
     cart.total = total
@@ -610,16 +713,36 @@ router.post('/place-order', async (req, res) => {
 
       }
     }
+    if (req.session.user.wallet && req.session.user.wallet != 0){
+      let wallet = req.session.user.wallet
+      let bal = 0
+      let wMinus = 0
+      let wStatus = true
+      if (total > wallet) {
 
-    if(offerS){
-      req.body.offerD=offerDis
-      req.body.offerS=true
+        total = total - wallet
+        bal = 0
+        wMinus = wallet
+        await orderHelpers.walletUpdate(bal,req.session.user._id)
+
+      } else {
+        bal = wallet - total
+        total = 0
+        wMinus = total
+        await orderHelpers.walletUpdate(bal,req.session.user._id)
+
+      }
+
     }
-    if (cart[0].coupon != null){
-      req.body.couponDis=cart.disAmt
-      req.body.coupon=true
+    if (offerS) {
+      req.body.offerD = offerDis
+      req.body.offerS = true
     }
-    
+    if (cart[0].coupon != null) {
+      req.body.couponDis = cart.disAmt
+      req.body.coupon = true
+    }
+
     req.body.cart = cart
     req.body.total = total
     req.body.user = ObjectID(req.body.user)
@@ -732,9 +855,32 @@ router.post('/cancel-order', async (req, res) => {
 // profile
 
 router.get('/profile', (req, res) => {
-  res.render('user/profile', {
-    user: true
-  })
+  if(req.session.user){
+
+    if(req.session.user.wallet){
+
+      orderHelpers.walletBalance(req.session.user._id).then((bal)=>{
+
+        res.render('user/profile', {
+          user: true,
+          bal
+        })
+  
+      })
+
+    } else {
+      res.render('user/profile', {
+        user: true,
+        bal : 0
+      })
+    }
+    
+    
+
+  }else {
+    res.redirect('/User/login')
+  }
+  
 })
 
 

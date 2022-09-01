@@ -339,57 +339,85 @@ module.exports = {
 
             db.get().collection(collection.ORDER_COLLECTION).aggregate([
                 {
-                    $project : {
-                        date :1 ,
-                        total : 1,
-                        _id: 0
-                    }
-                },
-                {
-                $match: {
-                    
-                        
-                            date : {
-                                $gte: new Date(
-                                    (new Date() - (24 * 60 * 60 * 1000))
-                                )
-                            }
-                        
-                    
-                }
-            },
-            {
-
-                $project: {
-
-                    newDate: {
-                        $dateToString: {
-                            format: "%Y-%m-%d",
-                            date: "$date"
-                        }
+                    $unwind: {
+                      path: "$cart",
                     },
-                    total: 1
-
-                }
-
-            },{
-                $group: {
-                    _id: "$newDate",
-                    totalAmount: {
-                        $sum: "$total"
-                    }
-                }
-
-
-            },{
-                $sort : {
-                    _id : 1
-                }
-            }
+                  },
+                  {
+                    $group: {
+                      _id: "$cart.product",
+                      title: {
+                        $first: "$cart.cartProducts.title",
+                      },
+                      price:{
+                        $first : "$cart.cartProducts.price"
+                      },
+                      totalSold: {
+                        $sum: 1,
+                      },
+                    },
+                  },
+                  {
+                    $sort: {
+                      totalSold: -1,
+                    },
+                  },
+                  {
+                    $limit: 5,
+                  },
+                  
 
             ]).toArray().then((data)=>{
                 console.log(data)
                 resolve(data)
+                
+            })
+        })
+        
+        
+    },
+    activeUser: () => {
+
+        return new Promise((resolve,reject)=>{
+
+            db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                
+                  {
+                    $group: {
+                      _id: "$user",
+                      
+                      totalOrders: {
+                        $sum: 1,
+                      },
+                    },
+                  },
+                  {
+                    $sort: {
+                      totalOrders: -1,
+                    },
+                  },
+                  {
+                    $limit: 10,
+                  },
+                  {
+                    $lookup: {
+                        from: 'user',
+                        localField: '_id',
+                        foreignField: '_id',
+                        as: 'Users'
+                      }
+                },{
+                    $unwind : {
+                        path : "$Users"
+                    }
+                }
+                  
+
+            ]).toArray().then((data)=>{
+                console.log(data)
+                resolve(data)
+                
+                
             })
         })
         
@@ -416,6 +444,25 @@ module.exports = {
                 reject()
 
             }
+        })
+    },
+
+    walletUpdate : (bal,id)=>{
+        
+        return new Promise (async (resolve,reject)=>{
+            await db.get().collection(collection.USER_COLLECTION).updateOne({_id : ObjectID(id) },{$set : {wallet : bal}}).then((response)=>{
+                resolve(response)
+            })
+           
+        })
+    },
+
+    walletBalance : (id)=>{
+        return new Promise (async (resolve,reject)=>{
+            await db.get().collection(collection.USER_COLLECTION).findOne({_id : ObjectID(id) }).then((response)=>{
+                resolve(response.wallet)
+            })
+           
         })
     }
 

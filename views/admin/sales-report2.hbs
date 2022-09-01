@@ -32,19 +32,19 @@
           <table class="table table-striped table-borderless">
             <thead style="background-color:#84B0CA ;" class="text-white">
               <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Price</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
                 
                 
-                <th scope="col">Total Sold</th>
+                <th scope="col">Total Orders</th>
               </tr>
             </thead>
             <tbody>
-              {{#each data}}
+              {{#each total}}
               <tr>
-                <th scope="row">{{title}}</th>
-                <td>₹{{price}}</td>
-                <td>{{totalSold}}</td>
+                <th scope="row">{{Users.username}}</th>
+                <td>{{Users.email}}</td>
+                <td>{{totalOrders}}</td>
                 
                 
               </tr>
