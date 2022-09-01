@@ -342,6 +342,7 @@ module.exports={
             db.get().collection(collection.PRODUCT_COLLECTION).find({mainCategory : ObjectID(brand)  }).toArray().then(async (response)=>{
                 console.log(response)
                 console.log("check 3")
+                
                 for(i=0;i<response.length;i++){
                     response[i].ogPrice=parseInt(response[i].ogPrice)
                     let oldPrice =response[i].ogPrice
@@ -353,8 +354,10 @@ module.exports={
 
                    await  db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id : response[i]._id},{$set : {price : newPrice , oldPrice : oldPrice,offer: true, cent : percent, expire: end, offerId : offerName} },{upsert:true}).then((response)=>{
                     console.log(response)
+                    
                    })
                 }
+                resolve()
             })
         })
     },

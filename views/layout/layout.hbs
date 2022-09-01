@@ -80,19 +80,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   </head>
   <body>
-    
+    {{#if login}}
+
+    {{else}}
     {{#if admin}}
     {{>AdminHeader}}
     {{else}}
     {{>UserHeader}}
     {{/if}}
 
+    {{/if}}
+    
+
     {{{body}}}
 
+    {{#if login}}
+
+    {{else}}
     {{#if admin}}
     {{>AdminFooter}}
     {{else}}
     {{>UserFooter}}
+    {{/if}}
+
     {{/if}}
 
 

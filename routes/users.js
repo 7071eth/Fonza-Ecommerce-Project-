@@ -117,19 +117,31 @@ router.get('/', async function (req, res, next) {
 router.get('/productDetails/:id', (req, res, next) => {
   console.log(req.params.id)
   id = req.params.id
-  userId = req.session.user._id
+  
   productHelpers.viewProductDetails(id).then((productOne) => {
 
     console.log(productOne)
 
-
-
+    if(req.session.user){
+      let logged = true
+      userId = req.session.user._id
     res.render('user/productDetails', {
       productOne,
-      userId
+      userId,
+      logged
 
 
     })
+    } else {
+      
+    res.render('user/productDetails', {
+      productOne
+      
+
+
+    })
+    }
+    
 
 
   })
@@ -149,7 +161,7 @@ router.get('/login', (req, res) => {
   if (req.session.user) {
     res.redirect('/')
   } else {
-    res.render('user/login')
+    res.render('user/login',{login : true})
   }
 
 })

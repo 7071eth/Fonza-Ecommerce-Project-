@@ -1,353 +1,363 @@
-{{!-- <!DOCTYPE html>
+{{!--
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Ansonika">
-    <title>Allaia | Bootstrap eCommerce Template - ThemeForest</title>
-    
-    <!-- Favicons-->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
-	
-    <!-- GOOGLE WEB FONT -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="Ansonika">
+	<title>Allaia | Bootstrap eCommerce Template - ThemeForest</title>
 
-    <!-- BASE CSS -->
-    <link href="css/bootstrap.custom.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+	<!-- Favicons-->
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
+	<link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
+	<link rel="apple-touch-icon" type="image/x-icon" sizes="114x114"
+		href="img/apple-touch-icon-114x114-precomposed.png">
+	<link rel="apple-touch-icon" type="image/x-icon" sizes="144x144"
+		href="img/apple-touch-icon-144x144-precomposed.png">
+
+	<!-- GOOGLE WEB FONT -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet">
+
+	<!-- BASE CSS -->
+	<link href="css/bootstrap.custom.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
 
 	<!-- SPECIFIC CSS -->
-    <link href="css/account.css" rel="stylesheet">
+	<link href="css/account.css" rel="stylesheet">
 
-    <!-- YOUR CUSTOM CSS -->
-    <link href="css/custom.css" rel="stylesheet">
+	<!-- YOUR CUSTOM CSS -->
+	<link href="css/custom.css" rel="stylesheet">
 
 </head>
 
 <body> --}}
-	
-	<div id="page">
 
-	
-	<main class="bg_gray">
-		
-	<div class="container margin_30">
-		<div class="page_header">
-			<div class="breadcrumbs">
-				{{!-- <ul>
-					<li><a href="#"></a></li>
-					<li><a href="#"></a></li>
-					<li></li>
-				</ul> --}}
-		</div>
-	</div>
-	<!-- /page_header -->
-		<div class="row justify-content-center">
-			
-			<div class="col-xl-6 col-lg-6 col-md-8">
-				<div class="box_account">
-					<h3 class="new_client">Registration</h3> 
-					
-
-					
-					
+	<div id="page" class="">
 
 
-					<p id="validationAlert" style="color: red ; font-size :14px ;"></p>
-					<p id="emailcheckalert" style="color: red ; font-size :14px ;">{{alertEmail}}</p>
+		<main class="bg_gray">
 
-					<small class="float-right pt-2">* Required Fields</small>
-					<form action="/User/account" method="POST" onsubmit = "return(validateForm());" name="myForm">
-					<div class="form_container">
-
-						<div class="form-group">
-							<input type="text" class="form-control" name="username" id="userName" value="" placeholder="Name*" onchange="validateName()">
-						</div>
-						<p id="userNameAlert" style="color: red ; font-size :14px ;"></p>
-
-						<div class="form-group">
-							<input type="email" class="form-control" name="email" id="email" placeholder="Email*" onchange="validateEmail()" >
-						</div>
-						<p id="emailAlert" style="color: red ; font-size :14px ;"></p>
-						<div class="form-group">
-							<input type="password" class="form-control" name="password" id="password" value="" placeholder="Password*" onchange="validatePassword()">
-						</div>
-						<p id="passwordAlert" style="color: red ;font-size :14px ;"></p>
-
-						<div class="form-group">
-							<input type="text" class="form-control" name="number" id="phoneNumber" value="" placeholder="Phone*" onchange="validatenum()">
-						</div>
-						<p id="numberAlert" style="color: red ; font-size :14px ;"></p>
-
-						<div class="form-group">
-							<input type="text" class="form-control" name="referal" id="referal" value="" placeholder="Referal code*" >
-						</div>
-						
-
-						
-
-						
-						
-						<div class="private box">
-							
-							<!-- /row -->
-							{{!-- <div class="row no-gutters">
-								<div class="col-6 pr-1">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="City*" name="city">
-									</div>
-								</div>
-								<div class="col-6 pl-1">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Postal Code*" name="postalcode">
-									</div>
-								</div>
-							</div>
-							<!-- /row -->
-							
-							<div class="row no-gutters">
-								<div class="col-6 pr-1">
-									<div class="form-group">
-										<div class="custom-select-form">
-											<select class="wide add_bottom_10" name="country" id="country">
-													<option value="" selected>State*</option>
-													<option value="Kerala">Kerala</option>
-													<option value="TamilNadu">Tamil Nadu</option>
-													<option value="Maharashtra">Maharashtra</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="col-6 pl-1">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Telephone *">
-									</div>
-								</div>
-							</div> --}}
-							<!-- /row -->
-							
-						</div>
-						<!-- /private -->
-						{{!-- <div class="company box" style="display: none;">
-							<div class="row no-gutters">
-								<div class="col-12">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Company Name*">
-									</div>
-								</div>
-								<div class="col-12">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Full Address">
-									</div>
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="row no-gutters">
-								<div class="col-6 pr-1">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="City*">
-									</div>
-								</div>
-								<div class="col-6 pl-1">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Postal Code*">
-									</div>
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="row no-gutters">
-								<div class="col-6 pr-1">
-									<div class="form-group">
-										<div class="custom-select-form">
-											<select class="wide add_bottom_10" name="country" id="country_2">
-													<option value="" selected>Country*</option>
-													<option value="Europe">Europe</option>
-													<option value="United states">United states</option>
-													<option value="Asia">Asia</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="col-6 pl-1">
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Telephone *">
-									</div>
-								</div>
-							</div>
-							<!-- /row -->
-						</div> --}}
-						<!-- /company -->
-						<hr>
-						<div class="form-group">
-							<label class="container_check">Accept <a href="#0">Terms and conditions</a>
-								<input type="checkbox" name="agree" id="agree">
-								<span class="checkmark"></span>
-							</label>
-						</div>
-						<div class="text-center"><input type="submit" value="Register" class="btn_1 full-width"></div>
+			<div class="container margin_30 ">
+				<div class="page_header">
+					<div class="breadcrumbs">
+						{{!-- <ul>
+							<li><a href="#"></a></li>
+							<li><a href="#"></a></li>
+							<li></li>
+						</ul> --}}
 					</div>
-					</form>
-					<!-- /form_container -->
 				</div>
-				<!-- /box_account -->
+				<!-- /page_header -->
+				<div class="row justify-content-center">
+
+					<div class="col-xl-6 col-lg-6 col-md-8">
+						<div class="box_account">
+							<h3 class="new_client">Registration</h3>
+
+
+
+
+
+
+							<p id="validationAlert" style="color: red ; font-size :14px ;"></p>
+							<p id="emailcheckalert" style="color: red ; font-size :14px ;">{{alertEmail}}</p>
+
+							<small class="float-right pt-2">* Required Fields</small>
+							<form action="/User/account" method="POST" onsubmit="return(validateForm());" name="myForm">
+								<div class="form_container">
+
+									<div class="form-group">
+										<input type="text" class="form-control" name="username" id="userName" value=""
+											placeholder="Name*" onchange="validateName()">
+									</div>
+									<p id="userNameAlert" style="color: red ; font-size :14px ;"></p>
+
+									<div class="form-group">
+										<input type="email" class="form-control" name="email" id="email"
+											placeholder="Email*" onchange="validateEmail()">
+									</div>
+									<p id="emailAlert" style="color: red ; font-size :14px ;"></p>
+									<div class="form-group">
+										<input type="password" class="form-control" name="password" id="password"
+											value="" placeholder="Password*" onchange="validatePassword()">
+									</div>
+									<p id="passwordAlert" style="color: red ;font-size :14px ;"></p>
+
+									<div class="form-group">
+										<input type="text" class="form-control" name="number" id="phoneNumber" value=""
+											placeholder="Phone*" onchange="validatenum()">
+									</div>
+									<p id="numberAlert" style="color: red ; font-size :14px ;"></p>
+
+									<div class="form-group">
+										<input type="text" class="form-control" name="referal" id="referal" value=""
+											placeholder="Referal code*">
+									</div>
+
+
+
+
+
+
+									<div class="private box">
+
+										<!-- /row -->
+										{{!-- <div class="row no-gutters">
+											<div class="col-6 pr-1">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="City*"
+														name="city">
+												</div>
+											</div>
+											<div class="col-6 pl-1">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="Postal Code*"
+														name="postalcode">
+												</div>
+											</div>
+										</div>
+										<!-- /row -->
+
+										<div class="row no-gutters">
+											<div class="col-6 pr-1">
+												<div class="form-group">
+													<div class="custom-select-form">
+														<select class="wide add_bottom_10" name="country" id="country">
+															<option value="" selected>State*</option>
+															<option value="Kerala">Kerala</option>
+															<option value="TamilNadu">Tamil Nadu</option>
+															<option value="Maharashtra">Maharashtra</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="col-6 pl-1">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="Telephone *">
+												</div>
+											</div>
+										</div> --}}
+										<!-- /row -->
+
+									</div>
+									<!-- /private -->
+									{{!-- <div class="company box" style="display: none;">
+										<div class="row no-gutters">
+											<div class="col-12">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="Company Name*">
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="Full Address">
+												</div>
+											</div>
+										</div>
+										<!-- /row -->
+										<div class="row no-gutters">
+											<div class="col-6 pr-1">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="City*">
+												</div>
+											</div>
+											<div class="col-6 pl-1">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="Postal Code*">
+												</div>
+											</div>
+										</div>
+										<!-- /row -->
+										<div class="row no-gutters">
+											<div class="col-6 pr-1">
+												<div class="form-group">
+													<div class="custom-select-form">
+														<select class="wide add_bottom_10" name="country"
+															id="country_2">
+															<option value="" selected>Country*</option>
+															<option value="Europe">Europe</option>
+															<option value="United states">United states</option>
+															<option value="Asia">Asia</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="col-6 pl-1">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="Telephone *">
+												</div>
+											</div>
+										</div>
+										<!-- /row -->
+									</div> --}}
+									<!-- /company -->
+									<hr>
+									<div class="form-group">
+										<label class="container_check">Accept <a href="#0">Terms and conditions</a>
+											<input type="checkbox" name="agree" id="agree">
+											<span class="checkmark"></span>
+										</label>
+									</div>
+									<div class="text-center"><input type="submit" value="Register"
+											class="btn_1 full-width"></div>
+								</div>
+							</form>
+							<!-- /form_container -->
+						</div>
+						<!-- /box_account -->
+					</div>
+				</div>
+				<!-- /row -->
 			</div>
-		</div>
-		<!-- /row -->
-		</div>
-		<!-- /container -->
-	</main>
-	<!--/main-->
-	
-	
+			<!-- /container -->
+		</main>
+		<!--/main-->
+
+
 	</div>
 	<!-- page -->
-	
+
 	<div id="toTop"></div><!-- Back to top button -->
-	
-    
- 
-
-   <script>
-//VALIDATION SCRIPTS
-
-	//Validate Email
-	  function validateEmail(){
-   
-    var text1=document.getElementById("email").value;
-    var regx=/^([a-zA-Z0-9\.-_ ]+)@([a-zA-Z0-9]+).([a-zA-Z]{2,20})(.[a-zA-Z]{2,5})$/;
-    if(regx.test(text1))
-    {
-        mail=1;
-        document.getElementById("emailAlert").innerHTML="";
-   
-    }
-    else{
-        mail=0;
-        document.getElementById("emailAlert").innerHTML="In-Valid Entry";
-        document.getElementById("emailAlert").style.visibility="visible";
-        document.getElementById("emailAlert").style.color="red";
-
-    }
-
-	}
-
-	//Validate number
-
-	function validatenum(){
-    
-    var text2=document.getElementById("phoneNumber").value;
-    var regx=/^[0-9]+$/;
-    if(regx.test(text2))
-    {
-       num=1;
-        document.getElementById("numberAlert").innerHTML="";
-        
-    }
-    else{
-        num=0;
-        document.getElementById("numberAlert").innerHTML="";
-        document.getElementById("numberAlert").style.visibility="visible";
-        document.getElementById("numberAlert").style.color="red";
-
-    }
-
-}
-//Validate name
-
-function validateName(){
-   
-    var text=document.getElementById("userName").value;
-    var regx=/^[a-zA-Z ]+$/;
-    if(regx.test(text))
-    {
-        nam=1;
-        document.getElementById("userNameAlert").innerHTML="";
-    }
-    else{
-        nam=0;
-        document.getElementById("userNameAlert").innerHTML="In-Valid Entry";
-        document.getElementById("userNameAlert").style.visibility="visible";
-        document.getElementById("userNameAlert").style.color="red";
-
-    }
-
-}
-
- //Password validation
-
-    function validatePassword() {
-
-        const text1 = document.getElementById("password").value;
-        console.log(text1);
-        {{!-- var regx = /^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[a-zA-Z]).{8,}$/; --}}
-        var regx = /^[0-9 a-z]+$/
-        if (regx.test(text1)) {
-            password = 1;
-            document.getElementById("passwordAlert").innerHTML = "";
-			
-           
-        }
-        else {
-            password = 0;
-            document.getElementById("passwordAlert").innerHTML = "In-Valid Entry";
-            document.getElementById("passwordAlert").style.visibility = "visible";
-            document.getElementById("passwordAlert").style.color = "red";
-
-        }
-
-    }
-
-	 function validateForm(){
-        validatePassword();
-        validateEmail();
-        validateName()
-		validatenum()
-
-        if(password==1&& nam==1&&num==1&&mail==1&&document.myForm.agree.checked==true)
-        {
 
 
-               password=0
-			   nam=0
-			   num=0
-			   mail=0
-			   
-			   
-			
-            return true;
-            
-        }
-        else{
-            document.getElementById("validationAlert").innerHTML="please enter the correct details";
-            document.getElementById("validationAlert").style.visibility="visible";
-            document.getElementById("validationAlert").style.color="red";
-            return false;
-        }
-    }
 
 
-  </script>
+	<script>
+		//VALIDATION SCRIPTS
+
+		//Validate Email
+		function validateEmail() {
+
+			var text1 = document.getElementById("email").value;
+			var regx = /^([a-zA-Z0-9\.-_ ]+)@([a-zA-Z0-9]+).([a-zA-Z]{2,20})(.[a-zA-Z]{2,5})$/;
+			if (regx.test(text1)) {
+				mail = 1;
+				document.getElementById("emailAlert").innerHTML = "";
+
+			}
+			else {
+				mail = 0;
+				document.getElementById("emailAlert").innerHTML = "In-Valid Entry";
+				document.getElementById("emailAlert").style.visibility = "visible";
+				document.getElementById("emailAlert").style.color = "red";
+
+			}
+
+		}
+
+		//Validate number
+
+		function validatenum() {
+
+			var text2 = document.getElementById("phoneNumber").value;
+			var regx = /^[0-9]+$/;
+			if (regx.test(text2)) {
+				num = 1;
+				document.getElementById("numberAlert").innerHTML = "";
+
+			}
+			else {
+				num = 0;
+				document.getElementById("numberAlert").innerHTML = "";
+				document.getElementById("numberAlert").style.visibility = "visible";
+				document.getElementById("numberAlert").style.color = "red";
+
+			}
+
+		}
+		//Validate name
+
+		function validateName() {
+
+			var text = document.getElementById("userName").value;
+			var regx = /^[a-zA-Z ]+$/;
+			if (regx.test(text)) {
+				nam = 1;
+				document.getElementById("userNameAlert").innerHTML = "";
+			}
+			else {
+				nam = 0;
+				document.getElementById("userNameAlert").innerHTML = "In-Valid Entry";
+				document.getElementById("userNameAlert").style.visibility = "visible";
+				document.getElementById("userNameAlert").style.color = "red";
+
+			}
+
+		}
+
+		//Password validation
+
+		function validatePassword() {
+
+			const text1 = document.getElementById("password").value;
+			console.log(text1);
+			{ { !-- var regx = /^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[a-zA-Z]).{8,}$/; --} }
+			var regx = /^[0-9 a-z]+$/
+			if (regx.test(text1)) {
+				password = 1;
+				document.getElementById("passwordAlert").innerHTML = "";
+
+
+			}
+			else {
+				password = 0;
+				document.getElementById("passwordAlert").innerHTML = "In-Valid Entry";
+				document.getElementById("passwordAlert").style.visibility = "visible";
+				document.getElementById("passwordAlert").style.color = "red";
+
+			}
+
+		}
+
+		function validateForm() {
+			validatePassword();
+			validateEmail();
+			validateName()
+			validatenum()
+
+			if (password == 1 && nam == 1 && num == 1 && mail == 1 && document.myForm.agree.checked == true) {
+
+
+				password = 0
+				nam = 0
+				num = 0
+				mail = 0
+
+
+
+				return true;
+
+			}
+			else {
+				document.getElementById("validationAlert").innerHTML = "please enter the correct details";
+				document.getElementById("validationAlert").style.visibility = "visible";
+				document.getElementById("validationAlert").style.color = "red";
+				return false;
+			}
+		}
+
+
+	</script>
 	<!-- COMMON SCRIPTS -->
-    <script src="js/common_scripts.min.js"></script>
-    <script src="js/main.js"></script>
+	<script src="js/common_scripts.min.js"></script>
+	<script src="js/main.js"></script>
 
 
-    <script>
-    	// Client type Panel
-		$('input[name="client_type"]').on("click", function() {
-		    var inputValue = $(this).attr("value");
-		    var targetBox = $("." + inputValue);
-		    $(".box").not(targetBox).hide();
-		    $(targetBox).show();
+	<script>
+		// Client type Panel
+		$('input[name="client_type"]').on("click", function () {
+			var inputValue = $(this).attr("value");
+			var targetBox = $("." + inputValue);
+			$(".box").not(targetBox).hide();
+			$(targetBox).show();
 		});
 	</script>
-		
-{{!-- </body>
+
+	{{!--
+</body>
+
 </html> --}}

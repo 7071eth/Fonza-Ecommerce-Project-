@@ -44,7 +44,8 @@ router.get('/', async function (req, res, next) {
     res.redirect('/admin/dashboard')
   } else {
     res.render('admin/login', {
-      title: 'Express'
+      title: 'Admin',
+      login: true
     });
   }
 
@@ -625,6 +626,7 @@ router.post('/add-offers', async (req, res) => {
     
     if(Array.isArray(req.body.brands)){
       console.log("checkpoint 1")
+      console.log(req.body.brands.length)
       for (i = 0; i < req.body.brands.length; i++) {
         brnd = req.body.brands[i]
         percent = req.body.percent

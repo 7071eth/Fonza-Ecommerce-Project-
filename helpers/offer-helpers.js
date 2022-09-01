@@ -67,8 +67,11 @@ module.exports = {
 
     addCoffer : (offerId,brndId)=>{
         return new Promise (async (resolve,reject)=>{
-            await db.get().collection(collection.SUBCATEGORY_COLLECTION).updateOne({_id : ObjectID(brndId)},{$set : {offerId: offerId}},{upsert: true})
-            resolve()
+            await db.get().collection(collection.SUBCATEGORY_COLLECTION).updateOne({_id : ObjectID(brndId)},{$set : {offerId: offerId}},{upsert: true}).then((response)=>{
+                resolve(response)
+                
+            })
+           
         })
     },
     proOffers : ()=>{
