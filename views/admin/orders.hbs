@@ -1,0 +1,75 @@
+
+
+<div class="container mt-3">
+  <h2>Orders</h2>
+              
+  <table class="table table-striped">
+    <thead>
+      <tr>
+      <th>Date</th>
+      <th>Address</th>
+      <th>Invoice no</th>
+      <th>Price</th>
+      <th>Status</th>
+      <th>Change Status</th>
+      
+    </tr>
+    </thead>
+    <tbody>
+        {{#each orders}}
+      <tr>
+      <th scope="row">{{this.date}}</th>
+      <td>{{this.address}}</td>
+      <td id="invoice" name="invoice"><a href="/admin/invoice/{{this._id}}">{{this._id}}</a></td>
+      <td>{{this.total}}</td>
+      <td>{{this.status}}</td>
+      <td>
+      <select class="form-select" aria-label="Default select example" onchange="canceled('{{this._id}}',value)" >
+            <option selected>Open this select menu</option>
+            <option  value="Cancelled">Cancel</option>
+            <option  value="Pending">Pending</option>
+            <option  value="Delivered">Delivered</option>
+            <option  value="Out for delivery">Out for delivery</option>
+
+      </select>
+      </td>
+      
+      
+    </tr>
+    {{/each}}
+      
+    </tbody>
+  </table>
+</div>
+
+    
+
+   <script>
+		
+
+   function canceled(id,status) {
+
+    
+
+     {
+        $.ajax({
+
+      url: "/admin/change-order",
+      method: "post",
+      data: {
+        invoice: id ,
+        status: status
+      },
+      success: (response) => {
+        
+        console.log(response)
+        location.reload()
+        
+      }
+
+    });
+  }
+  }
+  
+
+    </script>

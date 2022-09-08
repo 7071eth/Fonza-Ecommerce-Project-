@@ -1,0 +1,111 @@
+<main class="bg_gray">
+		<div class="container margin_30">
+		<div class="page_header">
+			<div class="breadcrumbs">
+				<ul>
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Category</a></li>
+					<li>Page active</li>
+				</ul>
+			</div>
+			<h1 class="fw-bold">Orders</h1>
+		</div>
+		<!-- /page_header -->
+		<!--Table-->
+<table class="table table-hover table-fixed">
+
+  <!--Table head-->
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Address</th>
+      <th>Invoice no</th>
+      <th>Price</th>
+      <th>Status</th>
+      <th>Cancel</th>
+      
+    </tr>
+  </thead>
+  <!--Table head-->
+
+  <!--Table body-->
+  <tbody>
+    {{#each orders}}
+    <tr>
+      
+      <th scope="row">{{this.date}}</th>
+      <td>{{this.address}}</td>
+      <td id="invoice" name="invoice"><a href="/User/invoice/{{_id}}">{{_id}}</a></td>
+      <td>{{this.total}}</td>
+      <td>{{this.status}}</td>
+      
+      <td><button class="ti-close btn-danger btn"  onclick="cancel('{{this._id}}')" ></button></td>
+      
+    </tr>
+    {{/each}}
+  
+  </tbody>
+  <!--Table body-->
+
+</table>
+<!--Table-->
+
+					</div>
+					<!-- /cart_actions -->
+	
+		</div>
+		<!-- /container -->
+		
+		
+	</main>
+
+   <script>
+		
+
+   function cancel(id) {
+
+  event.preventDefault();
+
+  swal({
+  title: "Are you sure you want to cancel this order ?",
+  text: "Once cancelled, you will not be able to revert it!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Your order has been cancelled !", {
+      icon: "success",
+      buttons: false,
+    });
+
+    setTimeout(hello,800)
+
+  function hello (){
+
+     {
+        $.ajax({
+
+      url: "/User/cancel-order",
+      method: "post",
+      data: {
+        invoice: id ,
+      },
+      success: (response) => {
+        
+        console.log(response)
+        location.reload()
+        
+      }
+
+    });
+  }
+  }
+  }
+});
+
+
+
+};
+    </script>

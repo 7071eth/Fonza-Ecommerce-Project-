@@ -10,7 +10,7 @@ var logger = require('morgan');
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
-const { hasSubscribers } = require('diagnostics_channel');
+// const { hasSubscribers } = require('diagnostics_channel');
 var hbs=require('express-handlebars')
 
 var hbss = hbs.create({});
@@ -74,12 +74,33 @@ app.use(cookieParser());
 app.use(express.static(path.join( __dirname,'public')));
 app.use(express.static(path.join( __dirname,'images')));
 app.use(express.static(path.join( __dirname,'public/User')));
+app.use(express.static(path.join( __dirname,'public/User/javascripts')));
+app.use(express.static(path.join( __dirname,'public/User/images')));
+app.use(express.static(path.join( __dirname,'public/User/images/banners')));
+app.use(express.static(path.join( __dirname,'public/admin')));
+app.use(express.static(path.join( __dirname,'public/User/stylesheets')));
 
+app.use((req, res, next) => {
+  if (!req.users) {
+    res.header("cache-control", "private,no-cache,no-store,must revalidate");
+    res.header("Express", "-3");
+  }
+  next();
+});
+
+app.use((req, res, next) => {
+  if (!req.user) {
+    res.header("cache-control", "private,no-cache,no-store,must revalidate");
+    res.header("Express", "-3");
+  }
+  next();
+});
 
 app.use(session({secret:"key",
 resave:false,
 saveUninitialized:true,
-cookie:{maxAge:600000}}))
+cookie:{maxAge:900000},
+rolling: true}))
 
 //hbs security open
 

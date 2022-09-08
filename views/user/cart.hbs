@@ -1,0 +1,270 @@
+<main class="bg_gray">
+	<div class="container margin_30">
+		<div class="page_header">
+			<div class="breadcrumbs">
+				<ul>
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Category</a></li>
+					<li>Page active</li>
+				</ul>
+			</div>
+			<h1>Cart page</h1>
+		</div>
+		<!-- /page_header -->
+		<h3 id="emptyAlert"></h3>
+		<a href="/" class="btn btn-success" id="emptyButton" hidden="false"></a>
+		<table class="table table-striped cart-list" id="tablecart">
+			<thead>
+				<tr>
+					<th id="hello">
+						Product
+					</th>
+					<th>
+						Price
+					</th>
+					<th>
+						Quantity
+					</th>
+					<th>
+						Subtotal
+					</th>
+					<th>
+
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each cart}}
+				<tr>
+					<td>
+						<div class="thumb_cart">
+							<img src="/{{cartProducts.image.[0]}}" data-src="/{{cartProducts.image.[0]}}" class="lazy"
+								alt="Image">
+						</div>
+						<span class="item_cart">{{cartProducts.title}}</span>
+					</td>
+					<td>
+						<strong id="{{cartProducts.price}}">${{cartProducts.price}}</strong>
+					</td>
+					<td>
+						<div class="def-number-input number-input safari_only">
+							<button onclick="addToCart(event,'{{product}}','{{user}}','-1','{{quantity}}')"
+								class="minus"></button>
+							<input id="{{product}}" class="quantity" min="0" name="quantity" value={{quantity}}
+								type="number">
+							<button onclick="addToCart(event,'{{product}}','{{user}}','1','{{quantity}}')"
+								class="plus"></button>
+						</div>
+
+					</td>
+					<td>
+						<strong id="{{cartProducts.title}}">{{subtotal}}</strong>
+					</td>
+					<td class="options">
+						<a href="/User/remove-product/{{cartProducts._id}}"><i class="ti-trash"></i></a>
+					</td>
+				</tr>
+				{{/each}}
+
+			</tbody>
+		</table>
+
+		<div class="row add_top_30 flex-sm-row-reverse cart_actions">
+
+			<div class="col-sm-8">
+				<div class="apply-coupon mt-3">
+					<div class="form-group form-inline" id="parent">
+						<input type="text" id="couponName" name="coupon-code" value="" placeholder="Promo code"
+							class="form-control"><button type="button" class="btn btn-secondary" id="cButton"
+							onclick="apply2()">Apply</button>
+							<button type="button" class="btn btn-danger" id="rButton"
+							onclick="remove1({{total}})" hidden="true">Remove</button>
+
+
+					</div>
+					<div>
+						<p id="couponAlert" style="color: red ;"></p>
+					</div>
+					<div>
+						<p id="applied" style="color: green ;"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /cart_actions -->
+
+	</div>
+	<!-- /container -->
+
+	<div class="box_cart">
+		<div class="container">
+			<div class="row justify-content-end">
+				<div class="col-xl-4 col-lg-4 col-md-6">
+					<ul class="mr-2">
+							
+							<span id="discountlabel" hidden="true"> Coupon discount : </span><li style="color: green ;" id="discounted">-{{cart.disAmt}}</li>
+							
+							{{#if cart.offerS}}
+							<span> Category discount : </span><li style="color: green ;" id="discounted">-{{cart.offerD}}</li>
+							{{/if}}
+							
+							<li id="tricked" hidden>{{cart.cName}}</li>
+							
+							
+							<h3>Total</h3>
+							<li id="total">
+								{{total}}
+							</li>
+						
+
+					</ul>
+
+					<a href="/User/checkout" class="btn_1 full-width cart">Proceed to Checkout</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /box_cart -->
+
+</main>
+
+
+
+
+
+<script>
+
+	if({{cart.cStatus}}){
+		
+		
+		document.getElementById('total').innerHTML={{cart.newPrice}}
+		zname = document.getElementById('tricked').innerHTML
+		document.getElementById('couponName').value = zname
+		document.getElementById('couponName').disabled = true
+		document.getElementById('cButton').hidden=true
+		document.getElementById('rButton').hidden=false
+		document.getElementById('applied').innerHTML='Coupon Applied !'
+
+	}
+
+	
+	window.addEventListener("load", myInitFunction)
+</script>
+
+<script>
+	
+	function apply2() {
+		
+
+		document.getElementById('applied').innerHTML=''
+		document.getElementById('couponAlert').innerHTML = ''
+
+		let coupon = document.getElementById('couponName').value
+		console.log(coupon)
+
+
+
+		$.ajax({
+			url: '/User/apply-coupon',
+			data: {
+				coupon,
+			},
+			method: 'post',
+			success: async (newData) => {
+				if (newData.exist) {
+					if (newData.used == false) {
+						if (newData.status) {
+							if (newData.total) {
+
+								await swal({
+									title: "Coupon Applied",
+									text: "You have saved Rs:" + newData.amt + "!!",
+									icon: "success",
+									buttons: true,
+								});
+
+								document.getElementById('total').innerHTML = newData.newPrice
+								document.getElementById('discounted').innerHTML = "-"+newData.amt
+								document.getElementById('couponName').disabled = true
+								document.getElementById('cButton').hidden=true
+								document.getElementById('rButton').hidden=false
+								document.getElementById('applied').innerHTML='Coupon Applied !'
+
+								document.getElementById("discountlabel").hidden=false
+								
+
+
+							} else {
+
+								document.getElementById('couponAlert').innerHTML = "Does not meet the minimum required amount"
+
+							}
+
+
+
+						} else {
+							document.getElementById('couponAlert').innerHTML = "Coupon Expired !"
+						}
+
+
+
+					} else {
+
+						document.getElementById('couponAlert').innerHTML = "Coupon already used !"
+
+					}
+
+
+				} else {
+					document.getElementById('couponAlert').innerHTML = "Coupon Does not exist !"
+				}
+
+
+
+
+			}
+		})
+
+	}
+
+	function remove1(total) {
+
+
+		document.getElementById('couponAlert').innerHTML = ''
+		document.getElementById('applied').innerHTML=''
+
+		let coupon = document.getElementById('couponName').value
+		console.log(coupon)
+
+		document.getElementById('rButton').hidden=true
+		document.getElementById('cButton').hidden=false
+
+		document.getElementById('discounted').innerHTML = ""
+		document.getElementById('discounted').hidden = true
+		document.getElementById('discountlabel').hidden = true
+
+
+
+
+		$.ajax({
+			url: '/User/remove-coupon',
+			data: {
+				coupon,
+				total
+
+			},
+			method: 'post',
+			success: (response) => {
+
+				console.log(response)
+				document.getElementById('couponName').disabled = false
+				document.getElementById('couponName').value=""
+				document.getElementById('total').innerHTML=total
+				
+			}
+		})
+
+	}
+
+</script>
+

@@ -1,39 +1,108 @@
+<main style="background-color: rgba(77, 139, 255, 0.12) ;">
+		<div id="carousel-home">
+			<div class="owl-carousel owl-theme">
+				<div class="owl-slide cover" style="background-image: url(/banners/apple1.jpg);">
+					<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.5)">
+						<div class="container">
+							<div class="row justify-content-center justify-content-md-end">
+								<div class="col-lg-6 static">
+									<div class="slide-text text-right white">
+										<h2 class="owl-slide-animated owl-slide-title">Apple<br>I phone 13 pro</h2>
+										<p class="owl-slide-animated owl-slide-subtitle">
+											Limited items available at this price
+										</p>
+										<div class="owl-slide-animated owl-slide-cta"><a class="btn_1" href="/User/brands/62edf5894f5a665fe4f3c00b" role="button">Shop Now</a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--/owl-slide-->
+				<div class="owl-slide cover" style="background-image: url(/banners/Vivo.jpg);">
+					<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.3)">
+						<div class="container">
+							<div class="row justify-content-center justify-content-md-start">
+								<div class="col-lg-6 static">
+									<div class="slide-text white">
+										<h2 class="owl-slide-animated owl-slide-title">Vivo<br>V20 SE</h2>
+										<p class="owl-slide-animated owl-slide-subtitle">
+											Limited items available at this price
+										</p>
+										<div class="owl-slide-animated owl-slide-cta"><a class="btn_1" href="listing-grid-1-full.html" role="button">Shop Now</a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--/owl-slide-->
+				<div class="owl-slide cover" style="background-image: url(/banners/Samsung1.jpeg);">
+					<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(255, 255, 255, 0.5)">
+						<div class="container">
+							<div class="row justify-content-center justify-content-md-start">
+								<div class="col-lg-12 static">
+									<div class="slide-text text-center black">
+										<h2 class="owl-slide-animated owl-slide-title" >Samsung<br>Galaxy Z Fold2</h2>
+										<p class="owl-slide-animated owl-slide-subtitle">
+											Lightweight cushioning and durable support with a Phylon midsole
+										</p>
+										<div class="owl-slide-animated owl-slide-cta"><a class="btn_1" href="listing-grid-1-full.html" role="button">Shop Now</a></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--/owl-slide-->
+				</div>
+			</div>
+			<div id="icon_drag_mobile"></div>
+		</div>
+		<!--/carousel-->
 
-<div class="container margin_60_35">
+		
+		<!--/banners_grid -->
+		
+		
+
+	<div class="container margin_60_35" >
+		
 			<div class="main_title">
 				<h2>Top Selling</h2>
-				<span>Products</span>
+				<span style="color: white">Products</span>
 				<p>Best deals on smart phones you will ever get.</p>
 			</div>
-
+				<h1></h1>
 			<div class="row small-gutters">
-				{{#each products}}
-				<div class="col-6 col-md-4 col-xl-3">
+				{{#each category}}
+					{{#if products.offer}}
 					
+				<div class="col-6 col-md-4 col-xl-3">
+						
 					<div class="grid_item ">
 						
 						
-						<figure>
-							<span class="ribbon off">-30%</span>
-							<a href="/User/productDetails/{{this._id}}">
+						<figure >
+							<span class="ribbon off">-{{products.cent}}%</span>
+							<a href="/User/productDetails/{{products._id}}">
 								
-								<img class="img-fluid " src="/{{this.image.[0]}}" data-src="img/products/shoes/1.jpg" alt="">
+								<img class="img-fluid " src="/{{products.image.[0]}}" style="width: 100% ; height: 100%;" data-src="img/products/shoes/1.jpg" alt="">
 								
 							</a>
-							<div data-countdown="2019/05/15" class="countdown"></div>
+							<div data-countdown="{{products.expire}}" class="countdown"></div>
 						</figure>
 						<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
 						<a href="product-detail-1.html">
-							<h3>{{this.title}}</h3>
+							<h3>{{Datas.subcategory}} {{products.title}}</h3>
 						</a>
 						<div class="price_box">
-							<span class="new_price">₹{{this.price}}</span>
-							<span class="old_price">₹60.00</span>
+							<span class="new_price">₹{{products.price}}</span>
+							<span class="old_price">₹{{products.oldPrice}}</span>
 						</div>
 						<ul>
 							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
 							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+							<li><a href="#0" onclick="addNToCart(event,'{{products._id}}','{{userDetails._id}}','1','new')" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
 						</ul>
 						
 					</div>
@@ -42,8 +111,65 @@
 					
 					<!-- /grid_item -->
 				</div>
+				{{else}}
+				<div class="col-6 col-md-4 col-xl-3">
+						
+					<div class="grid_item ">
+						
+						
+						<figure >
+							
+							<a href="/User/productDetails/{{products._id}}">
+								
+								<img class="img-fluid " src="/{{products.image.[0]}}" style="width: 100% ; height: 100%;" data-src="img/products/shoes/1.jpg" alt="">
+								
+							</a>
+							
+						</figure>
+						<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
+						<a href="product-detail-1.html">
+							<h3>{{Datas.subcategory}} {{products.title}}</h3>
+						</a>
+						<div class="price_box">
+							<span class="new_price">₹{{products.price}}</span>
+							
+						</div>
+						<ul>
+							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
+							<li><a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
+							<li><a href="#0" onclick="addNToCart(event,'{{products._id}}','{{userDetails._id}}','1','new')" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					<!-- /grid_item -->
+				</div>
+				{{/if}}
 				{{/each}}
 				<!-- /col -->
 			</div>
+			<div class="d-flex justify-content-center">
+				<a href="/User/products"><button class="btn " style="color: white; font-weight: 600; background-color: rgb(0,77,218)
+;">View More</button></a>
+			</div>
+			
 			<!-- /row -->
 		</div>
+
+
+		
+		<!-- /featured -->
+		
+		
+		
+
+		
+		<!-- /container -->
+	</main>
+
+	<script>
+		console.log(document.getElementById('tTotal').innerHTML)
+		console.log("Heloooooooooooo")
+	</script>

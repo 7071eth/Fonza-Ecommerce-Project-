@@ -1,0 +1,255 @@
+<main class="bg_gray">
+
+	<form id="placeorder">
+	<div class="container margin_30">
+		<div class="page_header">
+			<div class="breadcrumbs">
+				<ul>
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Category</a></li>
+					<li>Page active</li>
+				</ul>
+			</div>
+			<h1><strong></strong>Checkout</h1>
+
+		</div>
+		<!-- /page_header -->
+		<div class="row d-flex justify-content-center">
+			
+			<div class="col-lg-4 col-md-6">
+				<div class="step first payments">
+					<h3>1. Payment and Shipping</h3>
+					<ul>
+						{{!-- <li>
+							<label class="container_radio">Credit Card<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment" checked>
+								<span class="checkmark"></span>
+							</label>
+						</li>
+						<li>
+							<label class="container_radio">Paypal<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment">
+								<span class="checkmark"></span>
+							</label>
+						</li> --}}
+						<li>
+							<label class="container_radio">Cash on delivery<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment" value="COD" checked>
+								<span class="checkmark"></span>
+							</label>
+						</li>
+						<li>
+							<label class="container_radio">RazorPay<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment" value="RAZORPAY">
+								<span class="checkmark"></span>
+							</label>
+						</li>
+						<li>
+							<label class="container_radio">Paypal<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="payment" value="PAYPAL">
+								<span class="checkmark"></span>
+							</label>
+						</li>
+					</ul>
+
+					<div class="payment_info d-none d-sm-block">
+						<figure><img src="img/cards_all.svg" alt=""></figure>
+						<p>Fonza support only COD at the moment. New payment methods will be added soon.</p>
+					</div>
+
+					<h6 class="pb-2">Select Address/ <a href="/User/address">Add new address</a></h6>
+
+
+					<ul>
+						{{#each data.address}}
+						<li>
+							<label class="container_radio" name="address" value="Hello">{{name}} {{address}} {{city}}
+								{{postalCode}} {{country}}<a href="#0" class="info" data-toggle="modal"
+									data-target="#payments_method"></a>
+								<input type="radio" name="address"
+									value="{{name}} {{address}} {{city}} {{postalCode}} {{country}}">
+								<span class="checkmark"></span>
+							</label>
+						</li>
+						{{/each}}
+					</ul>
+
+				</div>
+				<!-- /step -->
+			</div>
+
+			<div class="col-lg-4 col-md-6">
+				<div class="step last">
+					<h3>2. Order Summary</h3>
+					<div class="box_general summary">
+
+						<ul>
+							{{#each cart}}
+							<li class="clearfix"><em>{{quantity}}x {{cartProducts.title}}</em>
+								<span>${{cartProducts.ogPrice}}</span>
+							</li>
+							{{/each}}
+
+						</ul>
+						<ul>
+
+							<li class="clearfix"><em><strong>Subtotal</strong></em> <span id="price">${{total}}</span></li>
+
+							{{#if cart.offerS}}
+							<li class="clearfix"><em><strong>Category discount</strong></em> <span id="price">-${{cart.offerD}}</span></li>
+							{{/if}}
+							<li class="clearfix"><em><strong id="disTitle"></strong></em><span id="discount"></span></li>
+							
+							{{#if wStatus}}
+
+							<li class="clearfix"><em><strong>Wallet discount</strong></em> <span id="price">-${{minus}}</span></li>
+							<li class="clearfix"><em><strong>Wallet balance</strong></em> <span id="price">${{bal}}</span></li>
+							
+
+							{{/if}}
+
+
+						</ul>
+						<div class="total clearfix"  name="total">TOTAL <span id="oldPrice">${{total}}</span></div>
+						<div class="total clearfix"  name="total"> <span id="newPrice"></span></div>
+						<div class="form-group">
+							<label class="container_check">Register to the Newsletter.
+								<input type="checkbox" checked>
+								<span class="checkmark"></span>
+							</label>
+						</div>
+
+						<button type="submit" class="btn btn-success">Place order</button>
+					</div>
+					<!-- /box_general -->
+				</div>
+				<!-- /step -->
+			</div>
+		</div>
+
+		<input type="hidden" name="user" value="{{data._id}}">
+		</form>
+		<!-- /row -->
+	</div>
+
+	<!-- /container -->
+</main>
+
+
+<script>
+
+	$("#placeorder").submit((event) => {
+		event.preventDefault();
+
+
+		swal({
+			title: "Order Processing",
+			text: "Redirecting...",
+			icon: "success",
+			buttons: false,
+		});
+
+		setTimeout(hello, 1000)
+
+		function hello() {
+
+			{
+				$.ajax({
+
+					url: "/User/place-order",
+					method: "post",
+					data: $("#placeorder").serialize(),
+					success: (response) => {
+
+						console.log("Ordereddddd")
+						console.log(response)
+						if (response.COD) {
+							location.href = '/User/orders'
+						} else if(response.RAZORPAY) {
+							
+							razorpayPayment(response)
+							function razorpayPayment(order) {
+								var options = {
+									"key": "rzp_test_juPuE4kQiJY8mm", // Enter the Key ID generated from the Dashboard
+									"amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+									"currency": "INR",
+									"name": "Fonza Ecom",
+									"description": "Test Transaction",
+									"image": "https://example.com/your_logo",
+									"order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+									"handler": function (response) {
+										
+
+										verifyPayment(response, order)
+									},
+									"prefill": {
+										"name": "Gaurav Kumar",
+										"email": "gaurav.kumar@example.com",
+										"contact": "9999999999"
+									},
+									"notes": {
+										"address": "Razorpay Corporate Office"
+									},
+									"theme": {
+										"color": "#3399cc"
+									}
+								};
+								var rzp1 = new Razorpay(options);
+								rzp1.open()
+							}
+							function verifyPayment(payment, order) {
+								$.ajax({
+									url: '/User/verify-payment',
+									data: {
+										payment,
+										order
+									},
+									method: 'post',
+									success : (response)=>{
+										swal({
+										title: "Order Placed",
+										text: "Redirecting...",
+										icon: "Payment success",
+										buttons: false,
+									});
+										location.href = '/User/orders'
+									}
+								})
+							}
+						} else {
+
+								 for (let i = 0; i < response.links.length; i++) {
+          						 if (response.links[i].rel === "approval_url") {
+            					 location.href = response.links[i].href;
+								}
+								}
+							
+						}
+
+					}
+
+
+				});
+			}
+
+		}
+
+
+	});
+</script>
+
+<script>
+	if({{cart.cStatus}}){
+		
+		document.getElementById('discount').innerHTML="-$"+{{cart.disAmt}}
+		document.getElementById('disTitle').innerHTML="Discount"
+		document.getElementById('newPrice').innerHTML="$"+{{cart.newPrice}}
+		document.getElementById('oldPrice').style='text-decoration: Line-Through'
+		document.getElementById('newPrice').style='color: green'
+	}
+</script>

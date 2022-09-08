@@ -1,0 +1,335 @@
+<section>
+  <div class="container-fluid">
+    <div class="row" style="background-color:rgb(211, 211, 211) ;">
+      <a href="/admin/add-offers" class="btn btn-success ml-auto mx-auto my-3" style="width: 200px;">Add new offer</a>
+    </div>
+
+    <ul class="nav nav-tabs container-fluid" id="myTab" role="tablist">
+      <li class="nav-item">
+
+
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+          aria-selected="true">Category offers</a>
+
+
+      </li>
+      <li class="nav-item">
+
+
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+          aria-selected="false">Product offers</a>
+
+      </li>
+
+      <li class="nav-item">
+
+
+        <a class="nav-link" id="offer-tab" data-toggle="tab" href="#offer" role="tab" aria-controls="offer"
+          aria-selected="false">All offers</a>
+
+      </li>
+
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div>
+            <table class="table table-striped">
+              <thead style="text-align:center ;">
+
+                <tr>
+                  <th>Brand</th>
+                  <th>Offer Name</th>
+                  <th>Discount %</th>
+                  <th>Expiry Date</th>
+
+                  <th>Remove</th>
+                </tr>
+
+              </thead>
+              <tbody style="text-align:center ;">
+                {{#each catOffers}}
+
+                <tr>
+
+                  <th scope="row">{{subcategory}}</th>
+                  <td>{{Offer.name}}</td>
+                  <td id="invoice" name="invoice"><span style="font-weight:900;">{{Offer.percent}}</span></td>
+                  <td>{{Offer.end}}</td>
+
+
+
+                   <td><button class="btn" onclick="rCategoryOffer('{{_id}}')"><i class="fas fa-trash-alt" style="color: red ;"></i></button></td>
+
+                </tr>
+
+                {{/each}}
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <div class="row">
+
+
+            <div>
+              <table class="table table-striped">
+                <thead style="text-align:center ;">
+                  <tr>
+                    <th style="text-align: left ;">Product </th>
+                    <th >Offer Name</th>
+
+                    <th>Discount %</th>
+                    <th>Expiry Date</th>
+
+
+                    <th>Remove</th>
+
+                  </tr>
+                </thead>
+                <tbody style="text-align: center;">
+
+                  {{#each proOffers}}
+                  <tr>
+                    <td style="text-align: left ;">{{title}}</td>
+                    <td >{{Offer.name}}</td>
+                    <td id="invoice" name="invoice"><span style="font-weight:900;">{{Offer.percent}}</span></td>
+                    <td>{{Offer.end}}</td>
+
+
+                    <td><button class="btn" onclick="rProductOffer('{{_id}}')"><i class="fas fa-trash-alt" style="color: red ;"></i></button></td>
+
+                  </tr>
+                  {{/each}}
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="offer" role="tabpanel" aria-labelledby="offer-tab">
+          <div class="row">
+
+
+            <div>
+              <table class="table table-striped">
+                <thead style="text-align:center ;">
+                  <tr>
+                    <th style="text-align: left ;">Offer Name</th>
+
+                    <th>Discount %</th>
+                    <th>Expiry Date</th>
+
+
+                    <th>Remove</th>
+
+                  </tr>
+                </thead>
+                <tbody style="text-align:center ;">
+                  {{#each offers}}
+                  <tr>
+
+                    <td style="text-align: left ;">{{name}}</td>
+                    <td id="invoice" name="invoice"><span style="font-weight:900;">{{percent}}</span></td>
+                    <td>{{end}}</td>
+
+
+
+                   <td><button class="btn" onclick="rOffer('{{_id}}')"><i class="fas fa-trash-alt" style="color: red ;"></i></button></td>
+
+
+
+                  </tr>
+                  {{/each}}
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+              {{#each pagination}}
+              {{#if selected}}
+              <li class="page-item"><a style="background-color:rgba(212, 212, 212, 0.695) ;" class="page-link"
+                  href="/admin/offers/?limit={{limit}}&page={{page}}&select=offer">{{page}}</a></li>
+              {{else}}
+              <li class="page-item"><a class="page-link"
+                  href="/admin/offers/?limit={{limit}}&page={{page}}&select=offer">{{page}}</a></li>
+              {{/if}}
+              {{/each}}
+
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+
+
+
+      </div>
+    </div>
+
+
+
+
+
+
+  </div>
+
+</section>
+<script>
+  function rCategoryOffer(id) {
+
+    swal({
+  title: "Are you sure you want to cancel this order ?",
+  text: "Once cancelled, you will not be able to revert it!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Your order has been cancelled !", {
+      icon: "success",
+      buttons: false,
+    });
+
+    setTimeout(hello,800)
+
+  function hello (){
+
+     {
+        $.ajax({
+      url: "/admin/remove-categoryOffer/"+id,
+      
+      method: "get",
+      success: (response) => {
+
+        location.reload()
+        
+      },
+    })
+  }
+  }
+  }
+});
+    
+
+  }
+</script>
+
+<script>
+  function rProductOffer(id) {
+
+    swal({
+  title: "Are you sure you want to cancel this order ?",
+  text: "Once cancelled, you will not be able to revert it!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Your order has been cancelled !", {
+      icon: "success",
+      buttons: false,
+    });
+
+    setTimeout(hello,800)
+
+  function hello (){
+
+     {
+        $.ajax({
+      url: "/admin/remove-productOffer/"+id,
+      
+      method: "get",
+      success: (response) => {
+
+        location.reload()
+        
+      },
+    })
+  }
+  }
+  }
+});
+    
+
+  }
+</script>
+
+<script>
+  function rOffer(id) {
+
+    swal({
+  title: "Are you sure you want to cancel this order ?",
+  text: "Once cancelled, you will not be able to revert it!",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    swal("Your order has been cancelled !", {
+      icon: "success",
+      buttons: false,
+    });
+
+    setTimeout(hello,800)
+
+  function hello (){
+
+     {
+        $.ajax({
+      url: "/admin/remove-Offer/"+id,
+      
+      method: "get",
+      success: (response) => {
+
+        location.reload()
+        
+      },
+    })
+  }
+  }
+  }
+});
+    
+
+  }
+</script>
+
+
+<script>
+
+  if ({{ selectId.offer }}) {
+
+    $(window).on('DOMContentLoaded', function (e) {
+      e.preventDefault()
+      $('#offer-tab').tab('show')
+    })
+  } 
+  else if ({{ selectId.pro }}) {
+
+    $(window).on('DOMContentLoaded', function (e) {
+      e.preventDefault()
+      $('#pro-tab').tab('show')
+    })
+  } else {
+    $(window).on('DOMContentLoaded', function (e) {
+      e.preventDefault()
+      $('#cat-tab').tab('show')
+    })
+  }
+
+  $('#myTab a').on('click', function (e) {
+    e.preventDefault()
+    $(this).tab('show')
+  })
+</script>
