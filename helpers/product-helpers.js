@@ -1,10 +1,8 @@
 var db = require('../config/connection')
 var collection = require('../config/collections')
-const bcrypt = require('bcrypt')
 const collections = require('../config/collections')
-//  const { unsubscribe } = require('../routes/admin')
+
 const { ObjectID } = require('bson')
-const { DeactivationsList } = require('twilio/lib/rest/messaging/v1/deactivation')
 
 module.exports={
     addCategory : (mainCategory)=>{

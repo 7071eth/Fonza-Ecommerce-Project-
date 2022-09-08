@@ -1,6 +1,4 @@
-const {
-  urlencoded
-} = require('body-parser');
+
 var express = require('express');
 const productHelpers = require('../helpers/product-helpers');
 var router = express.Router();
@@ -12,16 +10,14 @@ const referralCodeGenerator = require("referral-code-generator");
 const {
   ObjectID
 } = require('bson');
-const {
-  response
-} = require('../app');
+
 
 const paypal = require("paypal-rest-sdk");
 const couponHelpers = require('../helpers/coupon-helpers');
-const {
-  array
-} = require('../multer/multer');
-// const { response } = require('../app');
+// const {
+//   array
+// } = require('../multer/multer');
+
 
 const client = require("twilio")(
   process.env.ACCOUNT_SID,
