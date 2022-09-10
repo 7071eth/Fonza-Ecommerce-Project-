@@ -340,7 +340,7 @@ router.get('/cart', async (req, res) => {
 
       if (cart[i].cartProducts.offer) {
 
-        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+        cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price ;
         total = total + cart[i].quantity * cart[i].cartProducts.price
         offerDis = offerDis + (parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))
         offerS = true
@@ -410,7 +410,7 @@ router.get('/cart', async (req, res) => {
       total,
     })
   } else {
-    res.render('user/login')
+    res.redirect('/User/login')
   }
 
 })
@@ -429,7 +429,7 @@ router.get('/remove-product/:id', async (req, res) => {
     })
 
   } else {
-    res.render('user/login')
+    res.redirect/('User/login')
   }
 })
 
@@ -445,21 +445,25 @@ router.get('/checkout', async (req, res) => {
       let userD = req.session.user._id
       let cart = await cartHelpers.viewCart(userD)
 
-      let offerDis = 0
+      var offerDis = 0
       var total = 0;
+      var subtotal = 0 ;
       let offerS = false
 
       for (i = 0; i < cart.length; i++) {
 
         if (cart[i].cartProducts.offer) {
 
-          cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+          cart[i].subtotal = cart[i].quantity * parseInt(cart[i].cartProducts.ogPrice) ;
           total = total + cart[i].quantity * cart[i].cartProducts.price
-          offerDis = offerDis + (parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))
+          offerDis = offerDis + ((parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))*cart[i].quantity)
+          console.log(offerDis+"Thisis d")
           offerS = true
+          subtotal = subtotal + cart[i].subtotal
         } else {
 
-          cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+          cart[i].subtotal = cart[i].quantity * parseInt(cart[i].cartProducts.ogPrice)
+          subtotal = subtotal + cart[i].subtotal
           total = total + cart[i].quantity * cart[i].cartProducts.price
 
         }
@@ -530,7 +534,8 @@ router.get('/checkout', async (req, res) => {
         total,
         bal,
         minus,
-        wStatus
+        wStatus,
+        subtotal
 
       })
     } else {
@@ -539,20 +544,23 @@ router.get('/checkout', async (req, res) => {
 
       let offerDis = 0
       var total = 0;
+      var subtotal = 0
       let offerS = false
 
       for (i = 0; i < cart.length; i++) {
 
         if (cart[i].cartProducts.offer) {
 
-          cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+          cart[i].subtotal = cart[i].quantity * parseInt(cart[i].cartProducts.ogPrice)
           total = total + cart[i].quantity * cart[i].cartProducts.price
-          offerDis = offerDis + (parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))
+          offerDis = offerDis + ((parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))*cart[i].quantity)
           offerS = true
+          subtotal = subtotal + cart[i].subtotal
         } else {
 
-          cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
+          cart[i].subtotal = cart[i].quantity * parseInt(cart[i].cartProducts.ogPrice)
           total = total + cart[i].quantity * cart[i].cartProducts.price
+          subtotal = subtotal + cart[i].subtotal
 
         }
 
@@ -607,7 +615,8 @@ router.get('/checkout', async (req, res) => {
         user: true,
         data,
         cart,
-        total
+        total,
+        subtotal
       })
     }
 
@@ -670,12 +679,14 @@ router.post('/place-order', async (req, res) => {
 
         cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
         total = total + cart[i].quantity * cart[i].cartProducts.price
-        offerDis = offerDis + (parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))
+        offerDis = offerDis + ((parseInt(cart[i].cartProducts.ogPrice) - parseInt(cart[i].cartProducts.price))*cart[i].quantity)
+        cart[i].subtotal = cart[i].quantity * parseInt(cart[i].cartProducts.ogPrice)
         offerS = true
       } else {
 
         cart[i].subtotal = cart[i].quantity * cart[i].cartProducts.price;
         total = total + cart[i].quantity * cart[i].cartProducts.price
+        cart[i].subtotal = cart[i].quantity * parseInt(cart[i].cartProducts.ogPrice)
 
       }
 
@@ -1031,6 +1042,8 @@ router.post('/apply-coupon', async (req, res) => {
                   newData.total = true
                   newData.status = true
                   res.json(newData)
+                  console.log(newData)
+                  
 
                 } else {
 
@@ -1041,6 +1054,7 @@ router.post('/apply-coupon', async (req, res) => {
                   newData.total = true
                   newData.status = true
                   res.json(newData)
+                  console.log(newData)
 
                 }
               } else {
@@ -1051,6 +1065,7 @@ router.post('/apply-coupon', async (req, res) => {
                 newData.total = false
                 newData.status = true
                 res.json(newData)
+                console.log(newData)
               }
             } else {
 
@@ -1059,6 +1074,7 @@ router.post('/apply-coupon', async (req, res) => {
               newData.used = false
               newData.status = false
               res.json(newData)
+              console.log(newData)
             }
 
           })
@@ -1067,6 +1083,7 @@ router.post('/apply-coupon', async (req, res) => {
           newData.exist = true
           newData.used = true
           res.json(newData)
+          console.log(newData)
         }
 
 
@@ -1075,6 +1092,7 @@ router.post('/apply-coupon', async (req, res) => {
     } else {
       newData.exist = false
       res.json(newData)
+      console.log(newData)
     }
   })
 

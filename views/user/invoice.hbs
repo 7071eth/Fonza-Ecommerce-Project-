@@ -64,7 +64,7 @@
                 <td>{{cartProducts.title}}</td>
                 <td id="quantity">{{quantity}}</td>
                 <td id="ogprice">{{cartProducts.ogPrice}}</td>
-                <td id="subtotal"></td>
+                <td id="subtotal">{{subtotal}}</td>
               </tr>
               {{/each}}
             </tbody>
@@ -107,6 +107,3 @@
   </div>
 </div>
 
-<script>
-  document.getElementById('subtotal').innerHTML='$'+(document.getElementById('quantity').innerHTML*document.getElementById('ogprice').innerHTML)
-</script>
