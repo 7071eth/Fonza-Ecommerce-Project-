@@ -45,6 +45,10 @@
 					</td>
 					<td>
 						<strong id="{{cartProducts.price}}">${{cartProducts.price}}</strong>
+						{{#if cartProducts.offer}}
+						<strong class="old_price" id="{{cartProducts.price}}">${{cartProducts.ogPrice}}</strong>
+						{{/if}}
+						
 					</td>
 					<td>
 						<div class="def-number-input number-input safari_only">
@@ -104,9 +108,7 @@
 							
 							<span id="discountlabel" hidden="true"> Coupon discount : </span><li style="color: green ;" id="discounted">-{{cart.disAmt}}</li>
 							
-							{{#if cart.offerS}}
-							<span> Category discount : </span><li style="color: green ;" id="discounted">-{{cart.offerD}}</li>
-							{{/if}}
+							
 							
 							<li id="tricked" hidden>{{cart.cName}}</li>
 							
@@ -144,6 +146,7 @@
 		document.getElementById('cButton').hidden=true
 		document.getElementById('rButton').hidden=false
 		document.getElementById('applied').innerHTML='Coupon Applied !'
+		document.getElementById('discountla').hidden=false
 
 	}
 
@@ -171,6 +174,7 @@
 			},
 			method: 'post',
 			success: async (newData) => {
+				
 				if (newData.exist) {
 					if (newData.used == false) {
 						if (newData.status) {
@@ -183,13 +187,14 @@
 									buttons: true,
 								});
 
+								
+
 								document.getElementById('total').innerHTML = newData.newPrice
 								document.getElementById('discounted').innerHTML = "-"+newData.amt
 								document.getElementById('couponName').disabled = true
 								document.getElementById('cButton').hidden=true
 								document.getElementById('rButton').hidden=false
 								document.getElementById('applied').innerHTML='Coupon Applied !'
-
 								document.getElementById("discountlabel").hidden=false
 								
 
@@ -260,6 +265,7 @@
 				document.getElementById('couponName').disabled = false
 				document.getElementById('couponName').value=""
 				document.getElementById('total').innerHTML=total
+				location.reload()
 				
 			}
 		})
