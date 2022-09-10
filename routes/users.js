@@ -447,7 +447,7 @@ router.get('/checkout', async (req, res) => {
 
       var offerDis = 0
       var total = 0;
-      var subtotal = 0 ;
+      
       let offerS = false
 
       for (i = 0; i < cart.length; i++) {
