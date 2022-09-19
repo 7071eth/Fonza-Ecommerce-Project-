@@ -448,11 +448,18 @@ router.get('/checkout', async (req, res) => {
 
   if (req.session.user) {
 
+    
+
     if (req.session.user.wallet && req.session.user.wallet != 0) {
+
 
       let wallet = req.session.user.wallet
       let userD = req.session.user._id
       let cart = await cartHelpers.viewCart(userD)
+
+      if(cart.length!=0){
+
+      
 
       var offerDis = 0
       var total = 0;
@@ -548,8 +555,15 @@ router.get('/checkout', async (req, res) => {
 
       })
     } else {
+      res.render('user/checkout',{empty: true})
+    }
+    } else {
       let userD = req.session.user._id
       let cart = await cartHelpers.viewCart(userD)
+
+      if(cart.length!=0){
+
+      
 
       let offerDis = 0
       var total = 0;
@@ -627,6 +641,9 @@ router.get('/checkout', async (req, res) => {
         total,
         subtotal
       })
+    } else {
+      res.render('user/checkout',{empty: true})
+    }
     }
 
 
