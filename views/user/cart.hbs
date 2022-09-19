@@ -13,6 +13,16 @@
 		<!-- /page_header -->
 		<h3 id="emptyAlert"></h3>
 		<a href="/" class="btn btn-success" id="emptyButton" hidden="false"></a>
+		{{#if empty}}
+		<div class="d-flex justify-content-center" style="margin-top: 100px ;" >
+			<h1>Cart empty !</h1>
+			
+		</div>
+		<div class="d-flex justify-content-center" style="margin-bottom: 100px ; margin-top: 30px">
+			<a href="/User/products" class="btn btn-secondary">Add products</a>
+		</div>
+		{{else}}
+
 		<table class="table table-striped cart-list" id="tablecart">
 			<thead>
 				<tr>
@@ -73,6 +83,11 @@
 			</tbody>
 		</table>
 
+		{{/if}}
+
+		
+		{{#if empty}}
+		{{else}}
 		<div class="row add_top_30 flex-sm-row-reverse cart_actions">
 
 			<div class="col-sm-8">
@@ -95,11 +110,13 @@
 				</div>
 			</div>
 		</div>
+		{{/if}}
 		<!-- /cart_actions -->
 
 	</div>
 	<!-- /container -->
-
+	{{#if empty}}
+	{{else}}
 	<div class="box_cart">
 		<div class="container">
 			<div class="row justify-content-end">
@@ -126,6 +143,8 @@
 			</div>
 		</div>
 	</div>
+	{{/if}}
+	
 	<!-- /box_cart -->
 
 </main>

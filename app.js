@@ -78,6 +78,7 @@ app.use(express.static(path.join( __dirname,'public/User/javascripts')));
 app.use(express.static(path.join( __dirname,'public/User/images')));
 app.use(express.static(path.join( __dirname,'public/User/images/banners')));
 app.use(express.static(path.join( __dirname,'public/admin')));
+app.use(express.static(path.join( __dirname,'images/Login')));
 app.use(express.static(path.join( __dirname,'public/User/stylesheets')));
 
 app.use((req, res, next) => {

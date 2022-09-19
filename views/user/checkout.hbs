@@ -14,6 +14,15 @@
 
 		</div>
 		<!-- /page_header -->
+		{{#if empty}}
+		<div class="d-flex justify-content-center" style="margin-top: 100px ;" >
+			<h1>Empty !</h1>
+			
+		</div>
+		<div class="d-flex justify-content-center" style="margin-bottom: 100px ; margin-top: 30px">
+			<a href="/User/products" class="btn btn-secondary">Add products</a>
+		</div>
+		{{else}}
 		<div class="row d-flex justify-content-center">
 			
 			<div class="col-lg-4 col-md-6">
@@ -132,6 +141,7 @@
 				<!-- /step -->
 			</div>
 		</div>
+		{{/if}}
 
 		<input type="hidden" name="user" value="{{data._id}}">
 		</form>
