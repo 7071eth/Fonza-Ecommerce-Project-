@@ -413,10 +413,11 @@ router.get('/cart', async (req, res) => {
         user: true,
         cart,
         total,
+        
       })
 
     } else {
-      res.render('user/cart',{empty : true})
+      res.render('user/cart',{empty : true, user: true})
     }
   } else {
     res.redirect('/User/login')
@@ -555,7 +556,7 @@ router.get('/checkout', async (req, res) => {
 
       })
     } else {
-      res.render('user/checkout',{empty: true})
+      res.render('user/checkout',{empty: true, user: true})
     }
     } else {
       let userD = req.session.user._id
@@ -642,7 +643,7 @@ router.get('/checkout', async (req, res) => {
         subtotal
       })
     } else {
-      res.render('user/checkout',{empty: true})
+      res.render('user/checkout',{empty: true,user: true})
     }
     }
 
